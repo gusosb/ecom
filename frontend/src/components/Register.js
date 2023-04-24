@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate, Link } from 'react-router-dom'
-import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createUser } from '../requests'
 
 import Button from '@mui/material/Button'

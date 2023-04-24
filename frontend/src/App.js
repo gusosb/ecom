@@ -1,15 +1,19 @@
-import {
-  BrowserRouter as Router, Routes, Route, Link, Navigate
-} from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom"
 import { useEffect, Suspense, lazy, useState } from "react"
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getNotes, createNote, updateNote } from './requests'
+import { getNotes, createNote, updateNote, getSite } from './requests'
 
 const Login = lazy(() => import('./components/Login'))
 const Register = lazy(() => import('./components/Register'))
 const Home = lazy(() => import('./components/Home'))
 
 const App = () => {
+
+
+  const result = useQuery(['site'], getSite)
+  console.log(result)
+
+
 
   const [errorMessage, setErrorMessage] = useState(null)
   const [token, setToken] = useState(null)
@@ -35,6 +39,8 @@ const App = () => {
       }
     }
   }, [token])
+
+  if (result.isLoading) return 'Loading...'
 
   return (
     <>
