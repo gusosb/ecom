@@ -10,16 +10,27 @@ import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Box from '@mui/material/Box'
+import ListSubheader from '@mui/material/ListSubheader'
 import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemAvatar from '@mui/material/ListItemAvatar'
+import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
+import Collapse from '@mui/material/Collapse'
+import InboxIcon from '@mui/icons-material/MoveToInbox'
+import DraftsIcon from '@mui/icons-material/Drafts'
+import SendIcon from '@mui/icons-material/Send'
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import ExpandMore from '@mui/icons-material/ExpandMore'
+import StarBorder from '@mui/icons-material/StarBorder'
 
 const Admin = ({ categories, queryClient }) => {
     const [categoryName, setCategoryName] = useState('')
-    const [subOne, setSubOne] = useState(categories.map(e => { return { name: '' } }))
+    const [subOne, setSubOne] = useState(categories.map(e => { return { open: false } }))
     const [subTwo, setSubTwo] = useState(categories.flatMap(e => e.SubOne).map(b => { return { name: '' } }))
+    const [openTop, setOpenTop] = useState(categories.map(e => { return { open: false } }))
+    const [openSub, setOpenSub] = useState(categories.flatMap(e => e.SubOne).map(b => { return { open: false } }))
+
+    const [open, setOpen] = useState('')
 
     console.log(categories)
 
@@ -55,71 +66,57 @@ const Admin = ({ categories, queryClient }) => {
         setSubTwo(values)
     }
 
+    const handleClick = (i, values, level) => {
+        const vals = [...values]
+        vals[i].open = !vals[i].open
+        switch (level) {
+            case 'openTop':
+                setOpenTop(vals);
+                break;
+            case 'openSub':
+                setOpenSub(vals);
+                break;
+        }
+    }
+
     return (
-        <>
-            <TextField value={categoryName} onChange={({ target }) => setCategoryName(target.value)} id="outlined-basic" label="New Category" variant="outlined" />
-            <Button variant="text" onClick={sendCategory} >Create Category</Button>
-            <br />
+
+        <List
+            sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+            component="nav"
+            aria-labelledby="nested-list-subheader"
+            subheader={
+                <ListSubheader component="div" id="nested-list-subheader">Categories</ListSubheader>
+            }>
+            {categories.map((category, i) =>
+                <>
+                    <ListItemButton onClick={() => handleClick(i, openTop, 'openTop')}>
+                        <ListItemIcon>
+                            <InboxIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={category.name} />
+                        {openTop[i].open ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={openTop[i].open} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            {category.SubOne.map((subCategory, i) =>
 
 
-            <Table sx={{ maxWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell align="right"></TableCell>
-                        <TableCell align="right"></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {categories.map((category, i) =>
-                        <>
-
-                            <TableRow
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {category?.name}
-                                </TableCell>
-                                <TableCell align="right">
-                                    <TextField value={subOne[i]?.name} onChange={({ target }) => changeField(target, i)} id="outlined-basic" label="New Category" variant="outlined" />
-                                </TableCell>
-                                <TableCell align="right">
-                                    <Button variant="text" onClick={() => sendCategorySubOne(i, category.id)}>Create SubOne-Category</Button>
-                                </TableCell>
-                            </TableRow>
-
-                            <Table size="small" aria-label="purchases" sx={{ marginLeft: 2 }}>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Name</TableCell>
-                                        <TableCell align="right"></TableCell>
-                                        <TableCell align="right"></TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {category.SubOne.map((subCategory, i) => (
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
-                                                {subCategory.name}
-                                            </TableCell>
-                                            <TableCell align="right">
-                                                <TextField value={subTwo[i]?.name} onChange={({ target }) => changeSubTwo(target, i)} id="outlined-basic" label="New Category" variant="outlined" />
-                                            </TableCell>
-                                            <TableCell align="right">
-                                                <Button variant="text" onClick={() => sendCategorySubTwo(i, subCategory.id)}>Create SubTwo-Category</Button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-
-                        </>
-                    )}
-                </TableBody>
-            </Table>
+                                <ListItemButton onClick={() => handleClick(i, openSub, 'openSub')} sx={{ pl: 4 }}>
+                                    <ListItemIcon>
+                                        <InboxIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={subCategory.name} />
+                                    {openSub[i].open ? <ExpandLess /> : <ExpandMore />}
+                                </ListItemButton>
+                            )}
+                        </List>
+                    </Collapse>
+                </>
+            )}
+        </List>
 
 
-        </>
     )
 }
 

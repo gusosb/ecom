@@ -38,7 +38,7 @@ usersRouter.post('/login', async (request, response) => {
   const { email, password } = request.body
 
 
-  const user = await User.findOne({ where: { email: args.email } })
+  const user = await User.findOne({ where: { email } })
 
   const correctPassword = user === null
     ? false
@@ -47,10 +47,11 @@ usersRouter.post('/login', async (request, response) => {
   if (!(user && correctPassword)) {
     /*     throw new UserInputError('wrong credentials') */
     console.log('error no user or incorrect password')
+    response.json()
   }
 
   const userForToken = {
-    email: email,
+    email,
     id: user.id,
   }
 
