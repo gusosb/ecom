@@ -57,7 +57,7 @@ usersRouter.post('/login', async (request, response) => {
   response.json({ token: jwt.sign(userForToken, process.env.SECRET) })
 })
 
-usersRouter.get('/designers', async (request, response) => {
+usersRouter.get('/', async (request, response) => {
   const { authorization } = request.headers
   console.log(authorization)
 

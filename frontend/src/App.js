@@ -1,17 +1,21 @@
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom"
 import { useEffect, Suspense, lazy, useState } from "react"
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getNotes, createNote, updateNote, getSite } from './requests'
+import { getNotes, createNote, updateNote, getSite, getCategories } from './requests'
 
 const Login = lazy(() => import('./components/Login'))
 const Register = lazy(() => import('./components/Register'))
 const Home = lazy(() => import('./components/Home'))
+const Admin = lazy(() => import('./components/Admin'))
 
 const App = () => {
 
 
-  const result = useQuery(['site'], getSite)
-  console.log(result)
+  /* const result = useQuery(['site'], getSite) */
+  const result = useQuery(['categories'], getCategories, {
+    refetchOnWindowFocus: false
+  })
+  const queryClient = useQueryClient()
 
 
 
@@ -54,6 +58,7 @@ const App = () => {
                */}
             <Route path="login" element={token ? <Navigate replace to="/" /> : <Login notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
             <Route path="register" element={!token ? <Register notify={notify} setToken={setToken} errorMessage={errorMessage} /> : <Navigate replace to="/" />} />
+            <Route path="admin" element={token ? <Admin queryClient={queryClient} categories={result.data} notify={notify} setToken={setToken} errorMessage={errorMessage} /> : <Navigate replace to="/" />} />
 
 
           </Routes>
