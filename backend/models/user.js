@@ -10,6 +10,10 @@ User.init({
     primaryKey: true,
     autoIncrement: true
   },
+  isAdmin: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
   email: {
     type: DataTypes.STRING,
     unique: true,

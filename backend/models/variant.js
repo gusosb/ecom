@@ -2,9 +2,9 @@ const { Model, DataTypes } = require('sequelize')
 
 const { sequelize } = require('../util/db')
 
-class OrderItem extends Model { }
+class Variant extends Model {}
 
-OrderItem.init({
+Variant.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -14,19 +14,15 @@ OrderItem.init({
     type: DataTypes.STRING,
     allowNull: true
   },
-  price: {
-    type: DataTypes.FLOAT,
+  sellable: {
+    type: DataTypes.INTEGER,
     allowNull: true
-  },
-  vatRate: {
-    type: DataTypes.FLOAT,
-    allowNull: true
-  },
+  }
 }, {
   sequelize,
-  underscored: true,
+  underscored: false,
   timestamps: false,
-  modelName: 'orderitem',
+  modelName: 'variant',
 })
 
-module.exports = OrderItem
+module.exports = Variant

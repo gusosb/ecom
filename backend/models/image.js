@@ -2,31 +2,27 @@ const { Model, DataTypes } = require('sequelize')
 
 const { sequelize } = require('../util/db')
 
-class OrderItem extends Model { }
+class Image extends Model {}
 
-OrderItem.init({
+Image.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  name: {
+  path: {
     type: DataTypes.STRING,
     allowNull: true
   },
-  price: {
-    type: DataTypes.FLOAT,
+  index: {
+    type: DataTypes.INTEGER,
     allowNull: true
-  },
-  vatRate: {
-    type: DataTypes.FLOAT,
-    allowNull: true
-  },
+  }
 }, {
   sequelize,
-  underscored: true,
+  underscored: false,
   timestamps: false,
-  modelName: 'orderitem',
+  modelName: 'image',
 })
 
-module.exports = OrderItem
+module.exports = Image

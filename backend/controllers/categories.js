@@ -1,13 +1,11 @@
 const categoriesRouter = require('express').Router()
-const Category = require('../models/category')
-const Item = require('../models/item')
 const { auth } = require('./auth')
+const { Variant, Image, Item, Category } = require('../models')
 
 categoriesRouter.get('/', async (request, response) => {
 
 
   const currentUser = await auth(request)
-  console.log(currentUser)
 
   const categories = await Category.findAll({
     include: [
@@ -16,7 +14,7 @@ categoriesRouter.get('/', async (request, response) => {
         as: 'SubOne',
         required: true,
         include: [
-          { model: Category, as: 'SubTwo', include: [{ model: Item }] }
+          { model: Category, as: 'SubTwo', include: [{ model: Item, include: [{ model: Image }, {model: Variant}] }] }
         ]
       },
     ]
@@ -26,9 +24,30 @@ categoriesRouter.get('/', async (request, response) => {
 
 })
 
-categoriesRouter.post('/', async (request, response) => {
+categoriesRouter.get('/admin', async (request, response) => {
+  const currentUser = await auth(request)
+
+  const categories = await Category.findAll({
+    include: [
+      {
+        model: Category,
+        as: 'SubOne',
+        required: true,
+        include: [
+          {
+            model: Category, as: 'SubTwo', include: [{ model: Item, include: [{ model: Image }, { model: Variant }] }]
+          }
+        ]
+      },
+    ]
+  })
+
+  response.json(categories)
+
+})
+
+categoriesRouter.post('/admin', async (request, response) => {
   const { name, SubOneId, SubTwoId } = request.body
-  console.log(request)
   if (SubOneId) {
     const topCategory = await Category.findByPk(SubOneId)
     const newCategory = await Category.create({ name })
@@ -38,7 +57,9 @@ categoriesRouter.post('/', async (request, response) => {
     const newCategory = await Category.create({ name })
     await topCategory.addSubTwo(newCategory)
   } else {
-    await Category.create({ name })
+    const topCategory = await Category.create({ name })
+    const newDummyCategory = await Category.create({ name: 'dummy' })
+    await topCategory.addSubOne(newDummyCategory)
   }
 
   response.status(201).json()

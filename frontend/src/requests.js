@@ -10,11 +10,20 @@ export const getSite = () =>
 export const getCategories = () =>
     axios.get(baseUrl + '/api/categories').then(res => res.data)
 
+export const getAdminCategories = () =>
+    axios.get(baseUrl + '/api/categories/admin').then(res => res.data)
+
+export const getAdminOrders = () =>
+    axios.get(baseUrl + '/api/orders/admin').then(res => res.data)
+
 export const createNote = newNote =>
     axios.post(baseUrl, newNote).then(res => res.data)
 
 export const createCategory = newCategory =>
-    axios.post(`${baseUrl}/api/categories`, newCategory).then(res => res.data)
+    axios.post(`${baseUrl}/api/categories/admin`, newCategory).then(res => res.data)
+
+export const createItem = newItem =>
+    axios.post(`${baseUrl}/api/items`, newItem, { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': "multipart/form-data" } }).then(res => res.data)
 
 export const createUser = user =>
     axios.post(baseUrl + '/api/users/register', user).then(res => res.data)
@@ -24,3 +33,21 @@ export const loginUser = user =>
 
 export const updateNote = updatedNote =>
     axios.put(`${baseUrl}/${updatedNote.id}`, updatedNote).then(res => res.data)
+
+export const changeItemStatus = item =>
+    axios.put(`${baseUrl}/api/items/status/${item}`, item).then(res => res.data)
+
+export const updateItem = item =>
+    axios.put(`${baseUrl}/api/items/${item.id}`, item).then(res => res.data)
+
+export const updateVariant = variant =>
+    axios.put(`${baseUrl}/api/items/variant/${variant.id}`, variant).then(res => res.data)
+
+export const deleteImage = id =>
+    axios.delete(`${baseUrl}/api/items/image/${id}`).then(res => res.data)
+
+export const addImage = newImage =>
+    axios.post(`${baseUrl}/api/items/image`, newImage, { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': "multipart/form-data" } }).then(res => res.data)
+
+export const addVariant = newVariant =>
+    axios.post(`${baseUrl}/api/items/variant`, newVariant, { headers: { 'Authorization': `bearer ${token}` } }).then(res => res.data)

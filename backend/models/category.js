@@ -14,6 +14,14 @@ Category.init({
     type: DataTypes.STRING,
     allowNull: true
   },
+  shortDescription: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  longDescription: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
 }, {
   sequelize,
   underscored: true,

@@ -14,16 +14,28 @@ Item.init({
     type: DataTypes.STRING,
     allowNull: true
   },
-  image: {
-    type: DataTypes.STRING,
-    allowNull: true
-  },
   price: {
     type: DataTypes.FLOAT,
     allowNull: true
   },
   vatRateSE: {
     type: DataTypes.FLOAT,
+    allowNull: true
+  },
+  isActive: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  sellable: {
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
+  popularity: {
+    type: DataTypes.FLOAT,
+    allowNull: true
+  },
+  brand: {
+    type: DataTypes.STRING,
     allowNull: true
   },
 }, {

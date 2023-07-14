@@ -58,7 +58,7 @@ const Admin = ({ categories, queryClient }) => {
     return (
         <>
             <TextField value={categoryName} onChange={({ target }) => setCategoryName(target.value)} id="outlined-basic" label="New Category" variant="outlined" />
-            <Button variant="text" onClick={sendCategory} >Create Category</Button>
+            <Button variant="text" onClick={sendCategory}>Create Category</Button>
             <br />
 
 

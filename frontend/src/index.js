@@ -9,17 +9,20 @@ const queryClient = new QueryClient()
 
 const theme = createTheme({
   palette: {
-/*     primary: {
-      main: purple[500],
-    },
-    secondary: {
-      // This is green.A700 as hex.
-      main: '#11cb5f',
-    }, */
+    /*     primary: {
+          main: purple[500],
+        },
+        secondary: {
+          // This is green.A700 as hex.
+          main: '#11cb5f',
+        }, */
     white: {
       main: '#FFFFFF'
     }
   },
+  typography: {
+    fontFamily: ['Roboto', 'serif'].join(',')
+  }
 });
 
 

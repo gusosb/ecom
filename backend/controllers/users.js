@@ -45,9 +45,8 @@ usersRouter.post('/login', async (request, response) => {
     : await bcrypt.compare(password, user.passwordHash)
 
   if (!(user && correctPassword)) {
-    /*     throw new UserInputError('wrong credentials') */
-    console.log('error no user or incorrect password')
-    response.json()
+    response.status(401).json('error no user or incorrect password')
+    return
   }
 
   const userForToken = {

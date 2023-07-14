@@ -10,7 +10,7 @@ Order.init({
     primaryKey: true,
     autoIncrement: true
   },
-  email: {
+  address: {
     type: DataTypes.STRING,
     allowNull: true
   },
