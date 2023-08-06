@@ -12,8 +12,12 @@ const AdminOrders = lazy(() => import('./components/AdminOrders'))
 const FrontPage = lazy(() => import('./components/FrontPage'))
 const Category = lazy(() => import('./components/Category'))
 const Item = lazy(() => import('./components/Item'))
+const Checkout = lazy(() => import('./components/Checkout'))
 
 const App = () => {
+
+  console.log('language')
+  console.log(navigator.language)
 
   const result = useQuery(['categories'], getCategories, {
     refetchOnWindowFocus: false
@@ -84,6 +88,7 @@ const App = () => {
 
             <Route path="/" element={<Home changeVariantQuantity={changeVariantQuantity} removeFromCart={removeFromCart} cart={cart} setCart={setCart} categories={result.data} token={token} notify={notify} setToken={setToken} errorMessage={errorMessage} />}>
               <Route index element={(<FrontPage />)} />
+              <Route path="/checkout" element={<Checkout cart={cart} />} />
               <Route path="/:categoryname?/:subonecategoryname?/:subtwocategoryname?" element={<Category />} />
               {/* <Route path="/:categoryname/:subonecategoryname/:subtwocategoryname/:itemid/:itemname?" element={<Item />} /> */}
               <Route path="/product/:itemid/:itemname?" element={<Item changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} />} />

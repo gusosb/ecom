@@ -45,13 +45,16 @@ const Item = ({ cart, setCart, changeVariantQuantity }) => {
     const subCategory = topCategory?.SubOne.find(category => category.id === selectedItem.subOne)
     const subTwoCategory = subCategory?.SubTwo.find(category => category.id === selectedItem.subTwo)
 
-    const addToCart = (value) => {
+    const addToCart = () => {
         const values = { ...cart }
         values[variant] = { ...selectedItem, quantity: 1 }
         setCart(values)
     }
 
-    // onMouseEnter={() => setImage(product.prodImg)
+    const variantInCart = Object.keys(cart).some(key => parseInt(key) === variant)
+    console.log(variantInCart)
+
+    // onMouseEnter={() => setSelectedImage(product.prodImg)
 
     return (
         <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -99,14 +102,19 @@ const Item = ({ cart, setCart, changeVariantQuantity }) => {
                         </Box>
 
 
-                        <IconButton onClick={() => changeVariantQuantity(-1, variant)} color="primary" aria-label="increment-product">
-                            <RemoveCircleSharpIcon style={{ fontSize: '34px' }} />
-                        </IconButton>
-                        {cart[variant]?.quantity}
-                        <IconButton onClick={() => changeVariantQuantity(1, variant)} color="primary" aria-label="dimunition-product">
-                            <AddCircleSharpIcon style={{ fontSize: '34px' }} />
-                        </IconButton>
-                        <Button variant="contained" aria-label='add-to-cart' onClick={() => addToCart(selectedItem)} startIcon={<AddShoppingCartIcon />}>Lägg till i varukorg</Button>
+
+
+                        {!variantInCart
+                            ? <><br /> <Button variant="contained" aria-label='add-to-cart' onClick={() => addToCart(selectedItem)} startIcon={<AddShoppingCartIcon />}>Lägg till i varukorg</Button> </>
+                            : <><IconButton onClick={() => changeVariantQuantity(-1, variant)} color="primary" aria-label="increment-product">
+                                <RemoveCircleSharpIcon style={{ fontSize: '34px' }} />
+                            </IconButton>
+                                {cart[variant]?.quantity}
+                                <IconButton onClick={() => changeVariantQuantity(1, variant)} color="primary" aria-label="dimunition-product">
+                                    <AddCircleSharpIcon style={{ fontSize: '34px' }} />
+                                </IconButton>
+                            </>
+                        }
 
 
 
