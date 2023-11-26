@@ -9,5 +9,6 @@ tmp/nanoc/
 # Crash Log
 crash.log
 frontend/node_modules
+frontend/build
 backend/node_modules
 backend/.env

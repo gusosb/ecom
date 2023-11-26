@@ -1,6 +1,6 @@
 const categoriesRouter = require('express').Router()
 const { auth } = require('./auth')
-const { Variant, Image, Item, Category } = require('../models')
+const { Variant, Image, Item, Category, Review } = require('../models')
 
 categoriesRouter.get('/', async (request, response) => {
 
@@ -14,7 +14,7 @@ categoriesRouter.get('/', async (request, response) => {
         as: 'SubOne',
         required: true,
         include: [
-          { model: Category, as: 'SubTwo', include: [{ model: Item, include: [{ model: Image }, {model: Variant}] }] }
+          { model: Category, as: 'SubTwo', include: [{ model: Item, include: [{ model: Image }, { model: Variant }, { model: Review }] }] }
         ]
       },
     ]
@@ -34,9 +34,7 @@ categoriesRouter.get('/admin', async (request, response) => {
         as: 'SubOne',
         required: true,
         include: [
-          {
-            model: Category, as: 'SubTwo', include: [{ model: Item, include: [{ model: Image }, { model: Variant }] }]
-          }
+          { model: Category, as: 'SubTwo', include: [{ model: Item, include: [{ model: Image }, { model: Variant }, { model: Review }] }] }
         ]
       },
     ]
@@ -61,6 +59,27 @@ categoriesRouter.post('/admin', async (request, response) => {
     const newDummyCategory = await Category.create({ name: 'dummy' })
     await topCategory.addSubOne(newDummyCategory)
   }
+
+  response.status(201).json()
+})
+
+categoriesRouter.put('/admin/name', async (request, response) => {
+  const { name, id } = request.body
+
+  const category = await Category.findByPk(id)
+
+  category.set({ name })
+  category.save()
+
+  response.status(201).json()
+})
+
+
+categoriesRouter.put('/admin', async (request, response) => {
+  const [instance, created] = await Category.upsert({ ...request.body });
+  console.log(instance);
+  console.log(created);
+
 
   response.status(201).json()
 })

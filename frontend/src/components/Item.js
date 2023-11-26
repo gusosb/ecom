@@ -1,33 +1,58 @@
-
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getNotes, createNote, updateNote, getSite, getCategories } from '../requests'
-import {
-    BrowserRouter as Router, Routes, Route, Link, Navigate, useParams, Outlet, useOutletContext, useNavigate
-} from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { useState } from "react"
-
-
+import { useWindowSize } from '../helpers'
+import Markdown from 'react-markdown'
+import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
-// import Button from '@mui/material-next/Button'
 import IconButton from '@mui/material/IconButton'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
-import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp'
-import RemoveCircleSharpIcon from '@mui/icons-material/RemoveCircleSharp'
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import Box from '@mui/material/Box'
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
+import Rating from '@mui/material/Rating';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import ItemMobile from './ItemMobile'
+import CategoryLocation from "./blocks/CategoryLocation";
 import productPlaceholder from '../images/6872_100-Whey-Gold-Std-912-g-Vanilla-Ice-Cream_0922.webp'
 
-const Item = ({ cart, setCart, changeVariantQuantity }) => {
+
+const CustomTabPanel = (props) => {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}>
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+CustomTabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+const Item = ({ cart, setCart, changeVariantQuantity, categories, format }) => {
 
     const { itemid } = useParams()
-
-    const result = useQuery(['categories'], getCategories, {
-        refetchOnWindowFocus: false
-    })
-    const categories = result.data || []
 
     const selectedItem = categories.flatMap(a => a.SubOne.flatMap(b => b.SubTwo.flatMap(c => {
         if (c.items.find(d => d.id === parseInt(itemid))) {
@@ -39,6 +64,7 @@ const Item = ({ cart, setCart, changeVariantQuantity }) => {
 
     const [variant, setVariant] = useState(selectedItem.variants.find(e => e.sellable > 0)?.id)
     const [selectedImage, setSelectedImage] = useState(selectedItem.images[0])
+    const [tab, setTab] = useState(0)
 
 
     const topCategory = categories.find(category => category.id === selectedItem.top)
@@ -51,18 +77,29 @@ const Item = ({ cart, setCart, changeVariantQuantity }) => {
         setCart(values)
     }
 
-    const variantInCart = Object.keys(cart).some(key => parseInt(key) === variant)
-    console.log(variantInCart)
+    const variantInCart = cart && Object.keys(cart).some(key => parseInt(key) === variant)
 
-    // onMouseEnter={() => setSelectedImage(product.prodImg)
+    const windowSize = useWindowSize()
+
+    if (!windowSize.width) return <>Loading...</>
+
+    if (windowSize.width < 800)
+        return <ItemMobile
+            format={format}
+            variant={variant} setVariant={setVariant} variantInCart={variantInCart} selectedItem={selectedItem}
+            topCategory={topCategory} subCategory={subCategory} subTwoCategory={subTwoCategory} addToCart={addToCart}
+            cart={cart} changeVariantQuantity={changeVariantQuantity} CustomTabPanel={CustomTabPanel} Tab={Tab} Tabs={Tabs}
+            tab={tab} setTab={setTab} />
+
+
 
     return (
         <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
             <Grid item xs style={{ maxWidth: 1500, height: '100%' }} sx={{ m: 20, mt: 0, mb: 0 }}>
-                <Link to={`/${topCategory.name}`}>{topCategory.name}</Link>
-                {subCategory && <><Link to={`/${topCategory.name}/${subCategory.name}`}> / {subCategory.name}</Link> /
-                    {subTwoCategory && <Link to={`/${topCategory.name}/${subCategory.name}/${subTwoCategory.name}`}>{subTwoCategory.name} /</Link>}</>
-                }
+
+                <Grid container marginTop={1.2}>
+                    <CategoryLocation Link={Link} topCategory={topCategory} subCategory={subCategory} subTwoCategory={subTwoCategory} />
+                </Grid>
                 <Grid container columnSpacing={12}>
                     <Grid item xs={6}>
 
@@ -82,13 +119,24 @@ const Item = ({ cart, setCart, changeVariantQuantity }) => {
 
 
                         <h1 style={{ margin: 0 }}>{selectedItem.name}</h1>
+                        <h4 style={{ margin: 0, fontWeight: 'normal' }}>{selectedItem.brand}</h4>
+                        <br />
 
-                        <h3 style={{ margin: 0 }}>{selectedItem.price} kr</h3>
+                        <Grid container>
+                            <Grid item xs>
+                                <h1 style={{ margin: 0 }}>{format(selectedItem.price / 100)} kr</h1>
+                            </Grid>
+                            <Grid item xs='auto' >
+                                <Typography component="legend">Recensioner</Typography>
+                                <Rating name="read-only" value={3} readOnly />
+                            </Grid>
+
+                        </Grid>
+
 
 
                         <Box sx={{ minWidth: 120 }}>
                             <FormControl fullWidth>
-                                {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
                                 <Select
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
@@ -103,18 +151,64 @@ const Item = ({ cart, setCart, changeVariantQuantity }) => {
 
 
 
-
                         {!variantInCart
-                            ? <><br /> <Button variant="contained" aria-label='add-to-cart' onClick={() => addToCart(selectedItem)} startIcon={<AddShoppingCartIcon />}>Lägg till i varukorg</Button> </>
-                            : <><IconButton onClick={() => changeVariantQuantity(-1, variant)} color="primary" aria-label="increment-product">
-                                <RemoveCircleSharpIcon style={{ fontSize: '34px' }} />
-                            </IconButton>
-                                {cart[variant]?.quantity}
-                                <IconButton onClick={() => changeVariantQuantity(1, variant)} color="primary" aria-label="dimunition-product">
-                                    <AddCircleSharpIcon style={{ fontSize: '34px' }} />
-                                </IconButton>
+                            ? <><br /> <Button fullWidth variant="contained" aria-label='add-to-cart' onClick={addToCart} startIcon={<AddShoppingCartIcon />}>Lägg till i varukorg</Button> </>
+                            : <>
+                                <Box marginTop='5.5px' display='flex' alignItems='center' justifyContent='center'>
+                                    Antal
+                                    <IconButton onClick={() => changeVariantQuantity(-1, variant)} color="primary" aria-label="increment-product">
+                                        <IndeterminateCheckBoxIcon style={{ fontSize: '34px' }} />
+                                    </IconButton>
+                                    {cart[variant]?.quantity}
+                                    <IconButton onClick={() => changeVariantQuantity(1, variant)} color="primary" aria-label="dimunition-product">
+                                        <AddBoxIcon style={{ fontSize: '34px' }} />
+                                    </IconButton>
+                                </Box>
                             </>
                         }
+
+                        <Grid container sx={{ borderBottom: 1, borderColor: 'grey.300', paddingBottom: 1, marginTop: 2 }}>
+                            <Grid item xs>
+                                <Stack direction="row" alignItems="center" gap={1}>
+                                    <LocalShippingOutlinedIcon fontSize='small' />
+                                    <Typography variant="body2">Fri frakt över 499 kr</Typography>
+                                </Stack>
+                            </Grid>
+                            <Grid item xs>
+                                <Stack direction="row" alignItems="center" gap={1}>
+                                    <LocalOfferOutlinedIcon fontSize='small' />
+                                    <Typography variant="body2">Prisgaranti</Typography>
+                                </Stack>
+                            </Grid>
+                        </Grid>
+
+                        <Grid container sx={{ borderBottom: 1, borderColor: 'grey.300', paddingBottom: 1, paddingTop: 1 }}>
+                            <Markdown>{selectedItem?.description?.split('\n')[0]}</Markdown>
+                        </Grid>
+
+                        <Grid container marginTop={1}>
+                            <Grid item xs>
+                                <Typography color='#8a8a8a' fontSize='0.8rem' >
+                                    SKU #FP9789-004R
+                                </Typography>
+                            </Grid>
+                            <Grid item xs='auto'>
+                                producerimg
+                            </Grid>
+                        </Grid>
+
+
+                        <Tabs value={tab} onChange={(e, newValue) => setTab(newValue)} aria-label="tabs" centered>
+                            <Tab label="beskrivning" id='simple-tab-0' />
+                            <Tab label="innehåll" id='simple-tab-1' />
+                        </Tabs>
+
+                        <CustomTabPanel value={tab} index={0}>
+                            <Markdown>{selectedItem.description}</Markdown>
+                        </CustomTabPanel>
+                        <CustomTabPanel value={tab} index={1}>
+                            Item Two
+                        </CustomTabPanel>
 
 
 

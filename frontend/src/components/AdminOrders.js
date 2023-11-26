@@ -30,11 +30,13 @@ import IconButton from '@mui/material/IconButton'
 
 const AdminOrders = () => {
 
-  const result = useQuery(['admincategories'], getAdminOrders, {
+  const result = useQuery(['adminorders'], getAdminOrders, {
     refetchOnWindowFocus: false
   })
 
   const orders = result.data
+  console.log(orders);
+  
 
   return (
     <>

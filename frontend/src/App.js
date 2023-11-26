@@ -1,7 +1,8 @@
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from "react-router-dom"
 import { useEffect, Suspense, lazy, useState } from "react"
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getNotes, createNote, updateNote, getSite, getCategories } from './requests'
+import Category from "./components/Category"
 
 const Login = lazy(() => import('./components/Login'))
 const Register = lazy(() => import('./components/Register'))
@@ -10,14 +11,12 @@ const Admin = lazy(() => import('./components/Admin'))
 const AdminItems = lazy(() => import('./components/AdminItems'))
 const AdminOrders = lazy(() => import('./components/AdminOrders'))
 const FrontPage = lazy(() => import('./components/FrontPage'))
-const Category = lazy(() => import('./components/Category'))
+//const Category = lazy(() => import('./components/Category'))
 const Item = lazy(() => import('./components/Item'))
 const Checkout = lazy(() => import('./components/Checkout'))
+const Confirmation = lazy(() => import('./components/Confirmation'))
 
 const App = () => {
-
-  console.log('language')
-  console.log(navigator.language)
 
   const result = useQuery(['categories'], getCategories, {
     refetchOnWindowFocus: false
@@ -26,8 +25,12 @@ const App = () => {
 
   const [errorMessage, setErrorMessage] = useState(null)
   const [cart, setCart] = useState({})
+  const [avoidReading, setAvoidReading] = useState(false)
   const [token, setToken] = useState(null)
 
+  console.log(cart);
+
+  const totalSumInCart = cart && Object.keys(cart)?.length > 0 ? Object.keys(cart).reduce((acc, key) => acc + (cart[key].quantity * cart[key].price * (1 + (cart[key].vatRateSE / 10000))), 0) : 0;
 
   const notify = (message) => {
     setErrorMessage(message)
@@ -58,17 +61,27 @@ const App = () => {
     setCart(values)
   }
 
+  const format = (str) => {
+    return str.toFixed(2).replace('.', ',')
+  }
+
   useEffect(() => {
     if (!token) {
       const localtoken = localStorage.getItem('ecom')
-
       if (localtoken && localtoken !== 'undefined') {
         setToken(localtoken)
       }
     }
-    console.log(cart);
+    if (!cart?.length && !avoidReading) {
+      const localCart = JSON.parse(localStorage.getItem('ecomcart'))
+      setCart(localCart)
+      setAvoidReading(true)
+    } else {
+      localStorage.setItem('ecomcart', JSON.stringify(cart))
+    }
+  }, [token, cart, avoidReading])
 
-  }, [token, cart])
+
 
   if (result.isLoading) return 'Loading...'
 
@@ -86,12 +99,13 @@ const App = () => {
             <Route path="/admin/items/:categoryid?/:subonecategoryid?/:subtwocategoryid?/:itemid?/:variantid?" element={result.data && <AdminItems queryClient={queryClient} categories={result.data} />} />
             <Route path="/admin/orders" element={<AdminOrders queryClient={queryClient} categories={result.data} />} />
 
-            <Route path="/" element={<Home changeVariantQuantity={changeVariantQuantity} removeFromCart={removeFromCart} cart={cart} setCart={setCart} categories={result.data} token={token} notify={notify} setToken={setToken} errorMessage={errorMessage} />}>
+            <Route path="/confirmation/:order_id" element={<Confirmation />} />
+            <Route path="/" element={<Home format={format} totalSumInCart={totalSumInCart} changeVariantQuantity={changeVariantQuantity} removeFromCart={removeFromCart} cart={cart} setCart={setCart} categories={result.data} token={token} notify={notify} setToken={setToken} errorMessage={errorMessage} />}>
               <Route index element={(<FrontPage />)} />
-              <Route path="/checkout" element={<Checkout cart={cart} />} />
-              <Route path="/:categoryname?/:subonecategoryname?/:subtwocategoryname?" element={<Category />} />
+              <Route path="/checkout" element={<Checkout format={format} changeVariantQuantity={changeVariantQuantity} removeFromCart={removeFromCart} queryClient={queryClient} totalSumInCart={totalSumInCart} cart={cart} />} />
+              <Route path="/:categoryname?/:subonecategoryname?/:subtwocategoryname?" element={<Category categories={result.data || []} />} />
               {/* <Route path="/:categoryname/:subonecategoryname/:subtwocategoryname/:itemid/:itemname?" element={<Item />} /> */}
-              <Route path="/product/:itemid/:itemname?" element={<Item changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} />} />
+              <Route path="/product/:itemid/:itemname?" element={<Item format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} />} />
             </Route>
 
             {/*               <Route path="changepass/:userid/:token" element={<ChangePass notify={notify} setToken={setToken} errorMessage={errorMessage} />} />

@@ -1,7 +1,7 @@
 const itemsRouter = require('express').Router()
 const { auth } = require('./auth')
 const multer = require('multer')
-const { Item, Image, Variant } = require('../models')
+const { Item, Image, Variant, Review } = require('../models')
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -28,6 +28,15 @@ itemsRouter.post('/image', upload.single('file'), async (request, response) => {
   // const currentUser = await auth(request)
   const { itemId, index } = request.body
   await Image.create({ itemId, path: `/${request.file.destination}${request.file.filename}`, index })
+
+  response.status(201).json()
+})
+
+// => create review, in body should be comment and rating variable
+itemsRouter.post('/review/:id', async (request, response) => {
+  // const currentUser = await auth(request)
+  const itemId = request.params.id
+  await Review.create({ itemId, ...request.body })
 
   response.status(201).json()
 })

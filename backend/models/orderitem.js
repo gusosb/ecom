@@ -10,23 +10,42 @@ OrderItem.init({
     primaryKey: true,
     autoIncrement: true
   },
+  reference: { // => Internal ID of variant
+    type: DataTypes.STRING,
+  },
+  quantity: {
+    type: DataTypes.INTEGER,
+  },
   name: {
     type: DataTypes.STRING,
-    allowNull: true
   },
-  price: {
-    type: DataTypes.FLOAT,
-    allowNull: true
+  total_amount: {
+    type: DataTypes.INTEGER,
   },
-  vatRate: {
-    type: DataTypes.FLOAT,
-    allowNull: true
+  unit_price: {
+    type: DataTypes.INTEGER,
+  },
+  total_discount_amount: {
+    type: DataTypes.INTEGER,
+  },
+  tax_rate: {
+    type: DataTypes.INTEGER,
+  },
+  total_tax_amount: {
+    type: DataTypes.INTEGER,
   },
 }, {
   sequelize,
   underscored: true,
   timestamps: false,
   modelName: 'orderitem',
+  indexes: [
+    {
+      name: "unq_reford",
+      unique: true,
+      fields: ['reference', 'order_id'] // => variant ID and order ID are unique together, variant cannot exists twice in an order
+    }
+  ]
 })
 
 module.exports = OrderItem

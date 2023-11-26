@@ -2,7 +2,7 @@ const { Model, DataTypes } = require('sequelize')
 
 const { sequelize } = require('../util/db')
 
-class Order extends Model {}
+class Order extends Model { }
 
 Order.init({
   id: {
@@ -10,10 +10,57 @@ Order.init({
     primaryKey: true,
     autoIncrement: true
   },
-  address: {
+  externalId: {
     type: DataTypes.STRING,
-    allowNull: true
+    unique: true
   },
+  klarna_order_id: {
+    type: DataTypes.STRING
+  },
+  customer: {
+    type: DataTypes.STRING
+  },
+  // BEGIN ADDRESS FIELDS
+  given_name: {
+    type: DataTypes.STRING
+  },
+  family_name: {
+    type: DataTypes.STRING
+  },
+  email: {
+    type: DataTypes.STRING
+  },
+  street_address: {
+    type: DataTypes.STRING
+  },
+  postal_code: {
+    type: DataTypes.STRING
+  },
+  city: {
+    type: DataTypes.STRING
+  },
+  region: {
+    type: DataTypes.STRING
+  },
+  care_of: {
+    type: DataTypes.STRING
+  },
+  phone: {
+    type: DataTypes.STRING
+  },
+  country: {
+    type: DataTypes.STRING
+  },
+  // END ADDRESS FIELDS
+  initial_payment_method: {
+    type: DataTypes.STRING
+  },
+  order_amount: {
+    type: DataTypes.INTEGER
+  },
+  order_tax_amount: {
+    type: DataTypes.INTEGER
+  }
 }, {
   sequelize,
   underscored: true,

@@ -2,7 +2,7 @@ const { Model, DataTypes } = require('sequelize')
 
 const { sequelize } = require('../util/db')
 
-class Item extends Model {}
+class Item extends Model { }
 
 Item.init({
   id: {
@@ -12,15 +12,12 @@ Item.init({
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: true
   },
   price: {
-    type: DataTypes.FLOAT,
-    allowNull: true
+    type: DataTypes.INTEGER,
   },
   vatRateSE: {
-    type: DataTypes.FLOAT,
-    allowNull: true
+    type: DataTypes.INTEGER,
   },
   isActive: {
     type: DataTypes.BOOLEAN,
@@ -28,15 +25,18 @@ Item.init({
   },
   sellable: {
     type: DataTypes.INTEGER,
-    allowNull: true
   },
   popularity: {
     type: DataTypes.FLOAT,
-    allowNull: true
   },
   brand: {
     type: DataTypes.STRING,
-    allowNull: true
+  },
+  description: {
+    type: DataTypes.STRING,
+  },
+  sku: {
+    type: DataTypes.STRING,
   },
 }, {
   sequelize,

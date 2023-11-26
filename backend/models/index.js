@@ -6,6 +6,7 @@ const Image = require('./image')
 const Order = require('./order')
 const OrderItem = require('./orderitem')
 const Variant = require('./variant')
+const Review = require('./review')
 
 const { sequelize } = require('../util/db')
 
@@ -27,9 +28,12 @@ Image.belongsTo(Item)
 Item.hasMany(Variant)
 Variant.belongsTo(Item)
 
+Item.hasMany(Review)
+Review.belongsTo(Item)
+
 sequelize.sync({ alter: true })
 
 
 module.exports = {
-  User, Site, Category, Item, Order, OrderItem, Image, Variant
+  User, Site, Category, Item, Order, OrderItem, Image, Variant, Review
 }

@@ -3,6 +3,8 @@ import { getNotes, createNote, updateNote, getSite, getCategories } from '../req
 import {
   BrowserRouter as Router, Routes, Route, Link, Navigate, useParams, Outlet, useOutletContext, useNavigate
 } from "react-router-dom"
+import ReactMarkdown from 'react-markdown'
+import { useWindowSize } from '../helpers'
 
 import Grid from '@mui/material/Grid'
 import List from '@mui/material/List'
@@ -13,16 +15,11 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import IconButton from '@mui/material/IconButton'
 import Box from '@mui/material/Box'
+import CategoryMobile from './CategoryMobile'
 import testimage from '../images/pwp-pouch-v4-main_1.webp'
 
-// https://github.com/remarkjs/react-markdown
 
-const Category = () => {
-
-  const result = useQuery(['categories'], getCategories, {
-    refetchOnWindowFocus: false
-  })
-  const categories = result.data || []
+const Category = ({ categories }) => {
 
   const topCategoryName = useParams().categoryname
   const subCategoryName = useParams().subonecategoryname
@@ -40,19 +37,27 @@ const Category = () => {
 
   const items = selectedSubTwoCategory?.items || selectedSubCategory?.SubTwo.flatMap(a => a.items) || selectedTopCategory.SubOne.flatMap(a => a.SubTwo).flatMap(b => b.items)
 
+  const windowSize = useWindowSize()
+
+  if (windowSize.width < 800) return <CategoryMobile selectedTopCategory={selectedTopCategory} selectedSubCategory={selectedSubCategory} selectedSubTwoCategory={selectedSubTwoCategory}
+    lowestCategory={lowestCategory} items={items} windowSize={windowSize} subCategories={subCategories}
+  />
 
   return (
     <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
       <Grid item xs style={{ maxWidth: 1500, height: '100%' }} sx={{ m: 20, mt: 0, mb: 0 }}>
         <Grid container>
-          <Grid item xs={12}>
-            <Link to={`/${topCategoryName}`}>{topCategoryName}</Link>
-            {subCategoryName && <><Link to={`/${topCategoryName}/${subCategoryName}`}> / {subCategoryName}</Link> /
-              {subTwoCategoryName && <Link to={`/${topCategoryName}/${subCategoryName}/${subTwoCategoryName}`}>{subTwoCategoryName} /</Link>}</>
+          <Grid item xs={12} marginTop={1.2}>
+            <Link to={`/${topCategoryName}`} style={{ textDecoration: 'none', color: '#8a8a8a' }}>{selectedTopCategory.name}</Link>
+            {subCategoryName && <><Link to={`/${topCategoryName}/${subCategoryName}`} style={{ textDecoration: 'none', color: '#8a8a8a' }}> / {subCategoryName}</Link>
+              {subTwoCategoryName && <Link to={`/${topCategoryName}/${subCategoryName}/${subTwoCategoryName}`} style={{ textDecoration: 'none', color: '#8a8a8a' }}> / {subTwoCategoryName}</Link>}</>
             }
           </Grid>
           <Grid item xs={12}>
-            hej
+            <h1>{lowestCategory.name}</h1>
+
+            <ReactMarkdown children={lowestCategory.longDescription} />
+
           </Grid>
           <Grid item xs={3}>
             <List>
