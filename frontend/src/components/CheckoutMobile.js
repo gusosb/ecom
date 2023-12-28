@@ -1,89 +1,25 @@
 import { klarnaHtml } from '../helpers'
-import {
-    BrowserRouter as Router, Routes, Route, Link, Navigate, useParams, Outlet, useOutletContext, useNavigate
-} from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import Grid from '@mui/material/Grid'
-import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
-import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp'
-import RemoveCircleSharpIcon from '@mui/icons-material/RemoveCircleSharp'
 import Box from '@mui/material/Box'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import Paper from '@mui/material/Paper'
-import Select from '@mui/material/Select'
+import Typography from '@mui/material/Typography'
 import DeleteIcon from '@mui/icons-material/Delete'
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import FavoriteGoogleOutlined from '../images/favoritegoogle.svg'
-import { ReactComponent as FavoriteOutlined } from '../images/favoritegoogleoutlined.svg'
-import { ReactComponent as CustomIcon } from '../images/shoppingbag.svg'
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import productPlaceholder from '../images/6872_100-Whey-Gold-Std-912-g-Vanilla-Ice-Cream_0922.webp'
 
-const CheckoutMobile = ({ cart, removeFromCart, changeVariantQuantity, format, html_snippet }) => {
+const CheckoutMobile = ({ cart, removeFromCart, changeVariantQuantity, format, html_snippet, setCartOpen, baseURL }) => {
 
     return (
         <>
-
-
-            <Grid container>
-
-
-                <Grid container>
-
-                    {cart && Object.keys(cart).map((key, i) => {
-                        const itemVariant = cart[key].variants?.find(e => e.id === parseInt(key))
-                        return <>
-                            <Grid container paddingTop={i !== 0 ? '14px' : '4px'} paddingBottom={1} sx={{ borderBottom: (i + 1) !== Object.keys(cart).length && '.1rem solid #dadada' }} display='flex' alignItems="center" flexDirection='row' alignSelf='center' justifyContent='center'>
-                                <Grid item xs='auto'>
-                                    <IconButton disableFocusRipple disableRipple onClick={() => removeFromCart(key)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Grid>
-                                <Grid item xs={2}>
-                                    {/* <img src={cart[key].images[0].path} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} /> */}
-                                    <Box component={Link} to={`/product/${cart[key].id}/${cart[key].name}`}>
-                                        <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} src={productPlaceholder} />
-                                    </Box>
-                                </Grid>
-                                <Grid item xs='auto' sx={{ minWidth: 270 }}>
-                                    <h3 style={{ margin: 0 }}>{cart[key].name} - {itemVariant?.name}</h3>
-
-                                    {cart[key].brand}
-                                    <br />
-
-                                    <Grid container>
-
-                                        <Grid item xs>
-                                            <IconButton onClick={() => changeVariantQuantity(-1, key)} color="primary" aria-label="increment-product">
-                                                <RemoveCircleSharpIcon style={{ fontSize: '34px' }} />
-                                            </IconButton>
-                                            {cart[key]?.quantity}
-                                            <IconButton onClick={() => changeVariantQuantity(1, key)} color="primary" aria-label="dimunition-product">
-                                                <AddCircleSharpIcon style={{ fontSize: '34px' }} />
-                                            </IconButton>
-                                        </Grid>
-                                        <Grid item xs sx={{ minWidth: 170 }} display='flex' justifyContent='end' alignItems='center'>
-                                            Totalt:&nbsp;<b>{format(cart[key].quantity * cart[key].price * (1 + (cart[key].vatRateSE / 10000)) / 100)} kr</b>
-                                        </Grid>
-                                    </Grid>
-
-
-                                </Grid>
-                            </Grid>
-                        </>
-                    })}
-
-                </Grid>
-
-
-
-
+            <Grid container marginTop={2}>
 
                 {cart && Object.keys(cart).map((key, i) => {
                     const itemVariant = cart[key].variants?.find(e => e.id === parseInt(key))
+                    const path = cart[key].images[0]?.path
                     return <>
 
                         <Grid container ml={1} mr={1}>
@@ -92,10 +28,10 @@ const CheckoutMobile = ({ cart, removeFromCart, changeVariantQuantity, format, h
                                 <Grid container flexDirection='column'>
                                     <Grid item xs>
                                         <Box component={Link} to={`/product/${cart[key].id}/${cart[key].name}`}>
-                                            <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} src={productPlaceholder} />
+                                            <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} src={baseURL + path} />
                                         </Box>
                                     </Grid>
-                                    <Grid item xs display='flex' justifyContent='center' pl={1} pr={1}>
+                                    {/* <Grid item xs display='flex' justifyContent='center' pl={1} pr={1}>
 
                                         <IconButton sx={{
                                             borderRadius: 0,
@@ -111,15 +47,16 @@ const CheckoutMobile = ({ cart, removeFromCart, changeVariantQuantity, format, h
                                                 height: '35',
                                             }} />
                                         </IconButton>
-
-                                    </Grid>
+                                    </Grid> */}
                                 </Grid>
                             </Grid>
 
                             <Grid item xs>
 
-                                <h4 style={{ margin: 0 }}>{cart[key].name} - {itemVariant?.name}</h4>
-
+                                <Typography variant='h7' style={{ fontWeight: 'bold', margin: 0, color: 'inherit', textDecoration: 'inherit' }} component={Link} to={`/product/${cart[key].id}/${cart[key].name}`} onClick={() => setCartOpen(false)}>
+                                    {cart[key].name} - {itemVariant?.name}
+                                </Typography>
+                                <br />
                                 {cart[key].brand}
                                 <br />
                                 {format(cart[key].price * (1 + (cart[key].vatRateSE / 10000)) / 100)}
@@ -129,11 +66,11 @@ const CheckoutMobile = ({ cart, removeFromCart, changeVariantQuantity, format, h
 
                                     <Grid item xs>
                                         <IconButton onClick={() => changeVariantQuantity(-1, key)} color="primary" aria-label="increment-product">
-                                            <RemoveCircleSharpIcon style={{ fontSize: '34px' }} />
+                                            <IndeterminateCheckBoxIcon style={{ fontSize: '34px' }} />
                                         </IconButton>
                                         {cart[key]?.quantity}
                                         <IconButton onClick={() => changeVariantQuantity(1, key)} color="primary" aria-label="dimunition-product">
-                                            <AddCircleSharpIcon style={{ fontSize: '34px' }} />
+                                            <AddBoxIcon style={{ fontSize: '34px' }} />
                                         </IconButton>
                                     </Grid>
                                     <Grid item xs sx={{ minWidth: 150 }} display='flex' justifyContent='end' alignItems='center'>

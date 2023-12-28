@@ -50,7 +50,7 @@ CustomTabPanel.propTypes = {
     value: PropTypes.number.isRequired,
 };
 
-const Item = ({ cart, setCart, changeVariantQuantity, categories, format }) => {
+const Item = ({ cart, setCart, changeVariantQuantity, categories, format, baseUrl }) => {
 
     const { itemid } = useParams()
 
@@ -62,8 +62,10 @@ const Item = ({ cart, setCart, changeVariantQuantity, categories, format }) => {
     })
     ))[0]
 
-    const [variant, setVariant] = useState(selectedItem.variants.find(e => e.sellable > 0)?.id)
-    const [selectedImage, setSelectedImage] = useState(selectedItem.images[0])
+    const [variant, setVariant] = useState(selectedItem && selectedItem.variants.find(e => e.sellable > 0)?.id)
+    const [selectedImage, setSelectedImage] = useState(selectedItem?.images[0].path)
+    console.log(selectedImage);
+
     const [tab, setTab] = useState(0)
 
 
@@ -79,7 +81,15 @@ const Item = ({ cart, setCart, changeVariantQuantity, categories, format }) => {
 
     const variantInCart = cart && Object.keys(cart).some(key => parseInt(key) === variant)
 
+    const reviewValue = (selectedItem?.reviews.reduce((acc, obj) => acc + obj.rating, 0) / selectedItem?.reviews.length) || 0
+    console.log(reviewValue);
+
+
     const windowSize = useWindowSize()
+    const testArray = [
+        { path: 'firstimgpath' },
+        { path: 'secondimgpath' },
+    ]
 
     if (!windowSize.width) return <>Loading...</>
 
@@ -89,7 +99,7 @@ const Item = ({ cart, setCart, changeVariantQuantity, categories, format }) => {
             variant={variant} setVariant={setVariant} variantInCart={variantInCart} selectedItem={selectedItem}
             topCategory={topCategory} subCategory={subCategory} subTwoCategory={subTwoCategory} addToCart={addToCart}
             cart={cart} changeVariantQuantity={changeVariantQuantity} CustomTabPanel={CustomTabPanel} Tab={Tab} Tabs={Tabs}
-            tab={tab} setTab={setTab} />
+            tab={tab} setTab={setTab} Link={Link} testArray={testArray} baseUrl={baseUrl} />
 
 
 
@@ -97,21 +107,20 @@ const Item = ({ cart, setCart, changeVariantQuantity, categories, format }) => {
         <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
             <Grid item xs style={{ maxWidth: 1500, height: '100%' }} sx={{ m: 20, mt: 0, mb: 0 }}>
 
-                <Grid container marginTop={1.2}>
+                <Grid container marginTop={2}>
                     <CategoryLocation Link={Link} topCategory={topCategory} subCategory={subCategory} subTwoCategory={subTwoCategory} />
                 </Grid>
-                <Grid container columnSpacing={12}>
+                <Grid container columnSpacing={12} marginTop={2}>
                     <Grid item xs={6}>
 
-                        <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} src={productPlaceholder} />
-                        <Grid container display='flex' justifyContent='center' spacing={2}>
-                            <Grid item xs={2}>
-                                <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} src={productPlaceholder} />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} src={productPlaceholder} />
-                            </Grid>
+                        <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain', marginBottom: 8 }} src={baseUrl + selectedImage} />
 
+                        <Grid container display='flex' justifyContent='center' spacing={2}>
+                            {selectedItem.images.map(image =>
+                                <Grid item xs={2}>
+                                    <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain', outline: image.path === selectedImage && 'solid 1px #e0e0e0' }} src={baseUrl + image.path} onMouseEnter={() => setSelectedImage(image.path)} />
+                                </Grid>
+                            )}
                         </Grid>
 
                     </Grid>
@@ -135,20 +144,21 @@ const Item = ({ cart, setCart, changeVariantQuantity, categories, format }) => {
 
 
 
-                        <Box sx={{ minWidth: 120 }}>
-                            <FormControl fullWidth>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={variant}
-                                    onChange={({ target }) => setVariant(target.value)}>
-                                    {selectedItem.variants.map(variant =>
-                                        <MenuItem value={variant.id} disabled={variant.sellable > 0 ? false : true}>{variant.name}</MenuItem>
-                                    )}
-                                </Select>
-                            </FormControl>
-                        </Box>
-
+                        {selectedItem.variants.length > 1 &&
+                            <Box sx={{ minWidth: 120 }}>
+                                <FormControl fullWidth>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={variant}
+                                        onChange={({ target }) => setVariant(target.value)}>
+                                        {selectedItem.variants.map(variant =>
+                                            <MenuItem value={variant.id} disabled={variant.sellable > 0 ? false : true}>{variant.name}</MenuItem>
+                                        )}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                        }
 
 
                         {!variantInCart
@@ -174,7 +184,7 @@ const Item = ({ cart, setCart, changeVariantQuantity, categories, format }) => {
                                     <Typography variant="body2">Fri frakt över 499 kr</Typography>
                                 </Stack>
                             </Grid>
-                            <Grid item xs>
+                            <Grid item xs='auto'>
                                 <Stack direction="row" alignItems="center" gap={1}>
                                     <LocalOfferOutlinedIcon fontSize='small' />
                                     <Typography variant="body2">Prisgaranti</Typography>

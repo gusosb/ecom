@@ -1,7 +1,7 @@
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation, useParams } from "react-router-dom"
-import { useEffect, Suspense, lazy, useState } from "react"
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getNotes, createNote, updateNote, getSite, getCategories, confirmOrder } from '../requests'
+import { useParams } from "react-router-dom"
+import { useEffect } from "react"
+import { useQuery } from '@tanstack/react-query'
+import { confirmOrder } from '../requests'
 import { klarnaHtml } from '../helpers'
 
 import Grid from '@mui/material/Grid'
@@ -19,11 +19,6 @@ const Confirmation = () => {
     useEffect(() => {
         if (html_snippet) localStorage.removeItem('ecom-localSessionID')
     }, [html_snippet])
-
-
-
-    console.log(result.data);
-
 
     return (
         <>

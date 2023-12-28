@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 
 export const klarnaHtml = (snippet) => {
+   return snippet;
    return `
        <html>
-       <head> </head>
-    
+       <head>
+       </head>
        <body>
-       <textarea style="display: none" id="KCO">
+       <textarea style="display: none;" id="KCO">
                 ${snippet}
         </textarea
           >

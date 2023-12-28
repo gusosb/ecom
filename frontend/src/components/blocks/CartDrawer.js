@@ -1,9 +1,9 @@
 import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
-import RemoveCircleSharpIcon from '@mui/icons-material/RemoveCircleSharp'
-import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp'
 import DeleteIcon from '@mui/icons-material/Delete'
-// import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import Typography from '@mui/material/Typography'
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 const CartDrawer = ({ location, cart, cartOpen, setCartOpen, removeFromCart, format, Grid, toggleDrawer, CloseIcon, Box, Link, productPlaceholder, changeVariantQuantity, totalSumInCart, Button, swipeable, SwipeableDrawer }) => {
 
@@ -17,7 +17,7 @@ const CartDrawer = ({ location, cart, cartOpen, setCartOpen, removeFromCart, for
                     onClose={toggleDrawer()}
                     onOpen={() => setCartOpen(true)}
                     PaperProps={{
-                        sx: { width: 400 },
+                        sx: { width: 420, backgroundColor: '#faf9f8' },
                     }}>
                     <Grid container direction='column' height='100vh'>
                         <Grid item xs>
@@ -36,6 +36,7 @@ const CartDrawer = ({ location, cart, cartOpen, setCartOpen, removeFromCart, for
                             <Grid container display='flex' justifyContent='end'>
                                 {cart && Object.keys(cart).map((key, i) => {
                                     const itemVariant = cart[key].variants?.find(e => e.id === parseInt(key))
+                                    const path = cart[key].images[0]?.path
                                     return <>
                                         <Grid container paddingTop={i !== 0 ? '14px' : '4px'} paddingBottom={1} sx={{ borderBottom: (i + 1) !== Object.keys(cart).length && '.1rem solid #dadada' }} display='flex' alignItems="center" flexDirection='row' alignSelf='center' justifyContent='center'>
                                             <Grid item xs='auto'>
@@ -44,33 +45,30 @@ const CartDrawer = ({ location, cart, cartOpen, setCartOpen, removeFromCart, for
                                                 </IconButton>
                                             </Grid>
                                             <Grid item xs={2}>
-                                                {/* <img src={cart[key].images[0].path} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} /> */}
-                                                <Box component={Link} to={`/product/${cart[key].id}/${cart[key].name}`}>
-                                                    <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} src={productPlaceholder} />
+                                                <Box component={Link} to={`/product/${cart[key].id}/${cart[key].name}`} onClick={() => setCartOpen(false)}>
+                                                    <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} src={baseURL + path} />
                                                 </Box>
-                                                {/* <CardMedia
-                                                component="img"
-                                                style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }}
-                                                alt='product-image-thumbnail'
-                                                image={productPlaceholder}
-                                                onClick={() => navigateToItem(cart[key].id)}
-                                            /> */}
                                             </Grid>
-                                            <Grid item xs='auto' sx={{ minWidth: 270 }}>
-                                                <h3 style={{ margin: 0 }}>{cart[key].name} - {itemVariant?.name}</h3>
+                                            <Grid item xs='auto' sx={{ minWidth: 270 }} marginLeft={2} >
 
+                                                <Typography variant='h6' style={{ margin: 0, color: 'inherit', textDecoration: 'inherit' }} component={Link} to={`/product/${cart[key].id}/${cart[key].name}`} onClick={() => setCartOpen(false)}>
+                                                    {cart[key].name} - {itemVariant?.name}
+                                                </Typography>
+                                                {/* <h3 component={Link} to={'/'} style={{ margin: 0 }}>{cart[key].name} - {itemVariant?.name}</h3> */}
+
+                                                <br />
                                                 {cart[key].brand}
                                                 <br />
 
                                                 <Grid container>
 
                                                     <Grid item xs>
-                                                        <IconButton onClick={() => changeVariantQuantity(-1, key)} color="primary" aria-label="increment-product">
-                                                            <RemoveCircleSharpIcon style={{ fontSize: '34px' }} />
+                                                        <IconButton sx={{ paddingLeft: 0 }} onClick={() => changeVariantQuantity(-1, key)} color="primary" aria-label="decrement-product">
+                                                            <IndeterminateCheckBoxIcon style={{ fontSize: '34px' }} />
                                                         </IconButton>
                                                         {cart[key]?.quantity}
-                                                        <IconButton onClick={() => changeVariantQuantity(1, key)} color="primary" aria-label="dimunition-product">
-                                                            <AddCircleSharpIcon style={{ fontSize: '34px' }} />
+                                                        <IconButton onClick={() => changeVariantQuantity(1, key)} color="primary" aria-label="increment-product">
+                                                            <AddBoxIcon style={{ fontSize: '34px' }} />
                                                         </IconButton>
                                                     </Grid>
                                                     <Grid item xs sx={{ minWidth: 170 }} display='flex' justifyContent='end' alignItems='center'>

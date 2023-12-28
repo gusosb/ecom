@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react"
 import { useQuery, useMutation, useQueryClient, QueryClient } from '@tanstack/react-query'
-import { createCategory, createItem, changeItemStatus, updateItem, getAdminCategories, deleteImage, addImage, addVariant, updateVariant, updateCategory } from '../requests'
+import { createCategory, createItem, changeItemStatus, updateItem, getAdminCategories, deleteImage, addImage, addVariant, updateVariant, updateCategory, baseUrl } from '../requests'
 import {
     BrowserRouter as Router, Routes, Route, Link, Navigate, useParams, Outlet, useOutletContext, useNavigate
 } from "react-router-dom"
@@ -433,7 +433,7 @@ const AdminItems = ({ queryClient }) => {
                                                 {selectedItem.images.map(image =>
                                                     <>
                                                         {/* <img src={image.path} alt='' /> */}
-                                                        <img style={{ objectFit: 'contain', maxWidth: '300px' }} src={productPlaceholder} alt='' />
+                                                        <img style={{ objectFit: 'contain', maxWidth: '300px' }} src={baseUrl + image.path} alt='' />
                                                         <br />
                                                         <Button onClick={() => sendDeleteImage(image.id)} variant="contained">Delete image</Button>
                                                     </>

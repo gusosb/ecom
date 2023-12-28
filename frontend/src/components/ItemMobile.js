@@ -1,34 +1,23 @@
-import {
-  BrowserRouter as Router, Routes, Route, Link, Navigate, useParams, Outlet, useOutletContext, useNavigate
-} from "react-router-dom"
 import { useState, useRef, useEffect } from "react"
-import { useWindowSize } from '../helpers'
 import Markdown from 'react-markdown'
-import PropTypes from 'prop-types';
 import '../styles.css'
 
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
-// import Button from '@mui/material-next/Button'
 import IconButton from '@mui/material/IconButton'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
-import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp'
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import RemoveCircleSharpIcon from '@mui/icons-material/RemoveCircleSharp'
 import Box from '@mui/material/Box'
 import CircleIcon from '@mui/icons-material/Circle'
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
-import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import Rating from '@mui/material/Rating';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import Paper from '@mui/material/Paper';
 import productPlaceholder from '../images/6872_100-Whey-Gold-Std-912-g-Vanilla-Ice-Cream_0922.webp'
 import CategoryLocation from "./blocks/CategoryLocation";
@@ -36,7 +25,7 @@ import CategoryLocation from "./blocks/CategoryLocation";
 
 const ItemMobile = ({ variant, selectedItem, setVariant, topCategory, subCategory,
   subTwoCategory, format, addToCart, variantInCart, changeVariantQuantity,
-  cart, CustomTabPanel, Tab, Tabs, tab, setTab }) => {
+  cart, CustomTabPanel, Tab, Tabs, tab, setTab, Link, baseUrl }) => {
 
   const [sticky, setSticky] = useState(true)
 
@@ -90,7 +79,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, topCategory, subCategor
             <br />
 
             <Grid container>
-              <img src={productPlaceholder} style={{ maxWidth: '100%', height: 'auto' }} />
+              <img src={baseUrl + selectedItem.images[0].path} style={{ maxWidth: '100%', height: 'auto' }} />
             </Grid>
 
 
@@ -122,30 +111,30 @@ const ItemMobile = ({ variant, selectedItem, setVariant, topCategory, subCategor
             </Grid>
 
 
-            <Paper ref={ref2} sx={{ paddingTop: 2, boxShadow: sticky ? '0px -2px 4px -4px rgba(0,0,0,0.7)' : 'none' }} className={sticky ? 'stickyy' : undefined}>
+            <Paper ref={ref2} sx={{ backgroundColor: '#faf9f8', paddingTop: 2, boxShadow: sticky ? '0px -2px 4px -4px rgba(0,0,0,0.7)' : 'none' }} className={sticky ? 'stickyy' : undefined}>
 
 
               <Grid container spacing={2} padding={sticky && 2} paddingTop={0}>
-                <Grid item xs>
-
-                  <FormControl fullWidth>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={variant}
-                      onChange={({ target }) => setVariant(target.value)}>
-                      {selectedItem?.variants?.map(variant =>
-                        <MenuItem value={variant.id} disabled={variant.sellable > 0 ? false : true}>{variant.name}</MenuItem>
-                      )}
-                    </Select>
-                  </FormControl>
-
-                </Grid>
+                {selectedItem.variants.length > 1 &&
+                  <Grid item xs>
+                    <FormControl fullWidth>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={variant}
+                        onChange={({ target }) => setVariant(target.value)}>
+                        {selectedItem?.variants?.map(variant =>
+                          <MenuItem value={variant.id} disabled={variant.sellable > 0 ? false : true}>{variant.name}</MenuItem>
+                        )}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                }
                 <Grid item xs>
 
 
                   {!variantInCart
-                    ? <>             <Button sx={{ height: '100%' }} fullWidth variant="contained" color="primary" disableElevation onClick={addToCart} endIcon={<AddShoppingCartIcon />} >
+                    ? <><Button sx={{ height: '100%' }} fullWidth variant="contained" color="primary" disableElevation onClick={addToCart} endIcon={<AddShoppingCartIcon />} >
                       Lägg till
                     </Button> </>
                     : <>
@@ -198,7 +187,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, topCategory, subCategor
 
             <CustomTabPanel value={tab} index={selectedItem.description2 ? 2 : 1}>
               {selectedItem.reviews.length}
-              {selectedItem.reviews.map()}
+
               review
             </CustomTabPanel>
 

@@ -1,22 +1,16 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getNotes, createNote, updateNote, getSite, getCategories } from '../requests'
-import {
-  BrowserRouter as Router, Routes, Route, Link, Navigate, useParams, Outlet, useOutletContext, useNavigate
-} from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import ReactMarkdown from 'react-markdown'
 import { useWindowSize } from '../helpers'
 
 import Grid from '@mui/material/Grid'
 import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemAvatar from '@mui/material/ListItemAvatar'
-import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import IconButton from '@mui/material/IconButton'
 import Box from '@mui/material/Box'
 import CategoryMobile from './CategoryMobile'
 import testimage from '../images/pwp-pouch-v4-main_1.webp'
+import CategoryLocation from './blocks/CategoryLocation'
 
 
 const Category = ({ categories }) => {
@@ -48,10 +42,7 @@ const Category = ({ categories }) => {
       <Grid item xs style={{ maxWidth: 1500, height: '100%' }} sx={{ m: 20, mt: 0, mb: 0 }}>
         <Grid container>
           <Grid item xs={12} marginTop={1.2}>
-            <Link to={`/${topCategoryName}`} style={{ textDecoration: 'none', color: '#8a8a8a' }}>{selectedTopCategory.name}</Link>
-            {subCategoryName && <><Link to={`/${topCategoryName}/${subCategoryName}`} style={{ textDecoration: 'none', color: '#8a8a8a' }}> / {subCategoryName}</Link>
-              {subTwoCategoryName && <Link to={`/${topCategoryName}/${subCategoryName}/${subTwoCategoryName}`} style={{ textDecoration: 'none', color: '#8a8a8a' }}> / {subTwoCategoryName}</Link>}</>
-            }
+            <CategoryLocation Link={Link} topCategory={selectedTopCategory} subCategory={selectedSubCategory} subTwoCategory={selectedSubTwoCategory} />
           </Grid>
           <Grid item xs={12}>
             <h1>{lowestCategory.name}</h1>
@@ -66,7 +57,17 @@ const Category = ({ categories }) => {
                   <ListItemButton
                     component={Link}
                     to={selectedSubCategory ? `/${topCategoryName}/${subCategoryName}/${category.name}` : `/${topCategoryName}/${category.name}`}
-                    selected={category.id === lowestCategory.id}>
+                    selected={category.id === lowestCategory.id}
+                    sx={{
+                      "&.Mui-selected": {
+                        backgroundColor: '#F5DEB3',
+                        //backgroundColor: '#fbdd7e',
+                      },
+                      "&.Mui-selected:hover": {
+                        backgroundColor: '#F5DEB3'
+                      }
+                    }}
+                  >
                     <ListItemText primary={category.name} />
                   </ListItemButton>
                 </>
@@ -82,7 +83,6 @@ const Category = ({ categories }) => {
                     <IconButton
                       component={Link}
                       to={`/product/${item.id}/${item.name.replaceAll(' ', '-')}`}
-                      // to={`/${topCategoryName}/${subCategoryName}/${subTwoCategoryName}/${item.id}`}
                       sx={{
                         borderRadius: 0,
                         '.MuiTouchRipple-ripple .MuiTouchRipple-child': {

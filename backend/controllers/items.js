@@ -1,7 +1,7 @@
 const itemsRouter = require('express').Router()
 const { auth } = require('./auth')
 const multer = require('multer')
-const { Item, Image, Variant, Review } = require('../models')
+const { Item, Image, Variant, Review, Order } = require('../models')
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -32,14 +32,22 @@ itemsRouter.post('/image', upload.single('file'), async (request, response) => {
   response.status(201).json()
 })
 
-// => create review, in body should be comment and rating variable
-itemsRouter.post('/review/:id', async (request, response) => {
-  // const currentUser = await auth(request)
+
+// => create review
+itemsRouter.post('/reviews/:id', async (request, response) => {
   const itemId = request.params.id
-  await Review.create({ itemId, ...request.body })
+
+  console.log(request.body);
+  console.log(itemId);
+  
+
+  const order = await Order.findByPk(request.body.orderId)
+  const name = order.given_name
+  await Review.create({ itemId, ...request.body, name })
 
   response.status(201).json()
 })
+
 
 itemsRouter.post('/variant', async (request, response) => {
   // const currentUser = await auth(request)
@@ -55,7 +63,7 @@ itemsRouter.post('/variant', async (request, response) => {
 itemsRouter.put('/variant/:id', async (request, response) => {
   console.log('variant!');
 
-  const [item, created] = await Variant.upsert({
+  const [item, isCreated] = await Variant.upsert({
     ...request.body
   });
 

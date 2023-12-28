@@ -1,22 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getNotes, createNote, updateNote, getSite, getCategories } from '../requests'
-import {
-    BrowserRouter as Router, Routes, Route, Link, Navigate, useParams, Outlet, useOutletContext, useNavigate
-} from "react-router-dom"
+import { Link } from "react-router-dom"
 import ReactMarkdown from 'react-markdown'
 import CategoryLocation from './blocks/CategoryLocation'
-import { useEffect, useState } from "react"
 
 import Grid from '@mui/material/Grid'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemAvatar from '@mui/material/ListItemAvatar'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemText from '@mui/material/ListItemText'
 import IconButton from '@mui/material/IconButton'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import testimage from '../images/pwp-pouch-v4-main_1.webp'
 import Chip from '@mui/material/Chip';
 

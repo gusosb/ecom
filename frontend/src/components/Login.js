@@ -1,12 +1,10 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useNavigate, Link } from 'react-router-dom'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { loginUser } from '../requests'
 
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -23,16 +21,15 @@ const Login = ({ setToken, notify, errorMessage }) => {
   const loginUserMutation = useMutation(loginUser, {
     onSuccess: ({ token }) => {
       setToken(token)
-      localStorage.setItem('ecom', token)
+      localStorage.setItem('ecom-bunny-racer', token)
       navigate('/')
     },
   })
 
 
   const submit = async (event) => {
-    if (!email || !password) {
-      return
-    }
+    if (!email || !password) return
+
     event.preventDefault()
     loginUserMutation.mutate({ email, password })
 
@@ -65,8 +62,7 @@ const Login = ({ setToken, notify, errorMessage }) => {
               label="Epostadress"
               name="email"
               autoComplete="email"
-              autoFocus
-            />
+              autoFocus />
             <TextField
               margin="normal"
               required
@@ -77,25 +73,23 @@ const Login = ({ setToken, notify, errorMessage }) => {
               id="password"
               autoComplete="current-password"
               value={password}
-              onChange={({ target }) => setPassword(target.value)}
-            />
+              onChange={({ target }) => setPassword(target.value)} />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               onClick={submit}
-              sx={{ mt: 3, mb: 2 }}
-            >
+              sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link to="/forgotpass" variant="body2">
+                <Link to="/forgotpass" variant="body2" style={{ color: 'black' }}>
                   Glömt lösenord
                 </Link>
               </Grid>
               <Grid item sx={{ ml: 5 }}>
-                <Link to="/register" variant="body2">
+                <Link to="/register" variant="body2" style={{ color: 'black' }}>
                   Har du inget konto? Registrera dig
                 </Link>
               </Grid>

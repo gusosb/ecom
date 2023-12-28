@@ -9,13 +9,13 @@ const queryClient = new QueryClient()
 
 const theme = createTheme({
   palette: {
-    /*     primary: {
-          main: purple[500],
+         primary: {
+          main: '#F5DEB3',
+          background: '#faf9f8'
         },
         secondary: {
-          // This is green.A700 as hex.
-          main: '#11cb5f',
-        }, */
+          main: '#fbdd7e',
+        }, 
     white: {
       main: '#FFFFFF'
     }

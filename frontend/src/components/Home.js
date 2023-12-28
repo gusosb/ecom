@@ -5,13 +5,17 @@ import Footer from './Footer'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemText from '@mui/material/ListItemText'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import placeholderLogo from '../images/logoipsum-288.svg'
 import TextField from '@mui/material/TextField'
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
-// import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import { ReactComponent as ShoppingCartIcon } from '../images/shoppingbag.svg'
+import { ReactComponent as PersonOutlineOutlinedIcon } from '../images/person.svg'
 
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
@@ -31,29 +35,6 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     /* color: theme.palette.text.secondary, */
 }))
-
-const CssTextField = styled(TextField)({
-    '& label.Mui-focused': {
-        color: 'white',
-    },
-    '& .MuiInput-underline:after': {
-        borderBottomColor: 'white',
-    },
-    '& .MuiInputLabel-root': {
-        color: 'white',
-    },
-    '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            borderColor: 'white',
-        },
-        '&:hover fieldset': {
-            borderColor: 'white',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: 'white',
-        },
-    },
-})
 
 const margin = 10
 const maxWidth = 1250
@@ -103,7 +84,8 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
     const windowSize = useWindowSize()
 
     if (windowSize.width < 800) return <HomeMobile cart={cart} location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} toggleDrawer={toggleDrawer} totalSumInCart={totalSumInCart} changeVariantQuantity={changeVariantQuantity}
-        PersonOutlineOutlinedIcon={PersonOutlineOutlinedIcon} ShoppingCartIcon={ShoppingCartIcon} placeholderLogo={placeholderLogo} format={format} categories={categories}
+        PersonOutlineOutlinedIcon={PersonOutlineOutlinedIcon} ShoppingCartIcon={ShoppingCartIcon} placeholderLogo={placeholderLogo} format={format} categories={categories} Grid={Grid}
+        Box={Box} Button={Button} IconButton={IconButton}
     />
 
     return (
@@ -116,52 +98,52 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
 
             <Grid container direction='column'>
                 <Grid item xs='auto'>
-                    <Grid container backgroundColor='#25272e' justifyContent='center'>
+                    <Grid container justifyContent='center'>
                         <Grid item xs={12} style={{ minHeight, maxWidth }} sx={{ m: margin, mt: 0, mb: 0 }}>
                             <Grid container>
                                 <Grid item minHeight={minHeight} xs='auto'>
                                     <Box display='flex' alignItems='center' height='100%'>
-                                        hej
+                                        <LocalShippingOutlinedIcon fontSize='small' /> &nbsp; Fri leverans vid köp över 499 kr
                                     </Box>
                                 </Grid>
                                 <Grid item xs minHeight={minHeight} display='flex' justifyContent='flex-end'>
                                     <Box display='flex' alignItems='center' height='100%'>
-                                        Fri frakt vid 499:- / Snabba leveranser
+                                        Kundservice
                                     </Box>
                                 </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
 
-                    <Grid container backgroundColor='#2e3037' justifyContent='center'>
+                    <Grid container justifyContent='center'>
                         <Grid item xs={12} style={{ maxWidth, minHeight: minHeight2 }} sx={{ m: margin, mt: 0, mb: 0 }}>
                             <Grid container paddingTop={3}>
 
                                 <Grid item xs={4}>
-                                    <Box display='flex' alignItems='center' height='100%'>
+                                    <Box component={Link} to='/' display='flex' alignItems='center' height='100%'>
                                         <img className='img' src={placeholderLogo} />
                                     </Box>
                                 </Grid>
 
                                 <Grid item xs={4}>
                                     <Box display='flex' alignItems='center' height='100%'>
-                                        <CssTextField id="outlined-search" type="text" fullWidth
+                                        <TextField id="outlined-search" type="text" fullWidth
                                             variant="outlined"
                                             placeholder='Sök...'
                                             InputLabelProps={{ shrink: false }}
                                             value={searchText}
                                             InputProps={{
-                                                style: { color: "white" },
+                                                // style: { color: "white" },
                                                 startAdornment: (
                                                     <InputAdornment position="start">
-                                                        <SearchIcon color='white' />
+                                                        <SearchIcon />
                                                     </InputAdornment>
                                                 ),
                                                 endAdornment: searchText && (
                                                     <IconButton
                                                         aria-label="toggle password visibility"
                                                         onClick={() => setSearchText('')}
-                                                    ><CloseIcon color='white' /></IconButton>
+                                                    ><CloseIcon /></IconButton>
                                                 )
                                             }}
                                             onChange={({ target }) => setSearchText(target.value)}
@@ -177,7 +159,7 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
                                             style={{ height: 50 }}
                                         /* sx={{ '&:hover': { background: 'none', }, }} */
                                         >
-                                            <Grid container direction='column' display='flex' alignItems='center'>
+                                            <Grid container sx={{ color: 'black' }} direction='column' display='flex' alignItems='center'>
                                                 <PersonOutlineOutlinedIcon />
                                                 LOGGA IN
                                             </Grid>
@@ -190,58 +172,65 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
                                             style={{ height: 50 }}
                                         /* sx={{ '&:hover': { background: 'none', }, }} */
                                         >
-                                            <Grid container direction='column' display='flex' alignItems='center'>
+                                            <Grid container direction='column' color='black' display='flex' alignItems='center'>
                                                 <Badge badgeContent={cart && Object.keys(cart).length} color="secondary" sx={{ "& .MuiBadge-badge": {} }}>
-                                                    <ShoppingCartIcon />
+                                                    <ShoppingCartIcon sx={{ color: '#222' }} />
                                                 </Badge>
-                                                varukorg
+                                                VARUKORG
                                             </Grid>
                                         </Button>
                                     </Box>
-                                    <Box display='flex' alignItems='center' height='100%' flexDirection='column' justifyContent='center'>
-                                        <Button
-                                            style={{ height: 50 }}
-                                        /* sx={{ '&:hover': { background: 'none', }, }} */
-                                        >
-                                            <Grid container direction='column' display='flex' alignItems='center'>
-                                                <PersonOutlineOutlinedIcon />
-                                                LOGGA IN
-                                            </Grid>
-                                        </Button>
-                                    </Box>
+
                                 </Grid>
 
                             </Grid>
                             <Grid container paddingTop={2}>
                                 <Grid item xs={6}>
-                                    <Stack direction="row" spacing={2}>
+                                    <Stack direction="row" spacing={0}>
                                         {categories.map((category, i) =>
                                             <>
                                                 <Button sx={{ textTransform: 'none' }} component={Link} to={`/${category.name.toLowerCase()}`}
                                                     onMouseEnter={(event) => handleOpenMenu(event.currentTarget, i)}
                                                     onMouseLeave={() => handleCloseMenu(i)}
-                                                    onClick={() => handleCloseMenu(i)}
-                                                >
+                                                    onClick={() => handleCloseMenu(i)}>
                                                     <Item
-                                                        style={{ textDecoration: 'none', color: 'white' }}
-                                                        sx={{ backgroundColor: 'transparent' }} elevation={0}>
+                                                        style={{ textDecoration: 'none' }}
+                                                        sx={{ backgroundColor: 'transparent', fontSize: 18, fontWeight: 500, pb: 0, boxShadow: open[i] && '1px 7px 0px -5px #fbdd7e' }} elevation={0}>
                                                         {category.name}
                                                     </Item>
                                                 </Button>
 
-                                                <Popper id={category.id} open={open[i]} anchorEl={anchorEl[i]} onMouseEnter={() => handleOpenPopper(i)} onMouseLeave={popperLeave}>
-                                                    <Box
-                                                        sx={{
-                                                            marginTop: '-2px',
-                                                            border: 1,
-                                                            p: 1,
-                                                            bgcolor: 'background.paper',
-                                                        }}
-                                                    >
-                                                        {category.name}
+
+                                                <Popper sx={{ width: '100%' }} id={category.id} open={open[i]} anchorEl={anchorEl[i]} onMouseEnter={() => handleOpenPopper(i)} onMouseLeave={popperLeave}>
+                                                    <Box sx={{
+                                                        marginTop: '-2px',
+                                                        //border: 1,
+                                                        p: 1,
+                                                        // bgcolor: 'background.paper',
+                                                        bgcolor: '#faf9f8',
+                                                        borderBottom: '1px solid #ccc',
+                                                    }}>
+                                                        <Grid container display='flex' justifyContent='center'>
+                                                            {category.SubOne.map(subCategory =>
+                                                                <Grid item xs='auto'>
+                                                                    <List>
+                                                                        <ListItemButton component={Link} to={`/${category.name.toLowerCase()}/${subCategory.name.toLowerCase()}`} onClick={popperLeave}>
+                                                                            <ListItemText primary={subCategory.name} primaryTypographyProps={{ style: { fontWeight: 'bold' } }} />
+                                                                        </ListItemButton>
+                                                                        {subCategory.SubTwo.map(subTwoCategory =>
+                                                                            <ListItem disablePadding>
+                                                                                <ListItemButton sx={{ paddingTop: 0, paddingBottom: 0 }} component={Link} to={`/${category.name.toLowerCase()}/${subCategory.name.toLowerCase()}/${subTwoCategory.name.toLowerCase()}`} onClick={popperLeave}>
+                                                                                    <ListItemText primary={subTwoCategory.name} />
+                                                                                </ListItemButton>
+                                                                            </ListItem>
+                                                                        )}
+                                                                    </List>
+                                                                </Grid>
+                                                            )}
+                                                        </Grid>
                                                     </Box>
 
-                                                </Popper>
+                                                </Popper >
                                             </>
                                         )}
                                         {/* 
@@ -251,7 +240,7 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
 
                                 </Grid>
                                 <Grid item xs display='flex' justifyContent='flex-end'>
-                                    hej
+                                    Blogg
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -267,7 +256,7 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
                         </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
+            </Grid >
         </>
     )
 }

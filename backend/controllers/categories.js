@@ -14,7 +14,7 @@ categoriesRouter.get('/', async (request, response) => {
         as: 'SubOne',
         required: true,
         include: [
-          { model: Category, as: 'SubTwo', include: [{ model: Item, include: [{ model: Image }, { model: Variant }, { model: Review }] }] }
+          { model: Category, as: 'SubTwo', include: [{ model: Item, where: { isActive: true }, include: [{ model: Image }, { model: Variant }, { model: Review }] }] }
         ]
       },
     ]
@@ -34,8 +34,12 @@ categoriesRouter.get('/admin', async (request, response) => {
         as: 'SubOne',
         required: true,
         include: [
-          { model: Category, as: 'SubTwo', include: [{ model: Item, include: [{ model: Image }, { model: Variant }, { model: Review }] }] }
-        ]
+          {
+            model: Category, as: 'SubTwo', include: [{
+              model: Item,
+              include: [{ model: Image }, { model: Variant }, { model: Review }]
+            }]
+          }]
       },
     ]
   })
@@ -64,6 +68,9 @@ categoriesRouter.post('/admin', async (request, response) => {
 })
 
 categoriesRouter.put('/admin/name', async (request, response) => {
+  const currentUser = await auth(request)
+  console.log(currentUser);
+  
   const { name, id } = request.body
 
   const category = await Category.findByPk(id)

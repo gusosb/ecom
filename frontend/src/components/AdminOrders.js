@@ -1,9 +1,6 @@
-import { useState, useEffect } from "react"
-import { useQuery, useMutation, useQueryClient, QueryClient } from '@tanstack/react-query'
-import { createCategory, createItem, changeItemStatus, updateItem, getAdminOrders } from '../requests'
-import {
-  BrowserRouter as Router, Routes, Route, Link, Navigate, useParams, Outlet, useOutletContext, useNavigate
-} from "react-router-dom"
+import { useQuery } from '@tanstack/react-query'
+import { getAdminOrders } from '../requests'
+import { Link } from "react-router-dom"
 
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -36,7 +33,7 @@ const AdminOrders = () => {
 
   const orders = result.data
   console.log(orders);
-  
+
 
   return (
     <>

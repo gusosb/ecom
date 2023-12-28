@@ -43,7 +43,7 @@ ordersRouter.post('/session', async (request, response) => {
           terms: "https://www.example.com/terms.html",
           checkout: "https://www.example.com/checkout.html?order_id={checkout.order.id}",
           confirmation: `https://www.example.com/api/confirmation`,
-          // confirmation: `${process.env.base_url}/confirmation/{checkout.order.id}`,
+         // confirmation: `${process.env.base_url}/confirmation/{checkout.order.id}`,
           // push: `${process.env.base_url}/api/orders/{checkout.order.id}`
           push: `https://www.example.com/api/push`
         },

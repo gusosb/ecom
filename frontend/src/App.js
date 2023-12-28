@@ -1,8 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import { useEffect, Suspense, lazy, useState } from "react"
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getNotes, createNote, updateNote, getSite, getCategories } from './requests'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { getCategories, baseUrl } from './requests'
 import Category from "./components/Category"
+import Item from "./components/Item"
 
 const Login = lazy(() => import('./components/Login'))
 const Register = lazy(() => import('./components/Register'))
@@ -11,10 +12,9 @@ const Admin = lazy(() => import('./components/Admin'))
 const AdminItems = lazy(() => import('./components/AdminItems'))
 const AdminOrders = lazy(() => import('./components/AdminOrders'))
 const FrontPage = lazy(() => import('./components/FrontPage'))
-//const Category = lazy(() => import('./components/Category'))
-const Item = lazy(() => import('./components/Item'))
 const Checkout = lazy(() => import('./components/Checkout'))
 const Confirmation = lazy(() => import('./components/Confirmation'))
+const Review = lazy(() => import('./components/Review'))
 
 const App = () => {
 
@@ -62,7 +62,7 @@ const App = () => {
   }
 
   const format = (str) => {
-    return str.toFixed(2).replace('.', ',')
+    return str.toFixed(0).replace('.', ',')
   }
 
   useEffect(() => {
@@ -99,20 +99,21 @@ const App = () => {
             <Route path="/admin/items/:categoryid?/:subonecategoryid?/:subtwocategoryid?/:itemid?/:variantid?" element={result.data && <AdminItems queryClient={queryClient} categories={result.data} />} />
             <Route path="/admin/orders" element={<AdminOrders queryClient={queryClient} categories={result.data} />} />
 
-            <Route path="/confirmation/:order_id" element={<Confirmation />} />
             <Route path="/" element={<Home format={format} totalSumInCart={totalSumInCart} changeVariantQuantity={changeVariantQuantity} removeFromCart={removeFromCart} cart={cart} setCart={setCart} categories={result.data} token={token} notify={notify} setToken={setToken} errorMessage={errorMessage} />}>
               <Route index element={(<FrontPage />)} />
               <Route path="/checkout" element={<Checkout format={format} changeVariantQuantity={changeVariantQuantity} removeFromCart={removeFromCart} queryClient={queryClient} totalSumInCart={totalSumInCart} cart={cart} />} />
               <Route path="/:categoryname?/:subonecategoryname?/:subtwocategoryname?" element={<Category categories={result.data || []} />} />
               {/* <Route path="/:categoryname/:subonecategoryname/:subtwocategoryname/:itemid/:itemname?" element={<Item />} /> */}
-              <Route path="/product/:itemid/:itemname?" element={<Item format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} />} />
+              <Route path="/product/:itemid/:itemname?" element={<Item baseUrl={baseUrl} format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} />} />
+              <Route path="/review/:itemid/:orderid/:itemname?" element={<Review format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} queryClient={queryClient} />} />
+              <Route path='/login' element={token ? <Navigate replace to="/" /> : <Login notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
+              <Route path='/register' element={!token ? <Register notify={notify} setToken={setToken} errorMessage={errorMessage} /> : <Navigate replace to="/" />} />
+              <Route path="/confirmation/:order_id" element={<Confirmation />} />
             </Route>
 
             {/*               <Route path="changepass/:userid/:token" element={<ChangePass notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
               <Route path="forgotpass" element={<ForgotPass notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
                */}
-            <Route path='login' element={token ? <Navigate replace to="/" /> : <Login notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
-            <Route path='register' element={!token ? <Register notify={notify} setToken={setToken} errorMessage={errorMessage} /> : <Navigate replace to="/" />} />
             {/* <Route path="admin/:categoryid?/:itemid?" element={token ? <Admin queryClient={queryClient} categories={result.data} notify={notify} setToken={setToken} errorMessage={errorMessage} /> : <Navigate replace to="/" />} />
 
             <Route path="admin" element={<Admin />}>

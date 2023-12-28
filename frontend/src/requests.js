@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-// const baseUrl = 'http://localhost:3001'
-const baseUrl = 'https://ecomapi.kanindev.se'
-const token = localStorage.getItem('ecom')
+//export const baseUrl = 'http://localhost:3001'
+export const baseUrl = 'https://ecomapi.kanindev.se'
+const token = localStorage.getItem('ecom-bunny-racer')
 
 // export const getSite = () =>
 //     /* axios.get(baseUrl + '/api/site', { headers: { 'Authorization': `bearer ${token}` } }).then(res => res.data) */
@@ -63,4 +63,4 @@ export const updateOrder = data => // => Updates the order with new price data
     axios.post(baseUrl + '/api/orders/update', data).then(res => res.data)
 
 export const addReview = data =>
-    axios.post(baseUrl + `/api/items/review/${data.id}`, data).then(res => res.data)
+    axios.post(baseUrl + `/api/items/reviews/${data.id}`, data).then(res => res.data)

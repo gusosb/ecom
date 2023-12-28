@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useNavigate, Link } from 'react-router-dom'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { createUser } from '../requests'
 
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import Checkbox from '@mui/material/Checkbox'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -25,16 +24,15 @@ const Register = ({ setToken, notify, errorMessage }) => {
   const createUserMutation = useMutation(createUser, {
     onSuccess: ({ token }) => {
       setToken(token)
-      localStorage.setItem('ecom', token)
+      localStorage.setItem('ecom-bunny-racer', token)
       navigate('/')
     },
   })
 
   const submit = async (event) => {
     event.preventDefault()
-    if (!email || !password || !password2 || (password !== password2)) {
-      return
-    }
+    if (!email || !password || !password2 || (password !== password2)) return
+
     createUserMutation.mutate({ email, password })
   }
 
@@ -140,12 +138,12 @@ const Register = ({ setToken, notify, errorMessage }) => {
             </Grid>
             <Grid container>
               <Grid item xs>
-                <Link to="/" variant="body2">
+                <Link to="/" variant="body2" style={{ color: 'black' }}>
                   Glömt lösenord
                 </Link>
               </Grid>
               <Grid item sx={{ ml: 5 }}>
-                <Link to="/login" variant="body2">
+                <Link to="/login" variant="body2" style={{ color: 'black' }}>
                   Har du redan ett konto? Logga in
                 </Link>
               </Grid>

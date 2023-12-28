@@ -17,6 +17,12 @@ app.use(express.json())
 
 app.use(cors())
 
+// app.use(cors({
+//     origin: 'https://ecom.kanindev.se',
+// }));
+
+app.options('*', cors())
+
 app.use('/api/orders', ordersRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/categories', categoriesRouter)

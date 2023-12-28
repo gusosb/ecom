@@ -1,33 +1,28 @@
 import { useEffect, useState } from "react"
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { initSession, confirmOrder, updateOrder } from "../requests"
 import { klarnaHtml } from '../helpers'
-
+import { useTheme } from '@mui/material/styles'
 import { useWindowSize } from '../helpers'
 
 
 import Grid from '@mui/material/Grid'
-import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
-import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp'
-import RemoveCircleSharpIcon from '@mui/icons-material/RemoveCircleSharp'
-import Box from '@mui/material/Box'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
 import Paper from '@mui/material/Paper'
-import Select from '@mui/material/Select'
 import DeleteIcon from '@mui/icons-material/Delete'
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import productPlaceholder from '../images/6872_100-Whey-Gold-Std-912-g-Vanilla-Ice-Cream_0922.webp'
 import CheckoutMobile from "./CheckoutMobile"
 
 
-const Checkout = ({ cart, totalSumInCart, removeFromCart, changeVariantQuantity, format }) => {
+const Checkout = ({ cart, totalSumInCart, removeFromCart, changeVariantQuantity, format, baseURL }) => {
     const localSessionID = localStorage.getItem('ecom-localSessionID')
     const [html_snippet, setHtml_snippet] = useState('')
     const [iframeHeight, setIframeHeight] = useState('800px')
 
+    const theme = useTheme();
 
     let order_tax_amount = 0
     const order_lines = Object.keys(cart).map(e => {
@@ -116,6 +111,7 @@ const Checkout = ({ cart, totalSumInCart, removeFromCart, changeVariantQuantity,
                 <Grid container spacing={2}>
                     {Object.keys(cart).map((key, i) => {
                         const itemVariant = cart[key].variants?.find(e => e.id === parseInt(key))
+                        const path = cart[key].images[0]?.path
                         return <>
                             {i === 0 &&
                                 <Grid item xs={12}>
@@ -141,14 +137,14 @@ const Checkout = ({ cart, totalSumInCart, removeFromCart, changeVariantQuantity,
                                 </Grid>
                             }
                             <Grid item xs={12}>
-                                <Grid container component={Paper}>
+                                <Grid container component={Paper} sx={{ backgroundColor: 'primary.background' }}>
                                     <Grid xs={1} alignSelf='center' textAlign='center'>
                                         <IconButton disableFocusRipple disableRipple onClick={() => removeFromCart(key)}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </Grid>
                                     <Grid xs='auto' alignSelf='center'>
-                                        <img style={{ maxHeight: '150px', maxWidth: '100%', objectFit: 'contain' }} src={productPlaceholder} />
+                                        <img style={{ maxHeight: '150px', maxWidth: '100%', objectFit: 'contain' }} src={baseURL + path} />
                                     </Grid>
                                     <Grid xs alignSelf='center'>
                                         <b>
@@ -157,11 +153,11 @@ const Checkout = ({ cart, totalSumInCart, removeFromCart, changeVariantQuantity,
                                     </Grid>
                                     <Grid xs={2} alignSelf='center' textAlign='center'>
                                         <IconButton onClick={() => changeVariantQuantity(-1, key)} color="primary" aria-label="increment-product">
-                                            <RemoveCircleSharpIcon style={{ fontSize: '34px' }} />
+                                            <IndeterminateCheckBoxIcon style={{ fontSize: '34px' }} />
                                         </IconButton>
                                         {cart[key].quantity}
                                         <IconButton onClick={() => changeVariantQuantity(1, key)} color="primary" aria-label="dimunition-product">
-                                            <AddCircleSharpIcon style={{ fontSize: '34px' }} />
+                                            <AddBoxIcon style={{ fontSize: '34px' }} />
                                         </IconButton>
                                     </Grid>
                                     <Grid xs={2} alignSelf='center' textAlign='center'>
@@ -189,7 +185,7 @@ const Checkout = ({ cart, totalSumInCart, removeFromCart, changeVariantQuantity,
                     id='klarna-checkout'
                     className='iframe'
                     srcDoc={klarnaHtml(html_snippet)}
-                    style={{ width: '100%', height: iframeHeight }}
+                    style={{ width: '100%', height: iframeHeight, backgroundColor: `${theme.palette.primary.background} !important` }}
                     frameBorder='0'
                     scrolling='no'
                     allowfullscreen=''
