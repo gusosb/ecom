@@ -11,9 +11,10 @@ import Box from '@mui/material/Box'
 import CategoryMobile from './CategoryMobile'
 import testimage from '../images/pwp-pouch-v4-main_1.webp'
 import CategoryLocation from './blocks/CategoryLocation'
+import { Typography } from "@mui/material"
 
 
-const Category = ({ categories }) => {
+const Category = ({ categories, baseUrl, format }) => {
 
   const topCategoryName = useParams().categoryname
   const subCategoryName = useParams().subonecategoryname
@@ -34,7 +35,7 @@ const Category = ({ categories }) => {
   const windowSize = useWindowSize()
 
   if (windowSize.width < 800) return <CategoryMobile selectedTopCategory={selectedTopCategory} selectedSubCategory={selectedSubCategory} selectedSubTwoCategory={selectedSubTwoCategory}
-    lowestCategory={lowestCategory} items={items} windowSize={windowSize} subCategories={subCategories}
+    lowestCategory={lowestCategory} items={items} windowSize={windowSize} subCategories={subCategories} baseUrl={baseUrl} format={format}
   />
 
   return (
@@ -76,7 +77,7 @@ const Category = ({ categories }) => {
           </Grid>
           <Grid item xs sx={{ paddingLeft: 2 }}>
 
-            <Grid container spacing={2}>
+            <Grid container spacing={0}>
               {items.map(item =>
                 <>
                   <Grid item xs={3} height={350}>
@@ -90,15 +91,14 @@ const Category = ({ categories }) => {
                           // backgroundColor: 'red',
                         },
                       }}>
-                      {/* <img className='product-image' src={item.images[0]?.path} /> */}
-                      <img className='product-image' src={testimage} />
+                      <img className='product-image' src={baseUrl + item.images[0].path} />
                     </IconButton>
-                    <Box margin={1}>
-                      {item.name}
+                    <Box margin={1} marginTop={0}>
+                      <Typography variant='body' style={{ margin: 0, color: 'inherit', textDecoration: 'inherit' }} component={Link} to={`/product/${item.id}/${item.name}`}>
+                        {item.name}
+                      </Typography>
                       <br />
-                      desc?
-                      <br />
-                      pris?
+                      <b>{format(item.price * (1 + (item.vatRateSE / 10000)) / 100)}  kr</b>
                     </Box>
 
                   </Grid>

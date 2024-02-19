@@ -19,9 +19,14 @@ categoriesRouter.get('/', async (request, response) => {
       },
     ]
   })
-
   response.json(categories)
+})
 
+
+categoriesRouter.get('/new', async (request, response) => {
+  const categories = await Category.findAll({ include: [{ model: Item, include: [{ model: Image }, { model: Variant }, { model: Review }] }] });
+
+  response.json(categories);
 })
 
 categoriesRouter.get('/admin', async (request, response) => {
@@ -45,7 +50,21 @@ categoriesRouter.get('/admin', async (request, response) => {
   })
 
   response.json(categories)
+})
 
+categoriesRouter.get('/admin/new', async (request, response) => {
+  const currentUser = await auth(request)
+
+  const categories = await Category.findAll({
+    include: [
+      { model: Item, include: [{ model: Image }, { model: Variant }, { model: Review }] },
+    ]
+  })
+
+  console.log('categories admin new', categories);
+
+
+  response.json(categories)
 })
 
 categoriesRouter.post('/admin', async (request, response) => {
@@ -70,7 +89,7 @@ categoriesRouter.post('/admin', async (request, response) => {
 categoriesRouter.put('/admin/name', async (request, response) => {
   const currentUser = await auth(request)
   console.log(currentUser);
-  
+
   const { name, id } = request.body
 
   const category = await Category.findByPk(id)

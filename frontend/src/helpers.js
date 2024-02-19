@@ -1,44 +1,5 @@
 import { useState, useEffect } from 'react'
 
-export const klarnaHtml = (snippet) => {
-   return snippet;
-   return `
-       <html>
-       <head>
-       </head>
-       <body>
-       <textarea style="display: none;" id="KCO">
-                ${snippet}
-        </textarea
-          >
-    
-          <div id="my-checkout-container"></div>
-    
-          <!-- START - Dont edit -->
-          <script type="text/javascript">
-             const checkoutContainer = document.getElementById(
-                "my-checkout-container"
-             );
-             checkoutContainer.innerHTML = document
-                .getElementById("KCO")
-                .value.replace(/\\"/g, '"')
-                .replace(/\\n/g, "");
-             const scriptsTags = checkoutContainer.getElementsByTagName("script");
-             for (let i = 0; i < scriptsTags.length; i++) {
-                const parentNode = scriptsTags[i].parentNode;
-                const newScriptTag = document.createElement("script");
-                newScriptTag.type = "text/javascript";
-                newScriptTag.text = scriptsTags[i].text;
-                parentNode.removeChild(scriptsTags[i]);
-                parentNode.appendChild(newScriptTag);
-             }
-          </script>
-          <!-- END -->
-       </body>
-    </html>
-       `;
-}
-
 
 export const useWindowSize = () => {
    const [windowSize, setWindowSize] = useState({
@@ -65,20 +26,20 @@ export const useWindowSize = () => {
 }
 
 export const contactUs = [
-   { name: 'Kontakt', link: '/' },
-   { name: 'Vanliga frågor', link: '/' },
-]
+   { name: 'Kontakt', link: '/contact-us' },
+   { name: 'Vanliga frågor', link: '/faq' },
+];
 
 export const customerService = [
-   { name: 'Allmänna villkor', link: '/' },
-   { name: 'Retur', link: '/' },
-   { name: 'Betalningsvillkor', link: '/' },
+   { name: 'Allmänna villkor', link: '/general-terms' },
+   { name: 'Retur', link: '/returns' },
+   { name: 'Betalningsvillkor', link: '/payment-terms' },
    { name: 'Integritetspolcy', link: '/' },
-   { name: 'Leveransvillkor', link: '/' },
-   { name: 'Ångerrätt, retur och byten', link: '/' },
-]
+   { name: 'Leveransvillkor', link: '/delivery-terms' },
+   { name: 'Ångerrätt, retur och byten', link: '/return-terms' },
+];
 
 export const information = [
-   { name: 'Om Surdegsbutiken', link: '/' },
-   { name: 'Presentkort', link: '/' },
-]
+   { name: 'Om Surdegsbutiken', link: '/about' },
+   { name: 'Presentkort', link: '/giftcards' },
+];

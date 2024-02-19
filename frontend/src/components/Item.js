@@ -7,6 +7,8 @@ import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
+import ArrowBackIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos'
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import Box from '@mui/material/Box'
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
@@ -22,7 +24,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import ItemMobile from './ItemMobile'
 import CategoryLocation from "./blocks/CategoryLocation";
+import SwipeableViews from 'react-swipeable-views';
 import productPlaceholder from '../images/6872_100-Whey-Gold-Std-912-g-Vanilla-Ice-Cream_0922.webp'
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 
 const CustomTabPanel = (props) => {
@@ -63,10 +67,22 @@ const Item = ({ cart, setCart, changeVariantQuantity, categories, format, baseUr
     ))[0]
 
     const [variant, setVariant] = useState(selectedItem && selectedItem.variants.find(e => e.sellable > 0)?.id)
-    const [selectedImage, setSelectedImage] = useState(selectedItem?.images[0].path)
-    console.log(selectedImage);
 
     const [tab, setTab] = useState(0)
+
+    const [activeStep, setActiveStep] = useState(0);
+
+    const handleStepChange = (step) => {
+        setActiveStep(step);
+    };
+
+    const handleNext = () => {
+        setActiveStep(activeStep === selectedItem.images.length - 1 ? 0 : activeStep + 1)
+    };
+
+    const handleBack = () => {
+        setActiveStep(activeStep === 0 ? selectedItem.images.length - 1 : activeStep - 1)
+    };
 
 
     const topCategory = categories.find(category => category.id === selectedItem.top)
@@ -82,14 +98,15 @@ const Item = ({ cart, setCart, changeVariantQuantity, categories, format, baseUr
     const variantInCart = cart && Object.keys(cart).some(key => parseInt(key) === variant)
 
     const reviewValue = (selectedItem?.reviews.reduce((acc, obj) => acc + obj.rating, 0) / selectedItem?.reviews.length) || 0
-    console.log(reviewValue);
+
+    const visibleTabs = [
+        { name: 'beskriving' },
+        selectedItem.description2 && { name: 'innehåll' },
+        selectedItem.reviews.length > 0 && { name: 'recensioner' }
+    ].filter(Boolean)
 
 
     const windowSize = useWindowSize()
-    const testArray = [
-        { path: 'firstimgpath' },
-        { path: 'secondimgpath' },
-    ]
 
     if (!windowSize.width) return <>Loading...</>
 
@@ -99,7 +116,11 @@ const Item = ({ cart, setCart, changeVariantQuantity, categories, format, baseUr
             variant={variant} setVariant={setVariant} variantInCart={variantInCart} selectedItem={selectedItem}
             topCategory={topCategory} subCategory={subCategory} subTwoCategory={subTwoCategory} addToCart={addToCart}
             cart={cart} changeVariantQuantity={changeVariantQuantity} CustomTabPanel={CustomTabPanel} Tab={Tab} Tabs={Tabs}
-            tab={tab} setTab={setTab} Link={Link} testArray={testArray} baseUrl={baseUrl} />
+            tab={tab} setTab={setTab} Link={Link} baseUrl={baseUrl} SwipeableViews={SwipeableViews}
+            handleBack={handleBack} handleNext={handleNext} ArrowBackIcon={ArrowBackIcon} ArrowForwardIcon={ArrowForwardIcon}
+            handleStepChange={handleStepChange} setActiveStep={setActiveStep} activeStep={activeStep} FiberManualRecordIcon={FiberManualRecordIcon}
+            reviewValue={reviewValue} visibleTabs={visibleTabs}
+        />
 
 
 
@@ -113,15 +134,66 @@ const Item = ({ cart, setCart, changeVariantQuantity, categories, format, baseUr
                 <Grid container columnSpacing={12} marginTop={2}>
                     <Grid item xs={6}>
 
-                        <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain', marginBottom: 8 }} src={baseUrl + selectedImage} />
+                        <div style={{ position: 'relative' }}>
+                            <SwipeableViews
+                                axis={'x'}
+                                index={activeStep}
+                                onChangeIndex={handleStepChange}
+                                enableMouseEvents>
+                                {selectedItem.images.map((image, index) => (
+                                    <div key={index}>
+                                        <img
+                                            style={{
+                                                maxHeight: '100%',
+                                                maxWidth: '100%',
+                                                objectFit: 'contain',
+                                                // cursor: 'pointer',
+                                                marginBottom: 6
+                                            }}
+                                            src={baseUrl + image.path}
+                                        />
+                                    </div>
+                                ))}
+                            </SwipeableViews>
 
-                        <Grid container display='flex' justifyContent='center' spacing={2}>
-                            {selectedItem.images.map(image =>
-                                <Grid item xs={2}>
-                                    <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain', outline: image.path === selectedImage && 'solid 1px #e0e0e0' }} src={baseUrl + image.path} onMouseEnter={() => setSelectedImage(image.path)} />
-                                </Grid>
-                            )}
-                        </Grid>
+                            {selectedItem.images.length > 1 &&
+                                <>
+                                    <div style={{ position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)' }}>
+                                        <IconButton>
+                                            <ArrowBackIcon onClick={handleBack} />
+                                        </IconButton>
+                                    </div>
+                                    <div style={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)' }}>
+                                        <IconButton onClick={handleNext}>
+                                            <ArrowForwardIcon />
+                                        </IconButton>
+                                    </div>
+                                    <div style={{ position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                            {selectedItem.images.map((_, index) => (
+                                                <FiberManualRecordIcon
+                                                    key={index}
+                                                    style={{ fontSize: 12, margin: '0 4px', color: index === activeStep ? '#fbdd7e' : '#ccc' }}
+                                                    onClick={() => handleStepChange(index)}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                </>
+                            }
+
+
+                        </div>
+
+                        {selectedItem.images.length > 1 &&
+                            <Grid container display='flex' justifyContent='center' spacing={1}>
+                                {selectedItem.images.map((image, index) =>
+                                    <Grid item xs={2}>
+                                        <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain', outline: index === activeStep && 'solid 2px #a19d9d' }} src={baseUrl + image.path} onMouseEnter={() => setActiveStep(index)} />
+                                    </Grid>
+                                )}
+                            </Grid>
+                        }
 
                     </Grid>
                     <Grid item xs={6}>
@@ -133,13 +205,12 @@ const Item = ({ cart, setCart, changeVariantQuantity, categories, format, baseUr
 
                         <Grid container>
                             <Grid item xs>
-                                <h1 style={{ margin: 0 }}>{format(selectedItem.price / 100)} kr</h1>
+                                <h1 style={{ margin: 0 }}>{format(selectedItem.price * (1 + (selectedItem.vatRateSE / 10000)) / 100)}  kr</h1>
                             </Grid>
-                            <Grid item xs='auto' >
-                                <Typography component="legend">Recensioner</Typography>
-                                <Rating name="read-only" value={3} readOnly />
+                            <Grid item xs='auto'>
+                                <Typography component="legend">{selectedItem?.reviews.length} Recensioner</Typography>
+                                <Rating name="read-only" value={reviewValue} readOnly />
                             </Grid>
-
                         </Grid>
 
 
@@ -169,7 +240,7 @@ const Item = ({ cart, setCart, changeVariantQuantity, categories, format, baseUr
                                     <IconButton onClick={() => changeVariantQuantity(-1, variant)} color="primary" aria-label="increment-product">
                                         <IndeterminateCheckBoxIcon style={{ fontSize: '34px' }} />
                                     </IconButton>
-                                    {cart[variant]?.quantity}
+                                    {cart[variant]?.quantity} st
                                     <IconButton onClick={() => changeVariantQuantity(1, variant)} color="primary" aria-label="dimunition-product">
                                         <AddBoxIcon style={{ fontSize: '34px' }} />
                                     </IconButton>
@@ -209,15 +280,25 @@ const Item = ({ cart, setCart, changeVariantQuantity, categories, format, baseUr
 
 
                         <Tabs value={tab} onChange={(e, newValue) => setTab(newValue)} aria-label="tabs" centered>
-                            <Tab label="beskrivning" id='simple-tab-0' />
-                            <Tab label="innehåll" id='simple-tab-1' />
+                            {visibleTabs.map((tab, i) =>
+                                <Tab label={tab.name} id={`simple-tab-${i}`} />
+                            )}
                         </Tabs>
 
                         <CustomTabPanel value={tab} index={0}>
                             <Markdown>{selectedItem.description}</Markdown>
                         </CustomTabPanel>
-                        <CustomTabPanel value={tab} index={1}>
-                            Item Two
+
+                        {selectedItem.description2 &&
+                            <CustomTabPanel value={tab} index={1}>
+                                {selectedItem.description2}
+                                hej
+                            </CustomTabPanel>}
+
+                        <CustomTabPanel value={tab} index={selectedItem.description2 ? 2 : 1}>
+                            {selectedItem.reviews.length}
+
+                            review
                         </CustomTabPanel>
 
 

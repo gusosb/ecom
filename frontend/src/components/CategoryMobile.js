@@ -8,7 +8,7 @@ import Box from '@mui/material/Box'
 import testimage from '../images/pwp-pouch-v4-main_1.webp'
 import Chip from '@mui/material/Chip';
 
-const CategoryMobile = ({ selectedTopCategory, selectedSubCategory, selectedSubTwoCategory, lowestCategory, items, windowSize, subCategories }) => {
+const CategoryMobile = ({ selectedTopCategory, selectedSubCategory, selectedSubTwoCategory, lowestCategory, items, subCategories, baseUrl, format }) => {
 
     const splitDescription = lowestCategory.description?.slice(0, 250)
 
@@ -59,7 +59,6 @@ const CategoryMobile = ({ selectedTopCategory, selectedSubCategory, selectedSubT
                                         <IconButton
                                             component={Link}
                                             to={`/product/${item.id}/${item.name.replaceAll(' ', '-')}`}
-                                            // to={`/${topCategoryName}/${subCategoryName}/${subTwoCategoryName}/${item.id}`}
                                             sx={{
                                                 borderRadius: 0,
                                                 '.MuiTouchRipple-ripple .MuiTouchRipple-child': {
@@ -68,14 +67,12 @@ const CategoryMobile = ({ selectedTopCategory, selectedSubCategory, selectedSubT
                                                 },
                                             }}>
                                             {/* <img className='product-image' src={item.images[0]?.path} /> */}
-                                            <img className='product-image' src={testimage} />
+                                            <img className='product-image' src={baseUrl + item.images[0]?.path} />
                                         </IconButton>
                                         <Box margin={1} marginTop={0}>
                                             {item.name}
                                             <br />
-                                            desc?
-                                            <br />
-                                            pris?
+                                            <b>{format(item.price * (1 + (item.vatRateSE / 10000)) / 100)} kr</b>
                                         </Box>
 
                                     </Grid>

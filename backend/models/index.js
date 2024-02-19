@@ -31,6 +31,7 @@ Variant.belongsTo(Item)
 Item.hasMany(Review)
 Review.belongsTo(Item)
 
+// sequelize.sync()
 sequelize.sync({ alter: true })
 
 

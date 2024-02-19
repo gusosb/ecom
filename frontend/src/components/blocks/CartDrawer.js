@@ -5,7 +5,9 @@ import Typography from '@mui/material/Typography'
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
-const CartDrawer = ({ location, cart, cartOpen, setCartOpen, removeFromCart, format, Grid, toggleDrawer, CloseIcon, Box, Link, productPlaceholder, changeVariantQuantity, totalSumInCart, Button, swipeable, SwipeableDrawer }) => {
+const CartDrawer = ({ location, cart, cartOpen, setCartOpen, removeFromCart, format, Grid, toggleDrawer, CloseIcon,
+    Box, Link, productPlaceholder, changeVariantQuantity, totalSumInCart, Button, swipeable, SwipeableDrawer, baseUrl
+}) => {
 
     const Draws = swipeable ? SwipeableDrawer : Drawer;
     return (
@@ -46,7 +48,7 @@ const CartDrawer = ({ location, cart, cartOpen, setCartOpen, removeFromCart, for
                                             </Grid>
                                             <Grid item xs={2}>
                                                 <Box component={Link} to={`/product/${cart[key].id}/${cart[key].name}`} onClick={() => setCartOpen(false)}>
-                                                    <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} src={baseURL + path} />
+                                                    <img style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} src={baseUrl + path} />
                                                 </Box>
                                             </Grid>
                                             <Grid item xs='auto' sx={{ minWidth: 270 }} marginLeft={2} >
@@ -66,7 +68,7 @@ const CartDrawer = ({ location, cart, cartOpen, setCartOpen, removeFromCart, for
                                                         <IconButton sx={{ paddingLeft: 0 }} onClick={() => changeVariantQuantity(-1, key)} color="primary" aria-label="decrement-product">
                                                             <IndeterminateCheckBoxIcon style={{ fontSize: '34px' }} />
                                                         </IconButton>
-                                                        {cart[key]?.quantity}
+                                                        {cart[key]?.quantity} st
                                                         <IconButton onClick={() => changeVariantQuantity(1, key)} color="primary" aria-label="increment-product">
                                                             <AddBoxIcon style={{ fontSize: '34px' }} />
                                                         </IconButton>

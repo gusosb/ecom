@@ -25,7 +25,10 @@ import CategoryLocation from "./blocks/CategoryLocation";
 
 const ItemMobile = ({ variant, selectedItem, setVariant, topCategory, subCategory,
   subTwoCategory, format, addToCart, variantInCart, changeVariantQuantity,
-  cart, CustomTabPanel, Tab, Tabs, tab, setTab, Link, baseUrl }) => {
+  cart, CustomTabPanel, Tab, Tabs, tab, setTab, Link, baseUrl, SwipeableViews,
+  ArrowBackIcon, ArrowForwardIcon, handleStepChange, setActiveStep, activeStep, FiberManualRecordIcon,
+  reviewValue, visibleTabs
+}) => {
 
   const [sticky, setSticky] = useState(true)
 
@@ -51,11 +54,15 @@ const ItemMobile = ({ variant, selectedItem, setVariant, topCategory, subCategor
     }
   }, []);
 
-  const visibleTabs = [
-    { name: 'beskriving' },
-    selectedItem.description2 && { name: 'innehåll' },
-    { name: 'recensioner' }
-  ].filter(Boolean)
+
+
+  const handleNext = () => {
+    setActiveStep(activeStep === selectedItem.images.length - 1 ? 0 : activeStep + 1)
+  };
+
+  const handleBack = () => {
+    setActiveStep(activeStep === 0 ? selectedItem.images.length - 1 : activeStep - 1)
+  };
 
 
 
@@ -79,21 +86,69 @@ const ItemMobile = ({ variant, selectedItem, setVariant, topCategory, subCategor
             <br />
 
             <Grid container>
-              <img src={baseUrl + selectedItem.images[0].path} style={{ maxWidth: '100%', height: 'auto' }} />
+              {/* <img src={baseUrl + selectedItem.images[0].path} style={{ maxWidth: '100%', height: 'auto' }} /> */}
+
+              <div style={{ position: 'relative' }}>
+                <SwipeableViews
+                  axis={'x'}
+                  index={activeStep}
+                  onChangeIndex={handleStepChange}
+                  enableMouseEvents>
+                  {selectedItem.images.map((image, index) => (
+                    <div key={index}>
+                      <img
+                        style={{
+                          maxHeight: '100%',
+                          maxWidth: '100%',
+                          objectFit: 'contain',
+                          // cursor: 'pointer',
+                        }}
+                        src={baseUrl + image.path}
+                      />
+                    </div>
+                  ))}
+                </SwipeableViews>
+
+                {selectedItem.images.length > 1 &&
+                  <>
+                    <div style={{ position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)' }}>
+                      <IconButton>
+                        <ArrowBackIcon onClick={handleBack} />
+                      </IconButton>
+                    </div>
+                    <div style={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)' }}>
+                      <IconButton onClick={handleNext}>
+                        <ArrowForwardIcon />
+                      </IconButton>
+                    </div>
+                    <div style={{ position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        {selectedItem.images.map((_, index) => (
+                          <FiberManualRecordIcon
+                            key={index}
+                            style={{ fontSize: 12, margin: '0 4px', color: index === activeStep ? '#fbdd7e' : '#ccc' }}
+                            onClick={() => handleStepChange(index)} />
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                }
+              </div>
+
+
             </Grid>
 
 
             <Grid container sx={{ borderBottom: 1, borderColor: 'grey.300', paddingBottom: 1, paddingTop: 3 }}>
               <Typography component="legend">{selectedItem.reviews.length} Recensioner</Typography>
-
-              <Rating name="read-only" value={3} readOnly />
+              <Rating sx={{ marginLeft: 1 }} name="read-only" value={reviewValue} readOnly />
               <br />
             </Grid>
 
             <Grid container paddingTop={2}>
               <Grid item xs>
                 <Typography>
-                  <h1 style={{ margin: 0 }}>{format(selectedItem.price / 100)} kr</h1>
+                  <h1 style={{ margin: 0 }}>{format(selectedItem.price * (1 + (selectedItem.vatRateSE / 10000)) / 100)}  kr</h1>
                 </Typography>
               </Grid>
               <Grid item xs='auto' alignSelf='center'>
@@ -143,7 +198,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, topCategory, subCategor
                         <IconButton onClick={() => changeVariantQuantity(-1, variant)} color="primary" aria-label="increment-product">
                           <IndeterminateCheckBoxIcon style={{ fontSize: '34px' }} />
                         </IconButton>
-                        {cart[variant]?.quantity}
+                        {cart[variant]?.quantity} st
                         <IconButton onClick={() => changeVariantQuantity(1, variant)} color="primary" aria-label="dimunition-product">
                           <AddBoxIcon style={{ fontSize: '34px' }} />
                         </IconButton>

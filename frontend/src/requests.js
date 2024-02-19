@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-//export const baseUrl = 'http://localhost:3001'
-export const baseUrl = 'https://ecomapi.kanindev.se'
+export const baseUrl = 'http://localhost:3001'
+//export const baseUrl = 'https://ecomapi.kanindev.se'
 const token = localStorage.getItem('ecom-bunny-racer')
 
 // export const getSite = () =>
@@ -62,5 +62,22 @@ export const confirmOrder = data => // => Fetch an existing order, when order_id
 export const updateOrder = data => // => Updates the order with new price data
     axios.post(baseUrl + '/api/orders/update', data).then(res => res.data)
 
+// export const readOrder = data => // => REad the order on confirmation
+//     axios.post(baseUrl + `/api/read/${data.order_id}`, data).then(res => res.data)
+
 export const addReview = data =>
     axios.post(baseUrl + `/api/items/reviews/${data.id}`, data).then(res => res.data)
+
+
+// STRIPE
+export const initiateCheckout = data =>
+    axios.post(baseUrl + '/api/orders/create-payment-intent', data).then(res => res.data)
+
+export const checkPayment = data =>
+    axios.post(baseUrl + '/api/orders/checkpayment', data).then(res => res.data)
+
+export const updatePayment = data =>
+    axios.post(baseUrl + '/api/orders/update-payment-intent', data).then(res => res.data)
+
+export const createOrder = data =>
+    axios.post(baseUrl + '/api/orders/createorder', data).then(res => res.data)

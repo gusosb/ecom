@@ -17,7 +17,7 @@ import productPlaceholder from '../images/6872_100-Whey-Gold-Std-912-g-Vanilla-I
 
 
 const HomeMobile = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSumInCart, format, PersonOutlineOutlinedIcon, ShoppingCartIcon,
-    placeholderLogo, location, cartOpen, setCartOpen, toggleDrawer, Grid, Box, Button, IconButton
+    placeholderLogo, location, cartOpen, setCartOpen, toggleDrawer, Grid, Box, Button, IconButton, baseUrl
 }) => {
 
     const [menuOpen, setMenuOpen] = useState(false);

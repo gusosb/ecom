@@ -14,26 +14,28 @@ Order.init({
     type: DataTypes.STRING,
     unique: true
   },
-  klarna_order_id: {
-    type: DataTypes.STRING
+  payment_id: {
+    type: DataTypes.STRING,
+    unique: true
   },
-  customer: {
-    type: DataTypes.STRING
+  isPaid: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   },
   // BEGIN ADDRESS FIELDS
-  given_name: {
-    type: DataTypes.STRING
-  },
-  family_name: {
-    type: DataTypes.STRING
-  },
   email: {
     type: DataTypes.STRING
   },
-  street_address: {
+  name: {
     type: DataTypes.STRING
   },
-  postal_code: {
+  phone: {
+    type: DataTypes.STRING
+  },
+  address: {
+    type: DataTypes.STRING
+  },
+  postalcode: {
     type: DataTypes.STRING
   },
   city: {
@@ -45,16 +47,10 @@ Order.init({
   care_of: {
     type: DataTypes.STRING
   },
-  phone: {
-    type: DataTypes.STRING
-  },
   country: {
     type: DataTypes.STRING
   },
   // END ADDRESS FIELDS
-  initial_payment_method: {
-    type: DataTypes.STRING
-  },
   order_amount: {
     type: DataTypes.INTEGER
   },
@@ -64,7 +60,7 @@ Order.init({
 }, {
   sequelize,
   underscored: true,
-  timestamps: false,
+  timestamps: true,
   modelName: 'order',
 })
 

@@ -41,7 +41,7 @@ const maxWidth = 1250
 const minHeight = 39
 const minHeight2 = 157
 
-const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSumInCart, format }) => {
+const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSumInCart, format, baseUrl }) => {
 
     const [searchText, setSearchText] = useState('')
     const [cartOpen, setCartOpen] = useState(false)
@@ -85,7 +85,7 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
 
     if (windowSize.width < 800) return <HomeMobile cart={cart} location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} toggleDrawer={toggleDrawer} totalSumInCart={totalSumInCart} changeVariantQuantity={changeVariantQuantity}
         PersonOutlineOutlinedIcon={PersonOutlineOutlinedIcon} ShoppingCartIcon={ShoppingCartIcon} placeholderLogo={placeholderLogo} format={format} categories={categories} Grid={Grid}
-        Box={Box} Button={Button} IconButton={IconButton}
+        Box={Box} Button={Button} IconButton={IconButton} baseUrl={baseUrl} removeFromCart={removeFromCart}
     />
 
     return (
@@ -93,7 +93,7 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
 
             <CartDrawer location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} cart={cart} format={format} removeFromCart={removeFromCart} Grid={Grid}
                 toggleDrawer={toggleDrawer} CloseIcon={CloseIcon} Box={Box} Link={Link} productPlaceholder={productPlaceholder}
-                changeVariantQuantity={changeVariantQuantity} totalSumInCart={totalSumInCart} Button={Button}
+                changeVariantQuantity={changeVariantQuantity} totalSumInCart={totalSumInCart} Button={Button} baseUrl={baseUrl}
             />
 
             <Grid container direction='column'>

@@ -19,6 +19,9 @@ OrderItem.init({
   name: {
     type: DataTypes.STRING,
   },
+  variant: {
+    type: DataTypes.STRING,
+  },
   total_amount: {
     type: DataTypes.INTEGER,
   },
@@ -33,6 +36,12 @@ OrderItem.init({
   },
   total_tax_amount: {
     type: DataTypes.INTEGER,
+  },
+  image_path: {
+    type: DataTypes.STRING,
+  },
+  product_url: {
+    type: DataTypes.STRING,
   },
 }, {
   sequelize,
