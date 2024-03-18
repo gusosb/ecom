@@ -15,6 +15,10 @@ Image.init({
   },
   index: {
     type: DataTypes.INTEGER,
+  },
+  isHover: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   }
 }, {
   sequelize,

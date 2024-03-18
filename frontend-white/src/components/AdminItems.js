@@ -21,6 +21,8 @@ import List from '@mui/material/List'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
+import Checkbox from '@mui/material/Checkbox'
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Collapse from '@mui/material/Collapse'
 import Paper from '@mui/material/Paper'
 import TableContainer from '@mui/material/TableContainer'
@@ -103,6 +105,10 @@ const AdminItems = ({ queryClient }) => {
 
     const [newImage, setNewImage] = useState('')
     const [imageIndex, setImageIndex] = useState('')
+    const [isHover, setIsHover] = useState(false);
+    console.log('isHover', isHover);
+
+
     const [categoryName, setCategoryName] = useState('')
     const [newCategoryName, setNewCategoryName] = useState('')
     const [categoryDescription, setCategoryDescription] = useState('')
@@ -138,6 +144,7 @@ const AdminItems = ({ queryClient }) => {
     const [name, setName] = useState('')
     const [brand, setBrand] = useState('')
     const [description, setDescription] = useState('')
+    const [specification, setSpecification] = useState('')
 
     useEffect(() => {
         setSellable(selectedItem.sellable)
@@ -147,6 +154,7 @@ const AdminItems = ({ queryClient }) => {
         setName(selectedItem.name)
         setBrand(selectedItem.brand)
         setDescription(selectedItem.description || '')
+        setSpecification(selectedItem.specification || '')
 
         !categoryName && setCategoryName(selectedCategory.name)
         !categoryDescription && setCategoryDescription(selectedCategory.description)
@@ -220,6 +228,7 @@ const AdminItems = ({ queryClient }) => {
         name,
         brand,
         description,
+        specification,
         sku
     }
     const sendUpdateItem = () => {
@@ -232,10 +241,11 @@ const AdminItems = ({ queryClient }) => {
         deleteImageMutation.mutate(id)
     }
     const sendAddImage = () => {
-        const formData = new FormData()
-        formData.append('file', newImage)
-        formData.append('itemId', itemID)
-        addImageMutation.mutate(formData)
+        const formData = new FormData();
+        formData.append('file', newImage);
+        formData.append('itemId', itemID);
+        formData.append('isHover', isHover);
+        addImageMutation.mutate(formData);
     }
     const sendNewVariant = () => {
         addVariantMutation.mutate({ name: newVariant, itemId: selectedItem.id, sellable: newVariantSellable })
@@ -365,6 +375,13 @@ const AdminItems = ({ queryClient }) => {
                                                     <input type='file' onChange={({ target }) => setNewImage(target.files[0])} hidden accept="image/*" />
                                                 </Button>
                                                 <br /><br />
+
+                                                <FormControlLabel control={<Checkbox
+                                                    checked={isHover}
+                                                    onChange={({ target }) => setIsHover(target.checked)}
+                                                    inputProps={{ 'aria-label': 'controlled' }}
+                                                />} label="Hovered Image" />
+                                                <br /><br />
                                                 <Button variant="contained" onClick={sendAddImage}>Add Image</Button>
                                             </Grid>
 
@@ -413,6 +430,13 @@ const AdminItems = ({ queryClient }) => {
                                                 placeholder="Enter item description"
                                                 value={description}
                                                 onChange={({ target }) => setDescription(target.value)}
+                                            />
+                                            <StyledTextarea
+                                                maxRows={4}
+                                                aria-label="maximum height"
+                                                placeholder="Enter item speficiation"
+                                                value={specification}
+                                                onChange={({ target }) => setSpecification(target.value)}
                                             />
                                         </Grid>
                                     </Grid>

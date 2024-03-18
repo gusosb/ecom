@@ -12,18 +12,11 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 ordersRouter.get('/admin', async (request, response) => {
 
-  // const currentUser = await auth(request)
-  // /*   response.json() */
-  // if (!currentUser) {
-  //   response.status(404).end()
-  //   return
-  // }
+  const currentUser = await auth(request) || [];
+  if (!currentUser.isAdmin) return response.status(401).end();
 
-  const orders = await Order.findAll()
-  console.log(orders);
-
-
-  response.json(orders)
+  const orders = await Order.findAll({ include: [{ model: OrderItem }] });
+  response.json(orders);
 })
 
 

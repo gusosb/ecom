@@ -15,6 +15,7 @@ import { useWindowSize, StyledButton } from '../helpers'
 import productPlaceholder from '../images/6872_100-Whey-Gold-Std-912-g-Vanilla-Ice-Cream_0922.webp'
 import CartDrawer from './blocks/CartDrawer';
 import Typography from '@mui/material/Typography';
+import { ReactComponent as SURDEGSVG } from '../images/sourdoughsvg.svg';
 
 
 
@@ -44,7 +45,7 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
 
 
 
-    if (windowSize.width < 800) return <HomeMobile cart={cart} location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} toggleDrawer={toggleDrawer} totalSumInCart={totalSumInCart} changeVariantQuantity={changeVariantQuantity}
+    if (windowSize.width < 800) return <HomeMobile SURDEGSVG={SURDEGSVG} cart={cart} location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} toggleDrawer={toggleDrawer} totalSumInCart={totalSumInCart} changeVariantQuantity={changeVariantQuantity}
         PersonOutlineOutlinedIcon={PersonOutlineOutlinedIcon} ShoppingCartIcon={ShoppingCartIcon} placeholderLogo={placeholderLogo} format={format} categories={categories} Grid={Grid}
         Box={Box} Button={Button} IconButton={IconButton} baseUrl={baseUrl} removeFromCart={removeFromCart} windowSize={windowSize}
     />
@@ -52,7 +53,7 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
     return (
         <>
             <CartDrawer location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} cart={cart} format={format} removeFromCart={removeFromCart} Grid={Grid}
-                toggleDrawer={toggleDrawer} CloseIcon={CloseIcon} Box={Box} Link={Link} productPlaceholder={productPlaceholder}
+                toggleDrawer={toggleDrawer} CloseIcon={CloseIcon} Box={Box} Link={Link} productPlaceholder={productPlaceholder} windowSize={windowSize}
                 changeVariantQuantity={changeVariantQuantity} totalSumInCart={totalSumInCart} Button={Button} baseUrl={baseUrl}
             />
 
@@ -70,15 +71,18 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
                         <Grid item xs>
                             <Box paddingLeft={2} display="flex" gap={2}>
                                 <StyledButton component={Link} to='/shop'>shop</StyledButton>
-                                <StyledButton>discover</StyledButton>
+                                <StyledButton component={Link} to='/discover'>discover</StyledButton>
                             </Box>
                         </Grid>
 
-                        <Grid item xs>
-                            <Typography variant="h6" textAlign='center'>GUSTAF LUND</Typography>
+                        <Grid item xs display="flex" justifyContent="center" alignItems="center">
+                            <Typography component={Link} sx={{ color: 'inherit', textDecoration: 'inherit' }} to="/" variant="h6">
+                                SURDEGSHÖRNAN
+                            </Typography>
+                            <SURDEGSVG />
                         </Grid>
 
-                        <Grid item xs display='flex' justifyContent='end' >
+                        <Grid item xs display='flex' justifyContent='end'>
                             <Box paddingRight={4}>
                                 <IconButton onClick={() => setCartOpen(!cartOpen)} color="inherit">
                                     <Badge badgeContent={cart && Object.keys(cart).length} color="secondary" sx={{ "& .MuiBadge-badge": {} }}>

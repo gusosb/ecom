@@ -13,7 +13,7 @@ import { useState, useRef, useEffect } from 'react'
 
 
 const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCart, format, ShoppingCartIcon,
-    location, cartOpen, setCartOpen, toggleDrawer, Grid, Box, Button, IconButton, baseUrl, windowSize
+    location, cartOpen, setCartOpen, toggleDrawer, Grid, Box, Button, IconButton, baseUrl, windowSize, SURDEGSVG
 }) => {
 
     const footerRef = useRef(null);
@@ -35,8 +35,8 @@ const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCar
             <Box
                 sx={{
                     display: 'flex',
-                    flexDirection: 'column', // stack children vertically
-                    minHeight: '100vh', // minimum height of 100% of the viewport height
+                    flexDirection: 'column',
+                    minHeight: '100vh',
                 }}
             >
 
@@ -49,28 +49,24 @@ const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCar
                 }
 
 
-
                 <Grid container borderTop={1} paddingTop={1} paddingBottom={1} borderColor='#e6e6e6'
                     ref={footerRef}
                     sx={{
                         position: 'sticky',
-                        bottom: 0, // sticks to the bottom
-                        zIndex: 1100, // ensures it's above other content
+                        bottom: 0,
+                        zIndex: 1100,
                         bgcolor: 'background.paper'
                     }}>
-                    {/* <Grid item xs>
-                            <Box paddingLeft={2} display="flex" gap={2}>
-                                <StyledButton component={Link} to='/shop'>shop</StyledButton>
-                                <StyledButton>discover</StyledButton>
-                            </Box>
-                        </Grid> */}
 
                     <Grid item xs={2}>
                         <StyledButton component={Link} to='/shop'>shop</StyledButton>
                     </Grid>
 
-                    <Grid item xs>
-                        <Typography variant="h6" textAlign='center'>GUSTAF LUND</Typography>
+                    <Grid item xs display="flex" justifyContent="center" alignItems="center">
+                        <Typography component={Link} sx={{ color: 'inherit', textDecoration: 'inherit' }} to="/" variant="h6">
+                            SURDEGSHÖRNAN
+                        </Typography>
+                        <SURDEGSVG />
                     </Grid>
 
                     <Grid item xs={2} display='flex' justifyContent='end' >

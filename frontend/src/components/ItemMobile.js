@@ -65,8 +65,6 @@ const ItemMobile = ({ variant, selectedItem, setVariant, topCategory, subCategor
   };
 
 
-
-
   return (
     <>
       <Grid container>

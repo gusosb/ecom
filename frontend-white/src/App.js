@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useEffect, Suspense, lazy, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCategories, baseUrl } from './requests';
+
 import Category from './components/Category';
 import Item from './components/Item';
 import Checkout from './components/CheckoutStripe';
@@ -12,13 +13,13 @@ const Home = lazy(() => import('./components/Home'));
 const AdminItems = lazy(() => import('./components/AdminItems'));
 const AdminOrders = lazy(() => import('./components/AdminOrders'));
 const FrontPage = lazy(() => import('./components/FrontPage'));
-// const Checkout = lazy(() => import('./components/CheckoutStripe'));
 const Confirmation = lazy(() => import('./components/ConfirmationWrapper'));
-const Contact = lazy(() => import('./components/pages/Contact'));
 const CustomerSupport = lazy(() => import('./components/CustomerSupport'));
+const Discover = lazy(() => import('./components/Discover'));
 
 const FAQ = lazy(() => import('./components/pages/FAQ'));
 const Returns = lazy(() => import('./components/pages/Returns'));
+const Contact = lazy(() => import('./components/pages/Contact'));
 
 const App = () => {
 
@@ -32,7 +33,10 @@ const App = () => {
   const [avoidReading, setAvoidReading] = useState(false);
   const [token, setToken] = useState(null);
 
-  console.log(cart);
+
+  const [password, setPassword] = useState('');
+
+  console.log('cart', cart);
 
   const totalSumInCart = cart && Object.keys(cart)?.length > 0 ? Object.keys(cart).reduce((acc, key) => acc + (cart[key].quantity * cart[key].price * (1 + (cart[key].vatRateSE / 100))), 0) : 0;
 
@@ -83,6 +87,25 @@ const App = () => {
   }, [token, cart, avoidReading]);
 
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password === 'ostost1337') {
+      setPassword('ostost1337'); // Update state in your App component
+    } else {
+      alert('Incorrect password');
+    }
+  };
+
+  if (password !== 'ostost1337') {
+    return (
+      <form onSubmit={handleSubmit}>
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <button type="submit">Login</button>
+      </form>
+    )
+  }
+
+
   if (result.isLoading) return 'Loading...';
 
   return (
@@ -100,11 +123,11 @@ const App = () => {
               <Route path="/shop/:categoryname?" element={<Category format={format} baseUrl={baseUrl} categories={result.data || []} />} />
               <Route path="/product/:itemid/:itemname?" element={<Item baseUrl={baseUrl} format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} />} />
               {/* <Route path="/review/:itemid/:orderid/:itemname?" element={<Review baseUrl={baseUrl} format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} queryClient={queryClient} />} /> */}
-              <Route path='/confirmation' element={<Confirmation setCart={setCart} format={format} />} />
+              <Route path='/confirmation' element={<Confirmation setCart={setCart} format={format} baseUrl={baseUrl} />} />
               <Route path='/login' element={token ? <Navigate replace to="/" /> : <Login notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
               <Route path='/register' element={!token ? <Register notify={notify} setToken={setToken} errorMessage={errorMessage} /> : <Navigate replace to="/" />} />
 
-              <Route path='/contact-us' element={<Contact notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
+              <Route path='/discover' element={!token ? <Discover notify={notify} setToken={setToken} errorMessage={errorMessage} /> : <Navigate replace to="/" />} />
 
               <Route path='/customer-support' element={<CustomerSupport notify={notify} setToken={setToken} errorMessage={errorMessage} />}>
                 <Route path='faq' element={<FAQ notify={notify} setToken={setToken} errorMessage={errorMessage} />} />

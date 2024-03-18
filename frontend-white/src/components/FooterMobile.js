@@ -14,7 +14,7 @@ const FooterMobile = () => {
           borderColor: '#e6e6e6',
           display: 'flex',
           justifyContent: 'space-between',
-          padding: '20px', // Adjust the padding as needed
+          padding: '20px',
           pt: 2,
         }}
       >
@@ -30,12 +30,12 @@ const FooterMobile = () => {
             ABOUT US
           </CustomButton>
 
-          <CustomButton component={Link} to='/' >
+          {/* <CustomButton component={Link} to='/' >
             SUSTAINABILITY
           </CustomButton>
           <CustomButton component={Link} to='/' >
             LEGAL
-          </CustomButton>
+          </CustomButton> */}
 
         </Box>
 

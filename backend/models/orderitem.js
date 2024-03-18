@@ -43,6 +43,9 @@ OrderItem.init({
   product_url: {
     type: DataTypes.STRING,
   },
+  product_id: {
+    type: DataTypes.INTEGER,
+  },
 }, {
   sequelize,
   underscored: true,

@@ -35,6 +35,9 @@ Item.init({
   description: {
     type: DataTypes.STRING,
   },
+  specification: {
+    type: DataTypes.STRING,
+  },
   sku: {
     type: DataTypes.STRING,
   },

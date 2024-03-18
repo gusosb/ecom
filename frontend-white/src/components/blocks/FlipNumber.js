@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import './flip.css'; // Path to your stylesheet
+import { useEffect, useState } from 'react';
+import './flip.css';
 
 const FlippingNumber = ({ currentNumber }) => {
     const [prevNumber, setPrevNumber] = useState(currentNumber);
 
     useEffect(() => {
-        if (currentNumber !== prevNumber) {
-            // Trigger the animation by changing the key
-            setPrevNumber(currentNumber);
-        }
+        if (currentNumber !== prevNumber) setPrevNumber(currentNumber);
     }, [currentNumber, prevNumber]);
 
     return (

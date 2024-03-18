@@ -14,7 +14,7 @@ export const useWindowSize = () => {
    const [windowSize, setWindowSize] = useState({
       width: undefined,
       height: undefined,
-   })
+   });
    useEffect(() => {
       // Handler to call on window resize
       const handleResize = () => {
@@ -22,36 +22,17 @@ export const useWindowSize = () => {
          setWindowSize({
             width: window.innerWidth,
             height: window.innerHeight,
-         })
-      }
+         });
+      };
       // Add event listener
-      window.addEventListener("resize", handleResize)
+      window.addEventListener("resize", handleResize);
       // Call handler right away so state gets updated with initial window size
-      handleResize()
+      handleResize();
       // Remove event listener on cleanup
-      return () => window.removeEventListener("resize", handleResize)
-   }, []) // Empty array ensures that effect is only run on mount
-   return windowSize
-}
-
-export const contactUs = [
-   { name: 'Kontakt', link: '/contact-us' },
-   { name: 'Vanliga frågor', link: '/faq' },
-];
-
-export const customerService = [
-   { name: 'Allmänna villkor', link: '/general-terms' },
-   { name: 'Retur', link: '/returns' },
-   { name: 'Betalningsvillkor', link: '/payment-terms' },
-   { name: 'Integritetspolcy', link: '/' },
-   { name: 'Leveransvillkor', link: '/delivery-terms' },
-   { name: 'Ångerrätt, retur och byten', link: '/return-terms' },
-];
-
-export const information = [
-   { name: 'Om Surdegsbutiken', link: '/about' },
-   { name: 'Presentkort', link: '/giftcards' },
-];
+      return () => window.removeEventListener("resize", handleResize);
+   }, []); // Empty array ensures that effect is only run on mount
+   return windowSize;
+};
 
 export const StyledButton = styled(Button)({
    color: '#000',
@@ -60,7 +41,7 @@ export const StyledButton = styled(Button)({
    '&:hover': {
       background: 'none',
       boxShadow: 'none',
-      color: 'rgba(0, 0, 0, 0.35)', // lighter black on hover
+      color: 'rgba(0, 0, 0, 0.35)',
       textDecoration: 'none',
    },
 });
@@ -70,13 +51,13 @@ export const CustomButton = styled(Button)({
    background: 'none',
    border: 'none',
    boxShadow: 'none',
-   color: 'rgba(0, 0, 0, 0.87)', // standard Material-UI text color for light themes
-   fontWeight: 'normal', // ensures the text is not bold
+   color: 'rgba(0, 0, 0, 0.87)',
+   fontWeight: 'normal',
    padding: 0,
    '&:hover': {
       background: 'none',
       boxShadow: 'none',
-      color: 'rgba(0, 0, 0, 0.35)', // lighter black on hover
+      color: 'rgba(0, 0, 0, 0.35)',
       textDecoration: 'none',
    },
    justifyContent: 'flex-start'
@@ -86,13 +67,13 @@ export const DetailsButton = styled(Button)({
    color: 'black',
    border: '1px solid #e6e6e6',
    padding: '8px 16px',
-   textTransform: 'none', // Prevents uppercase transformation
-   fontSize: '1rem', // Adjust as needed
-   borderRadius: '1px', // Adjust as needed for rounded corners
-   boxShadow: 'none', // Removes any box-shadow
+   textTransform: 'none',
+   fontSize: '1rem',
+   borderRadius: '1px',
+   boxShadow: 'none',
    '&:hover': {
-      backgroundColor: 'transparent', // Keeps the button transparent on hover
-      boxShadow: 'none', // Removes any box-shadow on hover
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
    },
 });
 
@@ -103,7 +84,7 @@ export const CustomAccordion = ({ title, children, expanded, handleChange, first
          onChange={handleChange(title)}
          sx={{
             '&:not(:first-of-type)': {
-               borderTop: '1px solid #e6e6e6', // Add a top border to all but the first accordion
+               borderTop: '1px solid #e6e6e6',
             },
             ...(first && {
                '&:first-of-type': {
@@ -144,22 +125,22 @@ export const CustomAccordion = ({ title, children, expanded, handleChange, first
                },
             }}
          >
-            <Typography sx={{ width: '100%', flexShrink: 0 }}>
+            <Typography component="div" sx={{ width: '100%', flexShrink: 0 }}>
                {title}
             </Typography>
          </AccordionSummary>
          <AccordionDetails sx={{
-            display: 'flex', // Use flex to control the layout without adding extra space
-            flexDirection: 'column', // Stack children vertically
+            display: 'flex',
+            flexDirection: 'column',
             ...(last && {
                borderBottom: '1px solid #e6e6e6',
             }),
             '&.Mui-expanded': {
                paddingTop: '0 !important',
-               paddingBottom: '0 !important', // Remove padding to prevent height change
+               paddingBottom: '0 !important',
             },
          }}>
-            <Typography variant="body2" marginTop={2} marginBottom={1}>
+            <Typography component="div" variant="body2" marginTop={2} marginBottom={1}>
                {children}
             </Typography>
          </AccordionDetails>
@@ -176,8 +157,8 @@ export const VariantSelector = ({ variant, setVariant, variants, showVariants, s
    };
 
    const rotateStyle = {
-      transition: 'transform 0.25s', // Smooth transition for the rotation
-      transform: showVariants ? 'rotate(180deg)' : 'rotate(0deg)', // Rotate icon on state change
+      transition: 'transform 0.25s',
+      transform: showVariants ? 'rotate(180deg)' : 'rotate(0deg)',
    };
 
    return (
@@ -203,7 +184,7 @@ export const VariantSelector = ({ variant, setVariant, variants, showVariants, s
                      marginRight: '8px',
                   }}
                />
-               <Typography variant="body1">
+               <Typography variant="body1" component="div">
                   {variants.find(v => v.id === variant).name}
                </Typography>
             </Box>
@@ -233,9 +214,13 @@ export const VariantSelector = ({ variant, setVariant, variants, showVariants, s
                         marginRight: '8px',
                      }}
                   />
-                  <Typography variant="body1">{v.name}</Typography>
+                  <Typography variant="body1" component="div">{v.name}</Typography>
                </Box>
             ))}
       </>
    );
 };
+
+export const convertTaxRate = (taxRate) => {
+   return taxRate / 100;
+}

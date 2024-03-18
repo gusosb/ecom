@@ -12,7 +12,7 @@ import {
 
 
 
-const CheckoutForm = ({ sendCreateOrder, format, totalSumInCart, setEmail, setName, setAddress, setPostalcode, setCity, setPhone, setCreatingOrder, email }) => {
+const CheckoutForm = ({ sendCreateOrder, format, totalSumInCart, setEmail, setName, setAddress, setCountry, setAddress2, setPostalcode, setCity, setState, setPhone, setCreatingOrder, email }) => {
 
     const stripe = useStripe();
     const elements = useElements();
@@ -68,11 +68,14 @@ const CheckoutForm = ({ sendCreateOrder, format, totalSumInCart, setEmail, setNa
                             //},
                         }}
                         onChange={({ value }) => {
-                            setPhone(value.phone)
-                            setName(value.name)
-                            setAddress(value.address.line1)
-                            setPostalcode(value.address.postal_code)
-                            setCity(value.address.city)
+                            value.phone && setPhone(value.phone);
+                            value.name && setName(value.name);
+                            value.address.line1 && setAddress(value.address.line1);
+                            value.address.line2 && setAddress2(value.address.line2);
+                            value.address.postal_code && setPostalcode(value.address.postal_code);
+                            value.address.city && setCity(value.address.city);
+                            value.address.state && setState(value.address.state);
+                            value.address.country && setCountry(value.address.country);
                         }}
                     />
                 </Box>

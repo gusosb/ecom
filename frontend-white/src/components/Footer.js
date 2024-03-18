@@ -29,18 +29,18 @@ const Footer = () => {
                     ABOUT US
                 </CustomButton>
 
-                <CustomButton component={Link} to='/'>
+                {/* <CustomButton component={Link} to='/'>
                     SUSTAINABILITY
                 </CustomButton>
                 <CustomButton component={Link} to='/'>
                     LEGAL
-                </CustomButton>
+                </CustomButton> */}
 
             </Box>
 
             <Box alignSelf='end'>
                 <Typography variant="body2" component="div" sx={{ textAlign: 'end' }}>
-                    © 2024 GUSTAF LUND
+                    © 2024 SURDEGSHÖRNAN
                 </Typography>
             </Box>
 

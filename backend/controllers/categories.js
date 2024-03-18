@@ -24,7 +24,17 @@ categoriesRouter.get('/', async (request, response) => {
 
 
 categoriesRouter.get('/new', async (request, response) => {
-  const categories = await Category.findAll({ include: [{ model: Item, include: [{ model: Image }, { model: Variant }, { model: Review }] }] });
+  const categories = await Category.findAll({
+    include: [{
+      model: Item,
+      where: { isActive: true },
+      include: [
+        { model: Image },
+        { model: Variant },
+        { model: Review }
+      ]
+    }]
+  });
 
   response.json(categories);
 })

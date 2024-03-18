@@ -1,8 +1,9 @@
 import axios from 'axios'
 
-export const baseUrl = 'http://localhost:3001'
-//export const baseUrl = 'https://ecomapi.kanindev.se'
-const token = localStorage.getItem('ecom-bunny-racer')
+//export const baseUrl = 'http://localhost:3001'
+// export const baseUrl = 'https://ecomapi.kanindev.se'
+export const baseUrl = 'https://api.surdegshornan.se'
+const token = localStorage.getItem('ecom-bunny-racer') || '';
 
 // export const getSite = () =>
 //     /* axios.get(baseUrl + '/api/site', { headers: { 'Authorization': `bearer ${token}` } }).then(res => res.data) */
@@ -15,7 +16,7 @@ export const getAdminCategories = () =>
     axios.get(baseUrl + '/api/categories/admin/new').then(res => res.data)
 
 export const getAdminOrders = () =>
-    axios.get(baseUrl + '/api/orders/admin').then(res => res.data)
+    axios.get(baseUrl + '/api/orders/admin', { headers: { 'Authorization': `bearer ${token}` } }).then(res => res.data)
 
 export const createNote = newNote =>
     axios.post(baseUrl, newNote).then(res => res.data)

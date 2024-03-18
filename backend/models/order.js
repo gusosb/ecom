@@ -35,13 +35,16 @@ Order.init({
   address: {
     type: DataTypes.STRING
   },
+  address2: {
+    type: DataTypes.STRING
+  },
   postalcode: {
     type: DataTypes.STRING
   },
   city: {
     type: DataTypes.STRING
   },
-  region: {
+  state: {
     type: DataTypes.STRING
   },
   care_of: {
@@ -56,12 +59,31 @@ Order.init({
   },
   order_tax_amount: {
     type: DataTypes.INTEGER
+  },
+  order_reference: {
+    type: DataTypes.STRING,
+  },
+  tracking: {
+    type: DataTypes.STRING,
+  },
+  is_fulfilled: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   }
 }, {
   sequelize,
   underscored: true,
   timestamps: true,
   modelName: 'order',
-})
+  hooks: {
+    beforeCreate: (order, options) => {
+      order.order_reference = `GL-${generateRandomUniqueNumber()}`;
+    }
+  }
+});
+
+const generateRandomUniqueNumber = () => {
+  return Math.floor(100000 + Math.random() * 900000);
+}
 
 module.exports = Order

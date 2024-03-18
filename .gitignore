@@ -14,3 +14,4 @@ frontend-white/node_modules
 frontend-white/build
 backend/node_modules
 backend/.env
+backend/uploads

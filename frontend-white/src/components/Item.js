@@ -1,11 +1,12 @@
 import { useParams, useOutletContext } from "react-router-dom";
 import { useState } from "react";
-import { useWindowSize, CustomAccordion, VariantSelector } from '../helpers';
+import { useWindowSize, CustomAccordion, VariantSelector, convertTaxRate } from '../helpers';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import ItemMobile from './ItemMobile';
+import Markdown from 'react-markdown';
 
 
 const Item = ({ cart, setCart, categories, format, baseUrl }) => {
@@ -15,6 +16,8 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
     const [setCartOpen] = useOutletContext();
     const items = categories.flatMap(e => e.items);
     const selectedItem = items.find(e => e.id === parseInt(itemid));
+    console.log(selectedItem);
+    
     const [variant, setVariant] = useState(selectedItem && selectedItem.variants.find(e => e.sellable > 0)?.id);
     const [showVariants, setShowVariants] = useState(false);
 
@@ -38,7 +41,7 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
         return <ItemMobile
             variant={variant} selectedItem={selectedItem} setVariant={setVariant}
             format={format} addToCart={addToCart} expanded={expanded}
-            handleAccordionChange={handleAccordionChange}
+            handleAccordionChange={handleAccordionChange} baseUrl={baseUrl}
         />
 
 
@@ -47,9 +50,9 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
         <>
             <Grid container>
                 <Grid item xs={12} md={6}>
-                    <img src="https://cdn.obayaty.com/images/vid8gs32/production/194bd93cc43196a619ddb524c45497b93e71cbda-2560x3200.jpg?w=1920&fit=max&auto=format" alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                    <img src="https://cdn.obayaty.com/images/vid8gs32/production/ba000ab42fc5d3ce6595ed00b4b847355e80270a-2560x3200.jpg?w=1920&fit=max&auto=format" alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                    <img src="https://cdn.obayaty.com/images/vid8gs32/production/63584b29f138662363584009b9193018d263e01b-2560x3200.jpg?w=1920&fit=max&auto=format" alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                    {selectedItem.images.map(image =>
+                        <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                    )}
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <Box sx={{
@@ -66,15 +69,23 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
                             justifyContent: 'center',
                             alignItems: 'center',
                         }}>
-                            <Grid item>
+                            <Grid item width={590} mx={4}>
 
-                                <Typography variant="h5" gutterBottom>NAIL COLOUR</Typography>
-                                <Typography variant="subtitle1" gutterBottom>Violet Dusk</Typography>
-                                <Typography variant="body1" gutterBottom>INSTANT</Typography>
-                                <Typography variant="body2" gutterBottom>The nail color elevates your look.</Typography>
-                                <Typography variant="body1" gutterBottom>LONG-TERM</Typography>
-                                <Typography variant="body2" gutterBottom>Obayaty’s blend of bioceramics and hexanal is a caring complex to help promote healthier nails.</Typography>
+                                <Typography variant="h5" gutterBottom style={{ textTransform: 'uppercase' }}>{selectedItem.name}</Typography>
+                                {/* <Typography variant="subtitle1" gutterBottom>{selectedItem.brand}</Typography> */}
+                                {/* <Typography variant="body1" gutterBottom style={{ textTransform: 'uppercase' }}>handvävd</Typography> */}
+                                {/* <Typography variant="body2" gutterBottom>The nail color elevates your look.</Typography> */}
+                                {/* <Typography variant="body1" gutterBottom>LONG-TERM</Typography> */}
+                                {/* <Typography variant="body2" gutterBottom>beskrivnig beskrivnig, beskrivnig, beskrivnig,beskrivnig beskrivnig beskrivnig, beskrivnig, beskrivnig ...</Typography> */}
 
+                                <Markdown
+                                    components={{
+                                        p: ({ node, ...props }) => <Typography fontSize={15} variant="body1" gutterBottom {...props} />,
+                                        h1: ({ node, ...props }) => <Typography variant="body2" gutterBottom {...props} />,
+                                    }}
+                                >
+                                    {selectedItem.description}
+                                </Markdown>
 
 
                                 {selectedItem.variants.length > 1 &&
@@ -96,7 +107,7 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
                                         backgroundColor: '#000',
                                         color: '#fff',
                                         '&:hover': {
-                                            backgroundColor: 'rgba(0, 0, 0, 0.8)', // Slightly lighter black on hover
+                                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
                                         },
                                         padding: '12px',
                                         borderRadius: '1',
@@ -105,7 +116,7 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
                                     fullWidth
                                     onClick={addToCart}
                                 >
-                                    Buy – {format(selectedItem.price * (1 + (selectedItem.vatRateSE / 100)) / 100)} SEK
+                                    Buy – {format(selectedItem.price * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100)} SEK
                                 </Button>
 
 
@@ -113,13 +124,14 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
 
                                     <CustomAccordion
                                         first={true}
-                                        title="DESCRIPTION"
-                                        expanded={expanded === 'DESCRIPTION'}
-                                        handleChange={() => handleAccordionChange('DESCRIPTION')}
+                                        last={true}
+                                        title="BESKRIVNING"
+                                        expanded={expanded === 'BESKRIVNING'}
+                                        handleChange={() => handleAccordionChange('BESKRIVNING')}
                                     >
-                                        <Typography>Some description here...</Typography>
+                                        <Typography>{selectedItem.specification}</Typography>
                                     </CustomAccordion>
-
+                                    {/* 
                                     <CustomAccordion
                                         title="HOW TO USE"
                                         expanded={expanded === 'HOW TO USE'}
@@ -143,7 +155,7 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
                                         handleChange={() => handleAccordionChange('INGREDIENTS')}
                                     >
                                         <Typography>List of ingredients...</Typography>
-                                    </CustomAccordion>
+                                    </CustomAccordion> */}
                                 </Box>
 
 

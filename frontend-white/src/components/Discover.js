@@ -6,18 +6,14 @@ import CardMedia from '@mui/material/CardMedia'
 import { CardActionArea } from '@mui/material';
 
 
-const FrontPage = () => {
+const Discover = () => {
 
-  const [hovered, setHovered] = useState();
-  const [hovered2, setHovered2] = useState();
 
-  return (
-    <>
-      <Grid container justifyContent='center'>
-        frontpage!
-      </Grid>
-    </>
-  );
+    return (
+        <Grid container justifyContent='center'>
+            discover!
+        </Grid>
+    );
 };
 
-export default FrontPage;
+export default Discover;

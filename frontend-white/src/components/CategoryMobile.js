@@ -1,15 +1,13 @@
-import { Link, useOutletContext } from "react-router-dom"
-import ReactMarkdown from 'react-markdown'
+import { Link, useOutletContext } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+import { convertTaxRate } from '../helpers';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import FooterMobile from './FooterMobile';
 
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
-import FooterMobile from "./FooterMobile"
-
-const CategoryMobile = ({ categories, StyledButton, Product, ProductInfo, Typography, selectedCategory, items, baseUrl, format }) => {
+const CategoryMobile = ({ categories, StyledButton, Product, ProductInfo, Typography, selectedCategory, items, baseUrl, format, isShopRoute }) => {
 
     const [, footerHeight] = useOutletContext();
-    console.log('footerHeight', footerHeight);
-
 
     return (
         <>
@@ -18,106 +16,14 @@ const CategoryMobile = ({ categories, StyledButton, Product, ProductInfo, Typogr
                     {items.map((item, index) => (
                         <Grid item xs={6} sm={6} md={3} key={index}>
                             <Product component={Link} to={`/product/${item.id}/${item.name}`}>
-                                <img src='https://cdn.obayaty.com/images/vid8gs32/production/86551ad9f40d15aec2bc6d8a64ad88756f9d7e22-2560x3200.jpg?w=1920&fit=max&auto=format' alt={item.name} />
+                                <img src={baseUrl + item.images[0]?.path} alt={item.name} style={{ objectFit: 'cover' }} />
                                 <ProductInfo className="ProductInfo">
                                     <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>{item.name}</Typography>
-                                    <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{format(item.price * (1 + (item.vatRateSE / 100)) / 100)} SEK</Typography>
+                                    <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{format(item.price * (1 + convertTaxRate(item.vatRateSE)) / 100)} SEK</Typography>
                                 </ProductInfo>
                             </Product>
                         </Grid>
                     ))}
-
-                    {/* <Grid item xs={6} sm={6} md={3}>
-                        <Product component={Link} >
-                            <img src='https://cdn.obayaty.com/images/vid8gs32/production/86551ad9f40d15aec2bc6d8a64ad88756f9d7e22-2560x3200.jpg?w=1920&fit=max&auto=format' />
-                            <ProductInfo className="ProductInfo">
-                                <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>name</Typography>
-                                <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{100} SEK</Typography>
-                            </ProductInfo>
-                        </Product>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={3}>
-                        <Product component={Link} >
-                            <img src='https://cdn.obayaty.com/images/vid8gs32/production/86551ad9f40d15aec2bc6d8a64ad88756f9d7e22-2560x3200.jpg?w=1920&fit=max&auto=format' />
-                            <ProductInfo className="ProductInfo">
-                                <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>name</Typography>
-                                <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{100} SEK</Typography>
-                            </ProductInfo>
-                        </Product>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={3}>
-                        <Product component={Link} >
-                            <img src='https://cdn.obayaty.com/images/vid8gs32/production/86551ad9f40d15aec2bc6d8a64ad88756f9d7e22-2560x3200.jpg?w=1920&fit=max&auto=format' />
-                            <ProductInfo className="ProductInfo">
-                                <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>name</Typography>
-                                <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{100} SEK</Typography>
-                            </ProductInfo>
-                        </Product>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={3}>
-                        <Product component={Link} >
-                            <img src='https://cdn.obayaty.com/images/vid8gs32/production/86551ad9f40d15aec2bc6d8a64ad88756f9d7e22-2560x3200.jpg?w=1920&fit=max&auto=format' />
-                            <ProductInfo className="ProductInfo">
-                                <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>name</Typography>
-                                <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{100} SEK</Typography>
-                            </ProductInfo>
-                        </Product>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={3}>
-                        <Product component={Link} >
-                            <img src='https://cdn.obayaty.com/images/vid8gs32/production/86551ad9f40d15aec2bc6d8a64ad88756f9d7e22-2560x3200.jpg?w=1920&fit=max&auto=format' />
-                            <ProductInfo className="ProductInfo">
-                                <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>name</Typography>
-                                <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{100} SEK</Typography>
-                            </ProductInfo>
-                        </Product>
-                    </Grid> */}
-                    {/* <Grid item xs={6} sm={6} md={3}>
-                        <Product component={Link} >
-                            <img src='https://cdn.obayaty.com/images/vid8gs32/production/86551ad9f40d15aec2bc6d8a64ad88756f9d7e22-2560x3200.jpg?w=1920&fit=max&auto=format' />
-                            <ProductInfo className="ProductInfo">
-                                <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>name</Typography>
-                                <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{100} SEK</Typography>
-                            </ProductInfo>
-                        </Product>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={3}>
-                        <Product component={Link} >
-                            <img src='https://cdn.obayaty.com/images/vid8gs32/production/86551ad9f40d15aec2bc6d8a64ad88756f9d7e22-2560x3200.jpg?w=1920&fit=max&auto=format' />
-                            <ProductInfo className="ProductInfo">
-                                <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>name</Typography>
-                                <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{100} SEK</Typography>
-                            </ProductInfo>
-                        </Product>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={3}>
-                        <Product component={Link} >
-                            <img src='https://cdn.obayaty.com/images/vid8gs32/production/86551ad9f40d15aec2bc6d8a64ad88756f9d7e22-2560x3200.jpg?w=1920&fit=max&auto=format' />
-                            <ProductInfo className="ProductInfo">
-                                <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>name</Typography>
-                                <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{100} SEK</Typography>
-                            </ProductInfo>
-                        </Product>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={3}>
-                        <Product component={Link} >
-                            <img src='https://cdn.obayaty.com/images/vid8gs32/production/86551ad9f40d15aec2bc6d8a64ad88756f9d7e22-2560x3200.jpg?w=1920&fit=max&auto=format' />
-                            <ProductInfo className="ProductInfo">
-                                <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>name</Typography>
-                                <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{100} SEK</Typography>
-                            </ProductInfo>
-                        </Product>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={3}>
-                        <Product component={Link} >
-                            <img src='https://cdn.obayaty.com/images/vid8gs32/production/86551ad9f40d15aec2bc6d8a64ad88756f9d7e22-2560x3200.jpg?w=1920&fit=max&auto=format' />
-                            <ProductInfo className="ProductInfo">
-                                <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>name</Typography>
-                                <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{100} SEK</Typography>
-                            </ProductInfo>
-                        </Product>
-                    </Grid> */}
-
 
                 </Grid>
             </Box>
@@ -135,8 +41,22 @@ const CategoryMobile = ({ categories, StyledButton, Product, ProductInfo, Typogr
             }}>
 
                 <Grid container borderTop={1} borderColor='#e6e6e6' display='flex' justifyContent='center'>
+                    <StyledButton key='all' component={Link} to={`/shop`}
+                        sx={{
+                            '&::after': {
+                                content: '""',
+                                position: 'absolute',
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                height: '2px',
+                                backgroundColor: isShopRoute ? '#fbdd7e' : 'transparent'
+                            },
+                            pb: '2px',
+                        }}
+                    >Allt</StyledButton>
                     {categories.map(category =>
-                        <StyledButton component={Link} to={`/shop/${category.name.toLowerCase()}`}
+                        <StyledButton key={category.name} component={Link} to={`/shop/${category.name.toLowerCase()}`}
                             sx={{
                                 '&::after': {
                                     content: '""',

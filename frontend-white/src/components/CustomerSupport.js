@@ -12,7 +12,6 @@ const CustomerSupport = () => {
 
     const [, headerHeight, footerHeight] = useOutletContext();
 
-
     const windowSize = useWindowSize();
 
     return (

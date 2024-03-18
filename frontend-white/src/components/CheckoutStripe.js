@@ -1,11 +1,12 @@
+import { Link } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { initiateCheckout, createOrder, updatePayment } from '../requests';
 import { useMutation } from '@tanstack/react-query';
-import { useWindowSize } from '../helpers';
+import { useWindowSize, convertTaxRate } from '../helpers';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
-import FlipNumber from './blocks/FlipNumber'
+import FlipNumber from './blocks/FlipNumber';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -16,8 +17,6 @@ import Typography from '@mui/material/Typography';
 import CheckoutMobileStripe from './CheckoutMobileStripe';
 import CheckoutForm from './CheckoutForm';
 import Skeleton from '@mui/material/Skeleton';
-import { Link } from "react-router-dom";
-
 import Box from '@mui/material/Box';
 
 
@@ -62,7 +61,7 @@ const appearance = {
 };
 
 
-const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQuantity, format }) => {
+const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQuantity, format, baseUrl }) => {
     const [payment, setPayment] = useState({});
     const [creatingOrder, setCreatingOrder] = useState(false);
     const [isInitialRender, setIsInitialRender] = useState(true);
@@ -80,26 +79,31 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
     const [postalcode, setPostalcode] = useState('');
     const [city, setCity] = useState('');
 
+    const [address2, setAddress2] = useState('');
+    const [state, setState] = useState('');
+    const [country, setCountry] = useState('');
+
 
     let order_tax_amount = 0;
     const order_lines = Object.keys(cart).map(e => {
         const itemVariant = cart[e].variants?.find(b => b.id === parseInt(e));
-        const total_tax_amount = (cart[e].vatRateSE / 10000) * cart[e].price * cart[e].quantity
+        const total_tax_amount = convertTaxRate(cart[e].vatRateSE) * cart[e].price * cart[e].quantity
         order_tax_amount += total_tax_amount
         return {
             type: 'physical',
             name: cart[e].name,
             quantity: cart[e].quantity,
             quantity_unit: 'pcs',
-            unit_price: cart[e].price * (1 + (cart[e].vatRateSE / 10000)),
+            unit_price: cart[e].price * (1 + convertTaxRate(cart[e].vatRateSE)),
             tax_rate: cart[e].vatRateSE,
-            total_amount: cart[e].quantity * cart[e].price * (1 + (cart[e].vatRateSE / 10000)),
+            total_amount: cart[e].quantity * cart[e].price * (1 + convertTaxRate(cart[e].vatRateSE)),
             total_tax_amount,
             variant: itemVariant.name,
             product_url: `${window.location.origin}/product/${cart[e].id}`,
+            product_id: cart[e].id,
             reference: e,
-            image_path: cart[e].images[0]?.path // => setting the first image as default orderitem image
-        }
+            image_path: baseUrl + cart[e].images[0]?.path // => setting the first image as default orderitem image
+        };
     });
 
     const initiateCheckoutMutation = useMutation(initiateCheckout, {
@@ -111,7 +115,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
 
     const updatePaymentIntentMutation = useMutation(updatePayment, {
         onSuccess: (response) => {
-            console.log(response);
+            console.log('order updated!');
         },
     });
 
@@ -122,7 +126,10 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
     });
 
     const sendCreateOrder = () => {
-        createOrderMutation.mutate({ locale: navigator.language, order_amount: totalSumInCart, order_lines, order_tax_amount, email, phone, name, address, postalcode, city, order_reference: options.clientSecret, payment_id: payment.paymentId });
+        createOrderMutation.mutate({
+            locale: navigator.language, order_amount: totalSumInCart, order_lines, order_tax_amount, email, phone, name, address, postalcode, city,
+            order_reference: options.clientSecret, payment_id: payment.paymentId, address2, state, country
+        });
     }
 
     useEffect(() => {
@@ -148,94 +155,95 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
     if (windowSize.width < 800) return <CheckoutMobileStripe cart={cart} removeFromCart={removeFromCart} changeVariantQuantity={changeVariantQuantity}
         format={format} totalSumInCart={totalSumInCart}
         email={email} phone={phone} address={address} city={city} postalcode={postalcode}
+        setAddress2={setAddress2} setState={setState} setCountry={setCountry}
         setEmail={setEmail} setPhone={setPhone} setAddress={setAddress} setCity={setCity} setPostalcode={setPostalcode}
         sendCreateOrder={sendCreateOrder} setName={setName} Elements={Elements} stripePromise={stripePromise} options={options}
         setCreatingOrder={setCreatingOrder} shouldRenderForm={shouldRenderForm}
         List={List} ListItem={ListItem} Box={Box} Link={Link} FlipNumber={FlipNumber}
         loadSkeleton={loadSkeleton} Skeleton={Skeleton} RemoveIcon={RemoveIcon} AddIcon={AddIcon} creatingOrder={creatingOrder}
+        baseUrl={baseUrl}
     />
 
 
     return (
         <Grid container display='flex' justifyContent='center' marginTop={5}>
 
-            <Grid display='flex' item xs={12} style={{ maxWidth: 1000, height: '100%' }} sx={{ m: 20, mt: 0, mb: 0 }}>
+            <Grid display='flex' item xs={12} style={{ maxWidth: 1300, height: '100%' }} sx={{ m: 20, mt: 0, mb: 0 }}>
 
-                <Grid container spacing={4} marginTop={0}>
+                <Grid container spacing={10} paddingTop={4}>
 
                     <Grid item xs={6}>
 
                         <Grid container spacing={0}>
 
-                            <Grid item xs sx={{ borderBottom: '1px solid #e6e6e6' }}>
-                                <Typography paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>ORDER SUMMARY</Typography>
-                            </Grid>
-                            <List>
-                                {cart && Object.keys(cart).map((key, i) => {
-                                    const itemVariant = cart[key].variants?.find(e => e.id === parseInt(key));
-                                    const path = cart[key].images[0]?.path;
-                                    const hasMultipleVariants = cart[key].variants.length > 1;
-                                    return <>
+                            <Grid item xs >
+                                <Typography sx={{ borderBottom: '1px solid #e6e6e6' }} paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>ORDER SUMMARY</Typography>
 
-                                        <ListItem
-                                            key={key}
-                                            sx={{
-                                                pt: i === 0 ? 1 : 2,
-                                                pb: 2,
-                                                position: 'relative', // Relative positioning for the pseudo-element
-                                                '&::after': { // Pseudo-element for the custom divider
-                                                    content: '""',
-                                                    position: 'absolute',
-                                                    bottom: 0,
-                                                    left: 16, // Adjust the space on the left
-                                                    right: 16, // Adjust the space on the right
-                                                    borderBottom: '1px solid rgba(0, 0, 0, 0.12)', // Your divider style
-                                                    width: 'calc(100% - 32px)' // Adjust the width based on left and right space
-                                                }
-                                            }}
-                                        >
-                                            <Grid container spacing={2} alignItems="center">
-                                                <Grid item xs='auto'>
-                                                    <Box component={Link} to={`/product/${cart[key].id}/${cart[key].name}`}>
-                                                        <img
-                                                            src='https://cdn.obayaty.com/images/vid8gs32/production/86551ad9f40d15aec2bc6d8a64ad88756f9d7e22-2560x3200.jpg?w=1920&fit=max&auto=format'
-                                                            alt='123'
-                                                            style={{ width: '90px' }}
-                                                        />
-                                                    </Box>
-                                                </Grid>
-                                                <Grid item xs>
-                                                    <Typography variant="body1" style={{ color: 'inherit', textDecoration: 'inherit', textTransform: 'uppercase' }} component={Link} to={`/product/${cart[key].id}/${cart[key].name}`}>
-                                                        {cart[key]?.name}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="textSecondary" textTransform='uppercase'>
-
-                                                        {hasMultipleVariants && itemVariant?.name}
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid item>
-                                                    <Typography variant="body1" display='flex' justifyContent='center'>
-                                                        <FlipNumber currentNumber={format(cart[key].quantity * cart[key].price * (1 + (cart[key].vatRateSE / 100)) / 100)} />&nbsp;SEK
-                                                    </Typography>
-
-                                                    <Box display="flex" alignItems="center">
-                                                        <IconButton sx={{ padding: 0 }} onClick={() => changeVariantQuantity(-1, key)}>
-                                                            <RemoveIcon />
-                                                        </IconButton>
-                                                        <Typography variant="body2" sx={{ mx: 1 }}>
-                                                            {cart[key]?.quantity}
+                                <List>
+                                    {cart && Object.keys(cart).map((key, i) => {
+                                        const itemVariant = cart[key].variants?.find(e => e.id === parseInt(key));
+                                        const path = cart[key].images[0]?.path;
+                                        const hasMultipleVariants = cart[key].variants.length > 1;
+                                        return (
+                                            <ListItem
+                                                key={key}
+                                                sx={{
+                                                    pt: i === 0 ? 1 : 2,
+                                                    pb: 2,
+                                                    position: 'relative', // Relative positioning for the pseudo-element
+                                                    '&::after': { // Pseudo-element for the custom divider
+                                                        content: '""',
+                                                        position: 'absolute',
+                                                        bottom: 0,
+                                                        left: 16, // Adjust the space on the left
+                                                        right: 16, // Adjust the space on the right
+                                                        borderBottom: '1px solid rgba(0, 0, 0, 0.12)', // Your divider style
+                                                        width: 'calc(100% - 32px)' // Adjust the width based on left and right space
+                                                    }
+                                                }}
+                                            >
+                                                <Grid container spacing={2} alignItems="center">
+                                                    <Grid item xs='auto'>
+                                                        <Box component={Link} to={`/product/${cart[key].id}/${cart[key].name}`}>
+                                                            <img
+                                                                src={baseUrl + path}
+                                                                alt='123'
+                                                                style={{ width: '90px' }}
+                                                            />
+                                                        </Box>
+                                                    </Grid>
+                                                    <Grid item xs>
+                                                        <Typography variant="body1" style={{ color: 'inherit', textDecoration: 'inherit', textTransform: 'uppercase' }} component={Link} to={`/product/${cart[key].id}/${cart[key].name}`}>
+                                                            {cart[key]?.name}
                                                         </Typography>
-                                                        <IconButton sx={{ padding: 0 }} onClick={() => changeVariantQuantity(1, key)}>
-                                                            <AddIcon />
-                                                        </IconButton>
-                                                    </Box>
+                                                        <Typography variant="body2" color="textSecondary" textTransform='uppercase'>
+                                                            {hasMultipleVariants && itemVariant?.name}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item>
+                                                        <Typography variant="body1" component="div" display='flex' justifyContent='center'>
+                                                            <FlipNumber currentNumber={format(cart[key].quantity * cart[key].price * (1 + convertTaxRate(cart[key].vatRateSE)) / 100)} />&nbsp;SEK
+                                                        </Typography>
 
+                                                        <Box display="flex" alignItems="center">
+                                                            <IconButton sx={{ padding: 0 }} onClick={() => changeVariantQuantity(-1, key)}>
+                                                                <RemoveIcon />
+                                                            </IconButton>
+                                                            <Typography variant="body2" sx={{ mx: 1 }}>
+                                                                {cart[key]?.quantity}
+                                                            </Typography>
+                                                            <IconButton sx={{ padding: 0 }} onClick={() => changeVariantQuantity(1, key)}>
+                                                                <AddIcon />
+                                                            </IconButton>
+                                                        </Box>
+
+                                                    </Grid>
                                                 </Grid>
-                                            </Grid>
-                                        </ListItem>
-                                    </>
-                                })}
-                            </List>
+                                            </ListItem>
+                                        );
+                                    })}
+                                </List>
+                            </Grid>
 
                         </Grid>
 
@@ -264,7 +272,8 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
                         }
                         {options.clientSecret && shouldRenderForm &&
                             <Elements stripe={stripePromise} options={options}>
-                                <CheckoutForm sendCreateOrder={sendCreateOrder} totalSumInCart={totalSumInCart} format={format} setEmail={setEmail} setName={setName} setAddress={setAddress} setPostalcode={setPostalcode} setCity={setCity} setPhone={setPhone} creatingOrder={creatingOrder} setCreatingOrder={setCreatingOrder} email={email} />
+                                <CheckoutForm sendCreateOrder={sendCreateOrder} totalSumInCart={totalSumInCart} format={format} setEmail={setEmail} setName={setName} setAddress={setAddress} setPostalcode={setPostalcode} setCity={setCity} setPhone={setPhone} creatingOrder={creatingOrder} setCreatingOrder={setCreatingOrder} email={email}
+                                    setAddress2={setAddress2} setState={setState} setCountry={setCountry} />
                             </Elements>
                         }
                     </Grid>

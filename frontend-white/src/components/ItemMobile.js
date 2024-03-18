@@ -1,21 +1,23 @@
-import { useState, useRef, useEffect } from "react"
-import Markdown from 'react-markdown'
-import Grid from '@mui/material/Grid'
-import Button from '@mui/material/Button'
-import Box from '@mui/material/Box'
+import { useState, useRef, useEffect } from "react";
+import Markdown from 'react-markdown';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { DetailsButton, CustomAccordion, VariantSelector } from '../helpers'
-import '../styles.css'
+import { DetailsButton, CustomAccordion, VariantSelector, convertTaxRate } from '../helpers';
+import '../styles.css';
+
+// const backgroundColor = 'rgb(238, 238, 238)';
+const backgroundColor = '#FEFCF9';
 
 
-const backgroundColor = 'rgb(238, 238, 238)';
-
-
-const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expanded, handleAccordionChange }) => {
+const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expanded, handleAccordionChange, baseUrl }) => {
 
   const [sticky, setSticky] = useState(true);
   const [toggleDetails, setToggleDetails] = useState(false);
   const [showVariants, setShowVariants] = useState(false);
+
+  console.log(selectedItem);
 
   const ref = useRef(undefined);
   const ref2 = useRef(undefined);
@@ -42,25 +44,35 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
     <>
       <Grid container>
         <Grid item xs={12} md={6} ref={ref}>
-          <img src="https://cdn.obayaty.com/images/vid8gs32/production/194bd93cc43196a619ddb524c45497b93e71cbda-2560x3200.jpg?w=1920&fit=max&auto=format" alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} />
 
-          <Box component={Typography} variant="h5" paddingTop={4} sx={{ textTransform: 'uppercase' }} display='flex' justifyContent='center' backgroundColor={backgroundColor}>
-            {selectedItem.name}
-          </Box>
+          {selectedItem.images.map((image, index) => {
+            if (index === 0) return (
+              <>
+                <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                <Box component={Typography} variant="h5" paddingTop={0} sx={{ textTransform: 'uppercase' }} display='flex' justifyContent='center' backgroundColor={backgroundColor}>
+                  {selectedItem.name}
+                </Box>
 
-          <Box component={Typography} paddingTop={2} variant="subtitle1" display='flex' justifyContent='center' backgroundColor={backgroundColor}
-            alignItems="center" textAlign="center"
-            sx={{ fontSize: '1.1rem' }}
-          >
-            <Box mx={5}>
-              {selectedItem.description}
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            </Box>
-          </Box>
+                <Box component={Typography} paddingTop={2} variant="subtitle1" display='flex' justifyContent='center' backgroundColor={backgroundColor}
+                  alignItems="center" textAlign="center"
+                  sx={{ fontSize: '1.1rem' }}
+                >
+                  <Box mx={5} mb={4}>
+                    <Markdown
+                      components={{
+                        p: ({ node, ...props }) => <Typography fontSize={20} variant="body1" gutterBottom {...props} />,
+                        h1: ({ node, ...props }) => <Typography  variant="body2" gutterBottom {...props} />,
+                      }}
+                    >
+                      {selectedItem.description}
+                    </Markdown>
+                  </Box>
+                </Box>
+              </>
+            )
+            return <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} />
+          })}
 
-          <img src="https://cdn.obayaty.com/images/vid8gs32/production/ba000ab42fc5d3ce6595ed00b4b847355e80270a-2560x3200.jpg?w=1920&fit=max&auto=format" alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} />
-
-          <img src="https://cdn.obayaty.com/images/vid8gs32/production/63584b29f138662363584009b9193018d263e01b-2560x3200.jpg?w=1920&fit=max&auto=format" alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} />
         </Grid>
 
         <Grid container borderTop={1} borderColor='#e6e6e6' ref={ref2} sx={{ backgroundColor: 'background.paper' }} className={sticky ? 'stickyy' : undefined}>
@@ -122,7 +134,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
                 fullWidth
                 onClick={addToCart}
               >
-                Buy – {format(selectedItem.price * (1 + (selectedItem.vatRateSE / 100)) / 100)} SEK
+                Buy – {format(selectedItem.price * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100)} SEK
               </Button>
             </Grid>
           </Grid>

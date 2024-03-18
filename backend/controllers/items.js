@@ -16,9 +16,9 @@ const upload = multer({ storage: storage })
 // const upload = multer({ dest: 'uploads/' })
 
 itemsRouter.post('/', upload.single('file'), async (request, response) => {
-  const { name, price, vatRateSE, image, categoryId } = request.body
+  const { name, price, vatRateSE, image, categoryId } = request.body;
   // const currentUser = await auth(request)
-  const item = await Item.create({ name, price, vatRateSE, image, categoryId })
+  const item = await Item.create({ name, price, vatRateSE, image, categoryId });
   await Image.create({ itemId: item.id, path: `/${request.file.destination}${request.file.filename}`, index: 0 })
 
   response.status(201).json()
@@ -26,10 +26,12 @@ itemsRouter.post('/', upload.single('file'), async (request, response) => {
 
 itemsRouter.post('/image', upload.single('file'), async (request, response) => {
   // const currentUser = await auth(request)
-  const { itemId, index } = request.body
-  await Image.create({ itemId, path: `/${request.file.destination}${request.file.filename}`, index })
+  const { itemId, index, isHover } = request.body;
+  console.log('isHover', isHover);
 
-  response.status(201).json()
+  await Image.create({ itemId, path: `/${request.file.destination}${request.file.filename}`, index, isHover });
+
+  response.status(201).json();
 })
 
 
@@ -39,7 +41,7 @@ itemsRouter.post('/reviews/:id', async (request, response) => {
 
   console.log(request.body);
   console.log(itemId);
-  
+
 
   const order = await Order.findByPk(request.body.orderId)
   const name = order.given_name
