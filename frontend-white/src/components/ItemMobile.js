@@ -61,7 +61,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
                     <Markdown
                       components={{
                         p: ({ node, ...props }) => <Typography fontSize={20} variant="body1" gutterBottom {...props} />,
-                        h1: ({ node, ...props }) => <Typography  variant="body2" gutterBottom {...props} />,
+                        h1: ({ node, ...props }) => <Typography variant="body2" gutterBottom {...props} />,
                       }}
                     >
                       {selectedItem.description}
@@ -80,7 +80,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
           <Box width='100%' ref={boxRef}>
             {toggleDetails &&
               <>
-                <CustomAccordion
+                {/* <CustomAccordion
                   title="DESCRIPTION"
                   expanded={expanded === 'DESCRIPTION'}
                   handleChange={() => handleAccordionChange('DESCRIPTION')}
@@ -95,6 +95,14 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
                   handleChange={() => handleAccordionChange('SIZE & FIT')}
                 >
                   <Typography>Size & fitting ...</Typography>
+                </CustomAccordion> */}
+                <CustomAccordion
+                  last={true}
+                  title="BESKRIVNING"
+                  expanded={expanded === 'BESKRIVNING'}
+                  handleChange={() => handleAccordionChange('BESKRIVNING')}
+                >
+                  <Typography>{selectedItem.specification}</Typography>
                 </CustomAccordion>
               </>
             }
@@ -134,7 +142,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
                 fullWidth
                 onClick={addToCart}
               >
-                Buy – {format(selectedItem.price * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100)} SEK
+                Köp – {format(selectedItem.price * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100)} SEK
               </Button>
             </Grid>
           </Grid>

@@ -17,7 +17,7 @@ const CartDrawer = ({
 
     const Draws = swipeable ? SwipeableDrawer : Drawer;
     console.log(windowSize.width);
-    
+
     return (
         <Draws
             anchor='right'
@@ -38,7 +38,7 @@ const CartDrawer = ({
 
                     <Grid container sx={{ p: 2, borderBottom: '1px solid #e0e0e0' }}>
                         <Grid item xs>
-                            <Typography variant="h6" component="div">SHOPPING CART</Typography>
+                            <Typography variant="h6" component="div">VARUKORGEN</Typography>
                         </Grid>
                         <Grid item>
                             <IconButton onClick={() => setCartOpen(false)}>
@@ -124,7 +124,7 @@ const CartDrawer = ({
                 <Grid item xs='auto' sx={{ borderTop: '1px solid #e0e0e0' }}>
                     <Grid container sx={{ p: 2 }}>
                         <Grid item xs>
-                            <Typography variant="subtitle1" component="div" >TOTAL</Typography>
+                            <Typography variant="subtitle1" component="div" >TOTALT</Typography>
                         </Grid>
                         <Grid item>
                             <Typography variant="subtitle1" component="div">

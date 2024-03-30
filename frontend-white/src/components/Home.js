@@ -12,7 +12,6 @@ import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import Badge from '@mui/material/Badge'
 import { useWindowSize, StyledButton } from '../helpers'
-import productPlaceholder from '../images/6872_100-Whey-Gold-Std-912-g-Vanilla-Ice-Cream_0922.webp'
 import CartDrawer from './blocks/CartDrawer';
 import Typography from '@mui/material/Typography';
 import { ReactComponent as SURDEGSVG } from '../images/sourdoughsvg.svg';
@@ -53,7 +52,7 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
     return (
         <>
             <CartDrawer location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} cart={cart} format={format} removeFromCart={removeFromCart} Grid={Grid}
-                toggleDrawer={toggleDrawer} CloseIcon={CloseIcon} Box={Box} Link={Link} productPlaceholder={productPlaceholder} windowSize={windowSize}
+                toggleDrawer={toggleDrawer} CloseIcon={CloseIcon} Box={Box} Link={Link} windowSize={windowSize}
                 changeVariantQuantity={changeVariantQuantity} totalSumInCart={totalSumInCart} Button={Button} baseUrl={baseUrl}
             />
 
@@ -70,8 +69,8 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
                     <Grid container borderBottom={1} paddingTop={1} paddingBottom={1} borderColor='#e6e6e6'>
                         <Grid item xs>
                             <Box paddingLeft={2} display="flex" gap={2}>
-                                <StyledButton component={Link} to='/shop'>shop</StyledButton>
-                                <StyledButton component={Link} to='/discover'>discover</StyledButton>
+                                <StyledButton component={Link} to='/shop'>handla</StyledButton>
+                                <StyledButton component={Link} to='/discover'>upptäck</StyledButton>
                             </Box>
                         </Grid>
 

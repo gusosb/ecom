@@ -23,11 +23,11 @@ const FooterMobile = () => {
           flexDirection: 'column', // stacks buttons vertically
         }}>
           <CustomButton component={Link} to='/customer-support/faq'>
-            CUSTOMER SUPPORT
+            KUNDTJÄNST
           </CustomButton>
 
           <CustomButton component={Link} to='/' >
-            ABOUT US
+            OM OSS
           </CustomButton>
 
           {/* <CustomButton component={Link} to='/' >
@@ -50,7 +50,7 @@ const FooterMobile = () => {
 
           <CustomButton
             component='a'
-            href="https://www.instagram.com"
+            href="https://www.instagram.com/surdegshornan"
             target="_blank"
             rel="noopener noreferrer"
             sx={{
@@ -61,7 +61,7 @@ const FooterMobile = () => {
             INSTAGRAM
           </CustomButton>
 
-          <CustomButton
+          {/* <CustomButton
             component='a'
             href="https://www.tiktok.com"
             target="_blank"
@@ -73,7 +73,7 @@ const FooterMobile = () => {
             }}
           >
             TIKTOK
-          </CustomButton>
+          </CustomButton> */}
 
 
         </Box>

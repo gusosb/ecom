@@ -74,8 +74,8 @@ const AdminOrders = () => {
                 <TableCell align="right">{order.payment_id}</TableCell>
                 <TableCell align="right">{order.order_reference}</TableCell>
                 <TableCell align="right">{order.order_amount / 100}</TableCell>
-                <TableCell align="right">{order.is_fulfilled ? <CheckCircleOutlineIcon sx={{ color: 'green' }} /> : <DoNotDisturbIcon sx={{ color: 'red' }} />}</TableCell>
                 <TableCell align="right">{order.isPaid ? <CheckCircleOutlineIcon sx={{ color: 'green' }} /> : <DoNotDisturbIcon sx={{ color: 'red' }} />}</TableCell>
+                <TableCell align="right">{order.is_fulfilled ? <CheckCircleOutlineIcon sx={{ color: 'green' }} /> : <DoNotDisturbIcon sx={{ color: 'red' }} />}</TableCell>
               </TableRow>
               {
                 openRow === index && (

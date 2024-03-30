@@ -177,7 +177,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
                         <Grid container spacing={0}>
 
                             <Grid item xs >
-                                <Typography sx={{ borderBottom: '1px solid #e6e6e6' }} paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>ORDER SUMMARY</Typography>
+                                <Typography sx={{ borderBottom: '1px solid #e6e6e6' }} paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>ORDERSAMMANSTÄLLNING</Typography>
 
                                 <List>
                                     {cart && Object.keys(cart).map((key, i) => {
@@ -254,7 +254,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
                     <Grid item xs paddingBottom={4}>
 
                         <Grid item xs sx={{ borderBottom: '1px solid #e6e6e6', marginBottom: 2 }}>
-                            <Typography paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>CUSTOMER INFORMATION</Typography>
+                            <Typography paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>KUNDINFORMATION</Typography>
                         </Grid>
                         {loadSkeleton &&
                             <>

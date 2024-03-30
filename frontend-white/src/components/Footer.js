@@ -22,11 +22,11 @@ const Footer = () => {
                 flexDirection: 'column',
             }}>
                 <CustomButton component={Link} to='/customer-support/faq'>
-                    CUSTOMER SUPPORT
+                    KUNDTJÄNST
                 </CustomButton>
 
-                <CustomButton component={Link} to='/'>
-                    ABOUT US
+                <CustomButton component={Link} to='/about-us'>
+                    OM OSS
                 </CustomButton>
 
                 {/* <CustomButton component={Link} to='/'>
@@ -55,7 +55,7 @@ const Footer = () => {
 
                 <CustomButton
                     component='a'
-                    href="https://www.instagram.com"
+                    href="https://www.instagram.com/surdegshornan"
                     target="_blank"
                     rel="noopener noreferrer"
                     sx={{
@@ -66,7 +66,7 @@ const Footer = () => {
                     INSTAGRAM
                 </CustomButton>
 
-                <CustomButton
+                {/* <CustomButton
                     component='a'
                     href="https://www.tiktok.com"
                     target="_blank"
@@ -78,11 +78,11 @@ const Footer = () => {
                     }}
                 >
                     TIKTOK
-                </CustomButton>
+                </CustomButton> */}
 
                 <Box sx={{ pt: 10 }}>
                     <CustomButton sx={{ justifyContent: 'end' }} component='div'>
-                        SWEDEN (CHANGE)
+                        SVERIGE
                     </CustomButton>
                 </Box>
             </Box>

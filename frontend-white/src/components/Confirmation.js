@@ -54,7 +54,7 @@ const Confirmation = ({ format, baseUrl }) => {
             <Grid container>
 
                 <Grid item xs={12} sx={{ borderBottom: '1px solid #e6e6e6', pt: 4, pl: 2, justifyContent: 'center', display: 'flex' }}>
-                    <Typography paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>ORDER CONFIRMATION #{result?.order_reference}</Typography>
+                    <Typography paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>ORDERBEKRÄFTELSE #{result?.order_reference}</Typography>
                 </Grid>
                 <Grid item xs display='flex' justifyContent='center'>
 

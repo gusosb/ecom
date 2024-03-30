@@ -9,6 +9,7 @@ import { Typography } from "@mui/material"
 import { useEffect, useState } from 'react';
 import '../styles.css'
 
+
 const Product = styled(Box)({
   position: 'relative',
   textAlign: 'center',
@@ -84,7 +85,7 @@ const Category = ({ categories, baseUrl, format }) => {
         >Allt</StyledButton>
 
         {categories.map(category =>
-          <StyledButton key={category.name} component={Link} to={`/shop/${category.name.toLowerCase()}`}
+          <StyledButton key={category.id} component={Link} to={`/shop/${category.name.toLowerCase()}`}
             sx={{
               '&::after': {
                 content: '""',
@@ -115,10 +116,33 @@ const Category = ({ categories, baseUrl, format }) => {
               onMouseLeave={() => changeHovered(item.id)}
             >
 
-              <div style={{ width: '100%', paddingTop: '100%', position: 'relative' }}> {/* Aspect ratio box */}
-                {hovered[item.id] && hoverImage ?
-                  <img src={baseUrl + hoverImage} alt={item.name} style={{ objectFit: 'cover', position: 'absolute', top: 0, left: 0, height: '100%', width: '100%' }} />
-                  : <img src={baseUrl + item.images[0]?.path} alt={item.name} style={{ objectFit: 'cover', position: 'absolute', top: 0, left: 0, height: '100%', width: '100%' }} />}
+              <div style={{ width: '100%', paddingTop: '100%', position: 'relative' }}>
+              {hoverImage && <img
+                  src={baseUrl + hoverImage}
+                  alt={item.name}
+                  style={{
+                    objectFit: 'cover',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    height: '100%',
+                    width: '100%',
+                    display: hovered[item.id] && hoverImage ? 'block' : 'none',
+                  }}
+                />}
+                <img
+                  src={baseUrl + item.images[0]?.path}
+                  alt={item.name}
+                  style={{
+                    objectFit: 'cover',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    height: '100%',
+                    width: '100%',
+                    display: hovered[item.id] && hoverImage ? 'none' : 'block',
+                  }}
+                />
               </div>
 
 

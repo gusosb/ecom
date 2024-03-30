@@ -55,17 +55,6 @@ const CheckoutForm = ({ sendCreateOrder, format, totalSumInCart, setEmail, setNa
                                     required: 'always',
                                 },
                             },
-                            //defaultValues: {
-                            //   name: 'Jane Doe',
-                            //  address: {
-                            //      line1: '354 Oyster Point Blvd',
-                            //      line2: '',
-                            //     city: 'South San Francisco',
-                            //     state: 'CA',
-                            //    postal_code: '94080',
-                            //   country: 'US',
-                            //},
-                            //},
                         }}
                         onChange={({ value }) => {
                             value.phone && setPhone(value.phone);
@@ -101,7 +90,7 @@ const CheckoutForm = ({ sendCreateOrder, format, totalSumInCart, setEmail, setNa
                             }}
                             variant="contained"
                             fullWidth
-                            onClick={handlePay}>PAY&nbsp;
+                            onClick={handlePay}>Betala&nbsp;
                             <FlipNumber currentNumber={format(totalSumInCart / 100)} />&nbsp;
                             SEK</Button>
 

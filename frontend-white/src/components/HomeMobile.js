@@ -4,7 +4,6 @@ import FooterMobile from './FooterMobile'
 import CloseIcon from '@mui/icons-material/Close'
 import Badge from '@mui/material/Badge'
 import { StyledButton } from '../helpers'
-import productPlaceholder from '../images/6872_100-Whey-Gold-Std-912-g-Vanilla-Ice-Cream_0922.webp'
 import CartDrawer from './blocks/CartDrawer';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
@@ -26,7 +25,7 @@ const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCar
     return (
         <>
             <CartDrawer location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} cart={cart} format={format} removeFromCart={removeFromCart} Grid={Grid}
-                toggleDrawer={toggleDrawer} CloseIcon={CloseIcon} Box={Box} Link={Link} productPlaceholder={productPlaceholder}
+                toggleDrawer={toggleDrawer} CloseIcon={CloseIcon} Box={Box} Link={Link}
                 changeVariantQuantity={changeVariantQuantity} totalSumInCart={totalSumInCart} Button={Button} baseUrl={baseUrl} swipeable={true}
                 SwipeableDrawer={SwipeableDrawer} windowSize={windowSize}
             />
@@ -59,7 +58,7 @@ const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCar
                     }}>
 
                     <Grid item xs={2}>
-                        <StyledButton component={Link} to='/shop'>shop</StyledButton>
+                        <StyledButton component={Link} to='/shop'>HANDLA</StyledButton>
                     </Grid>
 
                     <Grid item xs display="flex" justifyContent="center" alignItems="center">

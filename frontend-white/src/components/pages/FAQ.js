@@ -3,6 +3,11 @@ import { CustomAccordion } from '../../helpers'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography';
 
+
+const questions = [
+    { title: 'KAN JAG ÅNGRA MIN ORDER?', description: 'Du har alltid rätt att ångra ditt köp inom 14 dagar enligt lagen om distansavtal, kontakta oss genom epost på info@surdegshornan.se för att få hjälp med att skicka tillbaka din order.' }
+]
+
 const FAQ = () => {
     const [expanded, setExpanded] = useState(false);
 
@@ -17,14 +22,16 @@ const FAQ = () => {
             </Box>
 
             <Box mx={2}>
-                <CustomAccordion
-                    last={true}
-                    title="QUESTION"
-                    expanded={expanded === 'QUESTION'}
-                    handleChange={() => handleAccordionChange('QUESTION')}
-                >
-                    <Typography>Question...</Typography>
-                </CustomAccordion>
+                {questions.map(question =>
+                    <CustomAccordion
+                        last={true}
+                        title={question.title}
+                        expanded={expanded === question.title}
+                        handleChange={() => handleAccordionChange(question.title)}
+                    >
+                        <Typography>{question.description}</Typography>
+                    </CustomAccordion>
+                )}
             </Box>
         </>
     )

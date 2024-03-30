@@ -20,7 +20,7 @@ const CustomerSupport = () => {
                 <Grid item xs={12} md={6} style={{ display: 'flex', flexDirection: 'column' }}>
                     <Box sx={{ flexGrow: 1, backgroundColor: '#000', padding: 4, px: 2, color: '#fff' }}>
                         <Typography variant="h4" gutterBottom component="div" style={{ textAlign: 'center', fontSize: '1.6rem' }}>
-                            CUSTOMER SUPPORT
+                            KUNDTJÄNST
                         </Typography>
                         <List>
                             {/*
@@ -37,12 +37,12 @@ const CustomerSupport = () => {
                             </ListItemButton>
                             <ListItemButton component={Link} to='returns'
                                 sx={{ borderBottom: '1px solid grey', '&:last-child': { borderBottom: 'none' }, px: 0 }}>
-                                <ListItemText primary="RETURNS" />
+                                <ListItemText primary="RETURER" />
                                 <ArrowForwardIosIcon />
                             </ListItemButton>
                             <ListItemButton component={Link} to='contact-us'
                                 sx={{ borderBottom: '1px solid grey', '&:last-child': { borderBottom: 'none' }, px: 0 }}>
-                                <ListItemText primary="CONTACT US" />
+                                <ListItemText primary="KONTAKTA OSS" />
                                 <ArrowForwardIosIcon />
                             </ListItemButton>
                         </List>
