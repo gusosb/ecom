@@ -4,9 +4,6 @@ const { Variant, Image, Item, Category, Review } = require('../models')
 
 categoriesRouter.get('/', async (request, response) => {
 
-
-  const currentUser = await auth(request)
-
   const categories = await Category.findAll({
     include: [
       {
@@ -40,7 +37,9 @@ categoriesRouter.get('/new', async (request, response) => {
 })
 
 categoriesRouter.get('/admin', async (request, response) => {
-  const currentUser = await auth(request)
+
+  const currentUser = await auth(request) || [];
+  if (!currentUser.isAdmin) return response.status(401).end();
 
   const categories = await Category.findAll({
     include: [
@@ -63,7 +62,8 @@ categoriesRouter.get('/admin', async (request, response) => {
 })
 
 categoriesRouter.get('/admin/new', async (request, response) => {
-  const currentUser = await auth(request)
+  const currentUser = await auth(request) || [];
+  if (!currentUser.isAdmin) return response.status(401).end();
 
   const categories = await Category.findAll({
     include: [
@@ -78,6 +78,9 @@ categoriesRouter.get('/admin/new', async (request, response) => {
 })
 
 categoriesRouter.post('/admin', async (request, response) => {
+  const currentUser = await auth(request) || [];
+  if (!currentUser.isAdmin) return response.status(401).end();
+
   const { name, SubOneId, SubTwoId } = request.body
   if (SubOneId) {
     const topCategory = await Category.findByPk(SubOneId)
@@ -97,8 +100,8 @@ categoriesRouter.post('/admin', async (request, response) => {
 })
 
 categoriesRouter.put('/admin/name', async (request, response) => {
-  const currentUser = await auth(request)
-  console.log(currentUser);
+  const currentUser = await auth(request) || [];
+  if (!currentUser.isAdmin) return response.status(401).end();
 
   const { name, id } = request.body
 
@@ -112,6 +115,9 @@ categoriesRouter.put('/admin/name', async (request, response) => {
 
 
 categoriesRouter.put('/admin', async (request, response) => {
+  const currentUser = await auth(request) || [];
+  if (!currentUser.isAdmin) return response.status(401).end();
+
   const [instance, created] = await Category.upsert({ ...request.body });
   console.log(instance);
   console.log(created);

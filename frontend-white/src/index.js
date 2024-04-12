@@ -3,19 +3,20 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import './styles.css'
+import './styles.css';
+import { HelmetProvider } from 'react-helmet-async';
 
 const queryClient = new QueryClient()
 
 const theme = createTheme({
   palette: {
-         primary: {
-          main: '#F5DEB3',
-          background: '#faf9f8'
-        },
-        secondary: {
-          main: '#fbdd7e',
-        }, 
+    primary: {
+      main: '#F5DEB3',
+      background: '#faf9f8'
+    },
+    secondary: {
+      main: '#fbdd7e',
+    },
     white: {
       main: '#FFFFFF'
     }
@@ -31,7 +32,9 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
-        <App />
+        <HelmetProvider>
+          <App />
+        </HelmetProvider>
       </ThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>

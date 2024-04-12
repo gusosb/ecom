@@ -123,7 +123,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
           <Grid container spacing={2}>
             <Grid item xs={4} margin={2} marginRight={0}>
               <DetailsButton sx={{ padding: '6px' }} variant="outlined" fullWidth onClick={() => setToggleDetails(!toggleDetails)}>
-                {toggleDetails ? 'CLOSE' : 'DETAILS'}
+                {toggleDetails ? 'STÄNG' : 'DETALJER'}
               </DetailsButton>
             </Grid>
             <Grid item xs margin={2} marginLeft={0}>

@@ -8,8 +8,6 @@ const { Op } = require('sequelize');
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 
-
-
 ordersRouter.get('/admin', async (request, response) => {
 
   const currentUser = await auth(request) || [];
@@ -19,6 +17,24 @@ ordersRouter.get('/admin', async (request, response) => {
   response.json(orders);
 })
 
+ordersRouter.put('/admin/tracking/:id', async (request, response) => {
+
+  const currentUser = await auth(request) || [];
+  if (!currentUser.isAdmin) return response.status(401).end();
+
+  const orderID = request.params.id;
+
+  const { tracking } = request.body;
+
+  const order = await Order.findByPk(orderID);
+  order.set({
+    tracking,
+    isFulfilled: true
+  });
+  await order.save();
+
+  response.status(200).json();
+})
 
 // STRIPE
 
@@ -114,7 +130,7 @@ ordersRouter.post('/webhook-receiver', async (request, response) => {
 
   if (type !== 'payment_intent.succeeded') return response.status(200).json();
 
-  order.isPaid = true;
+  order.is_paid = true;
   await order.save();
 
   response.status(201).json();

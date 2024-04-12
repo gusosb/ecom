@@ -12,7 +12,7 @@ import { useState, useRef, useEffect } from 'react'
 
 
 const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCart, format, ShoppingCartIcon,
-    location, cartOpen, setCartOpen, toggleDrawer, Grid, Box, Button, IconButton, baseUrl, windowSize, SURDEGSVG
+    location, cartOpen, setCartOpen, toggleDrawer, Grid, Box, Button, IconButton, baseUrl, windowSize, SURDEGSVG, Helmet
 }) => {
 
     const footerRef = useRef(null);
@@ -22,8 +22,17 @@ const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCar
         footerRef?.current?.clientHeight && setFooterHeight(footerRef.current.clientHeight);
     }, [footerRef]);
 
+    console.log(location.pathname.startsWith('/product'));
     return (
         <>
+            <Helmet>
+                <title>SURDEGSHÖRNAN - Baktillbehör för proffs och hemmabagare!</title>
+                <meta name="description" content="Surdegshörnan är din destination för högkvalitativa bakprodukter och tillbehör för att baka surdegsbröd hemma eller i yrkesköket. Upptäck vårt sortiment av jäskorgar, bakmattor, degskrapor och mycket mer!" />
+                <meta name="keywords" content="surdeg, surdegsbröd, jäskorg, bakmatta, degskrapa, bakverktyg, bagare, hemmabagare, baktillbehör" />
+                <meta name="author" content="Surdegshörnan" />
+                <link rel="canonical" href="https://www.surdegshornan.se/" />
+            </Helmet>
+
             <CartDrawer location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} cart={cart} format={format} removeFromCart={removeFromCart} Grid={Grid}
                 toggleDrawer={toggleDrawer} CloseIcon={CloseIcon} Box={Box} Link={Link}
                 changeVariantQuantity={changeVariantQuantity} totalSumInCart={totalSumInCart} Button={Button} baseUrl={baseUrl} swipeable={true}
@@ -43,7 +52,7 @@ const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCar
                     <Outlet context={[setCartOpen, footerHeight]} />
                 </Box>
 
-                {!location.pathname.startsWith('/shop') &&
+                {(!location.pathname.startsWith('/shop') || !location.pathname === '/') &&
                     <FooterMobile />
                 }
 

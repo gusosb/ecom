@@ -18,7 +18,7 @@ Order.init({
     type: DataTypes.STRING,
     unique: true
   },
-  isPaid: {
+  is_paid: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
@@ -54,10 +54,10 @@ Order.init({
     type: DataTypes.STRING
   },
   // END ADDRESS FIELDS
-  order_amount: {
+  order_amount: { // => gross
     type: DataTypes.INTEGER
   },
-  order_tax_amount: {
+  order_tax_amount: { // => total order tax amount
     type: DataTypes.INTEGER
   },
   order_reference: {
@@ -67,6 +67,17 @@ Order.init({
     type: DataTypes.STRING,
   },
   is_fulfilled: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  is_posted: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  verification_number: {
+    type: DataTypes.INTEGER
+  },
+  is_settled: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   }

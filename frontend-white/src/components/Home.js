@@ -15,12 +15,12 @@ import { useWindowSize, StyledButton } from '../helpers'
 import CartDrawer from './blocks/CartDrawer';
 import Typography from '@mui/material/Typography';
 import { ReactComponent as SURDEGSVG } from '../images/sourdoughsvg.svg';
+import { Helmet } from 'react-helmet-async';
 
 
 
 const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSumInCart, format, baseUrl }) => {
 
-    const [searchText, setSearchText] = useState('')
     const [cartOpen, setCartOpen] = useState(false)
 
 
@@ -46,11 +46,19 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
 
     if (windowSize.width < 800) return <HomeMobile SURDEGSVG={SURDEGSVG} cart={cart} location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} toggleDrawer={toggleDrawer} totalSumInCart={totalSumInCart} changeVariantQuantity={changeVariantQuantity}
         PersonOutlineOutlinedIcon={PersonOutlineOutlinedIcon} ShoppingCartIcon={ShoppingCartIcon} placeholderLogo={placeholderLogo} format={format} categories={categories} Grid={Grid}
-        Box={Box} Button={Button} IconButton={IconButton} baseUrl={baseUrl} removeFromCart={removeFromCart} windowSize={windowSize}
+        Box={Box} Button={Button} IconButton={IconButton} baseUrl={baseUrl} removeFromCart={removeFromCart} windowSize={windowSize} Helmet={Helmet}
     />
 
     return (
         <>
+            <Helmet>
+                <title>SURDEGSHÖRNAN - Baktillbehör för proffs och hemmabagare!</title>
+                <meta name="description" content="Surdegshörnan är din destination för högkvalitativa bakprodukter och tillbehör för att baka surdegsbröd hemma eller i yrkesköket. Upptäck vårt sortiment av jäskorgar, bakmattor, degskrapor och mycket mer!" />
+                <meta name="keywords" content="surdeg, surdegsbröd, jäskorg, bakmatta, degskrapa, bakverktyg, bagare, hemmabagare, baktillbehör" />
+                <meta name="author" content="Surdegshörnan" />
+                <link rel="canonical" href="https://www.surdegshornan.se/" />
+            </Helmet>
+
             <CartDrawer location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} cart={cart} format={format} removeFromCart={removeFromCart} Grid={Grid}
                 toggleDrawer={toggleDrawer} CloseIcon={CloseIcon} Box={Box} Link={Link} windowSize={windowSize}
                 changeVariantQuantity={changeVariantQuantity} totalSumInCart={totalSumInCart} Button={Button} baseUrl={baseUrl}
@@ -70,7 +78,7 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
                         <Grid item xs>
                             <Box paddingLeft={2} display="flex" gap={2}>
                                 <StyledButton component={Link} to='/shop'>handla</StyledButton>
-                                <StyledButton component={Link} to='/discover'>upptäck</StyledButton>
+                                {/* <StyledButton component={Link} to='/discover'>upptäck</StyledButton>*/}
                             </Box>
                         </Grid>
 

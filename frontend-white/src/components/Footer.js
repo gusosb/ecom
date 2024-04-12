@@ -82,7 +82,7 @@ const Footer = () => {
 
                 <Box sx={{ pt: 10 }}>
                     <CustomButton sx={{ justifyContent: 'end' }} component='div'>
-                        SVERIGE
+                        SVERIGE / SEK
                     </CustomButton>
                 </Box>
             </Box>

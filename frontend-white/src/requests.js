@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 //export const baseUrl = 'http://localhost:3001'
-// export const baseUrl = 'https://ecomapi.kanindev.se'
 export const baseUrl = 'https://api.surdegshornan.se'
 const token = localStorage.getItem('ecom-bunny-racer') || '';
 
@@ -13,7 +12,7 @@ export const getCategories = () =>
     axios.get(baseUrl + '/api/categories/new').then(res => res.data)
 
 export const getAdminCategories = () =>
-    axios.get(baseUrl + '/api/categories/admin/new').then(res => res.data)
+    axios.get(baseUrl + '/api/categories/admin/new', { headers: { 'Authorization': `bearer ${token}` } }).then(res => res.data)
 
 export const getAdminOrders = () =>
     axios.get(baseUrl + '/api/orders/admin', { headers: { 'Authorization': `bearer ${token}` } }).then(res => res.data)
@@ -62,6 +61,9 @@ export const confirmOrder = data => // => Fetch an existing order, when order_id
 
 export const updateOrder = data => // => Updates the order with new price data
     axios.post(baseUrl + '/api/orders/update', data).then(res => res.data)
+
+export const updateTracking = order => // => Updates the tracking number on the order
+    axios.put(`${baseUrl}/api/order/admin/tracking/${order.id}`, order).then(res => res.data)
 
 // export const readOrder = data => // => REad the order on confirmation
 //     axios.post(baseUrl + `/api/read/${data.order_id}`, data).then(res => res.data)

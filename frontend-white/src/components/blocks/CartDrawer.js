@@ -18,6 +18,9 @@ const CartDrawer = ({
     const Draws = swipeable ? SwipeableDrawer : Drawer;
     console.log(windowSize.width);
 
+    const isMobile = windowSize.width <= 800;
+    const drawerWidth = isMobile ? windowSize.width : 600;
+
     return (
         <Draws
             anchor='right'
@@ -26,13 +29,13 @@ const CartDrawer = ({
             onClose={() => setCartOpen(false)}
             PaperProps={{
                 sx: {
-                    width: windowSize.width > 800 ? 600 : windowSize,
+                    width: drawerWidth,
                     backgroundColor: '#fff',
-                    borderLeft: '1px solid #e0e0e0'
+                    borderLeft: '1px solid #e0e0e0',
                 },
             }}
         >
-            <Grid container direction='column' height='100vh'>
+            <Grid container direction='column' height={isMobile ? '100dvh' : '100vh'}>
 
                 <Grid item xs='auto'>
 

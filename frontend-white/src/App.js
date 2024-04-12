@@ -87,7 +87,7 @@ const App = () => {
   }, [token, cart, avoidReading]);
 
 
-  const handleSubmit = (e) => {
+  /*const handleSubmit = (e) => {
     e.preventDefault();
     if (password === 'ostost1337') {
       setPassword('ostost1337'); // Update state in your App component
@@ -103,7 +103,7 @@ const App = () => {
         <button type="submit">Login</button>
       </form>
     )
-  }
+  }*/
 
 
   if (result.isLoading) return 'Loading...';
@@ -118,7 +118,10 @@ const App = () => {
             <Route path="/admin/orders" element={<AdminOrders queryClient={queryClient} categories={result.data} />} />
 
             <Route path="/" element={<Home baseUrl={baseUrl} format={format} totalSumInCart={totalSumInCart} changeVariantQuantity={changeVariantQuantity} removeFromCart={removeFromCart} cart={cart} setCart={setCart} categories={result.data} token={token} notify={notify} setToken={setToken} errorMessage={errorMessage} />}>
-              <Route index element={(<FrontPage />)} />
+
+              {/*<Route index element={<FrontPage />} />*/}
+              <Route index element={<Category format={format} baseUrl={baseUrl} categories={result.data || []} />} />
+
               <Route path="/checkout" element={<Checkout baseUrl={baseUrl} format={format} changeVariantQuantity={changeVariantQuantity} removeFromCart={removeFromCart} queryClient={queryClient} totalSumInCart={totalSumInCart} cart={cart} />} />
               <Route path="/shop/:categoryname?" element={<Category format={format} baseUrl={baseUrl} categories={result.data || []} />} />
               <Route path="/product/:itemid/:itemname?" element={<Item baseUrl={baseUrl} format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} />} />

@@ -7,7 +7,7 @@ import Box from '@mui/material/Box'
 import CategoryMobile from './CategoryMobile'
 import { Typography } from "@mui/material"
 import { useEffect, useState } from 'react';
-import '../styles.css'
+import '../styles.css';
 
 
 const Product = styled(Box)({
@@ -68,7 +68,14 @@ const Category = ({ categories, baseUrl, format }) => {
 
   return (
     <>
-      <Grid container borderBottom={1} borderColor='#e6e6e6' display='flex' justifyContent='center'>
+      <Grid container borderBottom={1} borderColor='#e6e6e6' display='flex' justifyContent='center'
+        sx={{
+          position: 'sticky',
+          top: 57,
+          zIndex: '50',
+          background: '#ffffff',
+        }}
+      >
         <StyledButton key='all' component={Link} to={`/shop`}
           sx={{
             '&::after': {
@@ -117,7 +124,7 @@ const Category = ({ categories, baseUrl, format }) => {
             >
 
               <div style={{ width: '100%', paddingTop: '100%', position: 'relative' }}>
-              {hoverImage && <img
+                {hoverImage && <img
                   src={baseUrl + hoverImage}
                   alt={item.name}
                   style={{
