@@ -21,7 +21,7 @@ app.use('/api/orders', ordersRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/categories', categoriesRouter);
 app.use('/api/items', itemsRouter);
-/* app.use('/api/site', siteRouter) */
+app.use('/api/site', siteRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
