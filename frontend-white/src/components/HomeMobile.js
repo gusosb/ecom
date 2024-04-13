@@ -52,8 +52,16 @@ const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCar
                     <Outlet context={[setCartOpen, footerHeight]} />
                 </Box>
 
-                {(!location.pathname.startsWith('/shop') || !location.pathname === '/') &&
-                    <FooterMobile />
+                {!location.pathname === '/' &&
+                    <Box paddingBottom={'37px'}>
+                        hej
+                        <FooterMobile />
+                    </Box>
+                }
+                {location.pathname.startsWith('/product') &&
+                    <Box paddingBottom={'37px'}>
+                        <FooterMobile />
+                    </Box>
                 }
 
 
