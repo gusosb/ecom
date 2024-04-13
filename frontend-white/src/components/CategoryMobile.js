@@ -28,7 +28,7 @@ const CategoryMobile = ({ categories, StyledButton, Product, ProductInfo, Typogr
                 </Grid>
             </Box>
 
-            <Box paddingBottom='37px'>
+            <Box paddingBottom='91px'>
                 <FooterMobile />
             </Box>
             <Box sx={{
