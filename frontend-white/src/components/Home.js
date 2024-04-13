@@ -77,7 +77,7 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
                     <Grid container borderBottom={1} paddingTop={1} paddingBottom={1} borderColor='#e6e6e6'>
                         <Grid item xs>
                             <Box paddingLeft={2} display="flex" gap={2}>
-                                <StyledButton component={Link} to='/shop'>handla</StyledButton>
+                                <StyledButton component={Link} to='/shop'>SHOP</StyledButton>
                                 {/* <StyledButton component={Link} to='/discover'>upptäck</StyledButton>*/}
                             </Box>
                         </Grid>

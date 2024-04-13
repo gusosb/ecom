@@ -90,7 +90,7 @@ const CheckoutForm = ({ sendCreateOrder, format, totalSumInCart, setEmail, setNa
                             }}
                             variant="contained"
                             fullWidth
-                            onClick={handlePay}>Betala&nbsp;
+                            onClick={handlePay}>PAY&nbsp;
                             <FlipNumber currentNumber={format(totalSumInCart / 100)} />&nbsp;
                             SEK</Button>
 

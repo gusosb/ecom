@@ -34,9 +34,9 @@ const App = () => {
   const [token, setToken] = useState(null);
 
 
-  const [password, setPassword] = useState('');
+  //const [password, setPassword] = useState('');
 
-  console.log('cart', cart);
+  //console.log('cart', cart);
 
   const totalSumInCart = cart && Object.keys(cart)?.length > 0 ? Object.keys(cart).reduce((acc, key) => acc + (cart[key].quantity * cart[key].price * (1 + (cart[key].vatRateSE / 100))), 0) : 0;
 

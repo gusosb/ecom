@@ -13,7 +13,6 @@ const Admin = () => {
         refetchOnWindowFocus: false
     })
     const queryClient = useQueryClient()
-    console.log(result)
 
 
 

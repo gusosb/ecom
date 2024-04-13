@@ -17,7 +17,6 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
   const [toggleDetails, setToggleDetails] = useState(false);
   const [showVariants, setShowVariants] = useState(false);
 
-  console.log(selectedItem);
 
   const ref = useRef(undefined);
   const ref2 = useRef(undefined);
@@ -25,7 +24,6 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
 
 
   const handleScroll = () => {
-    console.log(boxRef.current.offsetHeight);
     const acceptedHeihts = [0, 49];
     const y = window.innerHeight + window.pageYOffset - (acceptedHeihts.includes(boxRef.current.offsetHeight) ? 57 : -70);
     const ofstop = ref.current && ref.current.offsetTop + ref.current.offsetHeight + ref2.current.offsetHeight;
@@ -123,7 +121,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
           <Grid container spacing={2}>
             <Grid item xs={4} margin={2} marginRight={0}>
               <DetailsButton sx={{ padding: '6px' }} variant="outlined" fullWidth onClick={() => setToggleDetails(!toggleDetails)}>
-                {toggleDetails ? 'STÄNG' : 'DETALJER'}
+                {toggleDetails ? 'CLOSE' : 'DETAILS'}
               </DetailsButton>
             </Grid>
             <Grid item xs margin={2} marginLeft={0}>
@@ -142,7 +140,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
                 fullWidth
                 onClick={addToCart}
               >
-                Köp – {format(selectedItem.price * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100)} SEK
+                BUY – {format(selectedItem.price * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100)} SEK
               </Button>
             </Grid>
           </Grid>

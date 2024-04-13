@@ -16,7 +16,6 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
     const [setCartOpen] = useOutletContext();
     const items = categories.flatMap(e => e.items);
     const selectedItem = items.find(e => e.id === parseInt(itemid));
-    console.log(selectedItem);
 
     const [variant, setVariant] = useState(selectedItem && selectedItem.variants.find(e => e.sellable > 0)?.id);
     const [showVariants, setShowVariants] = useState(false);
@@ -116,7 +115,7 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
                                     fullWidth
                                     onClick={addToCart}
                                 >
-                                    Köp – {format(selectedItem.price * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100)} SEK
+                                    BUY – {format(selectedItem.price * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100)} SEK
                                 </Button>
 
 

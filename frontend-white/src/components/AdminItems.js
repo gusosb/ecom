@@ -93,7 +93,6 @@ const AdminItems = ({ queryClient }) => {
         refetchOnWindowFocus: false
     })
     const categories = result.data || []
-    // console.log(categories);
 
     const topCategoryID = parseInt(useParams().categoryid)
     const subCategoryID = parseInt(useParams().subonecategoryid)
@@ -106,7 +105,6 @@ const AdminItems = ({ queryClient }) => {
     const [newImage, setNewImage] = useState('')
     const [imageIndex, setImageIndex] = useState('')
     const [isHover, setIsHover] = useState(false);
-    console.log('isHover', isHover);
 
 
     const [categoryName, setCategoryName] = useState('')
@@ -124,11 +122,9 @@ const AdminItems = ({ queryClient }) => {
     const selectedCategory = categories.find(category => category.id === categoryID) || [];
 
     const selectedItem = selectedCategory?.items?.find(item => item.id === parseInt(itemID)) || [];
-    console.log(selectedItem);
 
 
     const selectedVariant = selectedItem.variants?.find(variant => variant.id === variantID)
-    // console.log(selectedVariant);
 
 
 

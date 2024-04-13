@@ -9,12 +9,12 @@ const Contact = () => {
     return (
         <>
             <Box paddingTop={4} display='flex' justifyContent='center'>
-                <Typography variant="h5" gutterBottom>KONTAKTA OSS</Typography>
+                <Typography variant="h5" gutterBottom>CONTACT US</Typography>
             </Box>
 
             <Box mx={windowSize > 800 ? 20 : 5} mt={4}>
 
-                <Typography variant="body1" gutterBottom>Kontakta oss via epost, <a href="mailto:info@surdegshornan.se">info@surdegshornan.se</a></Typography>
+                <Typography variant="body1" gutterBottom>We are happy to answer any questions you might have, please contact us by email, <a href="mailto:info@gustaflund.se">info@gustaflund.se</a></Typography>
 
             </Box>
         </>

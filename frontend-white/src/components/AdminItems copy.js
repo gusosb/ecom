@@ -36,7 +36,6 @@ const AdminItems = ({ queryClient }) => {
         refetchOnWindowFocus: false
     })
     const categories = result.data || []
-    console.log(categories);
 
 
     const [categoryName, setCategoryName] = useState('')

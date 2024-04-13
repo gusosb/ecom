@@ -23,11 +23,11 @@ const FooterMobile = () => {
           flexDirection: 'column', // stacks buttons vertically
         }}>
           <CustomButton component={Link} to='/customer-support/faq'>
-            KUNDTJÄNST
+            CUSTOMER SUPPORT
           </CustomButton>
 
-          <CustomButton component={Link} to='/' >
-            OM OSS
+          <CustomButton component={Link} to='/about-us' >
+            ABOUT US
           </CustomButton>
 
           {/* <CustomButton component={Link} to='/' >

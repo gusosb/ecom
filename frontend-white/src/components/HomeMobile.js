@@ -22,7 +22,6 @@ const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCar
         footerRef?.current?.clientHeight && setFooterHeight(footerRef.current.clientHeight);
     }, [footerRef]);
 
-    console.log(location.pathname.startsWith('/product'));
     return (
         <>
             <Helmet>
@@ -52,9 +51,18 @@ const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCar
                     <Outlet context={[setCartOpen, footerHeight]} />
                 </Box>
 
-                {(!location.pathname.startsWith('/shop') || !location.pathname === '/') &&
-                    <FooterMobile />
+                {!location.pathname === '/' &&
+                    <Box paddingBottom={'37px'}>
+                        hej
+                        <FooterMobile />
+                    </Box>
                 }
+                {location.pathname.startsWith('/product') &&
+                    <Box paddingBottom={'37px'}>
+                        <FooterMobile />
+                    </Box>
+                }
+
 
 
                 <Grid container borderTop={1} paddingTop={1} paddingBottom={1} borderColor='#e6e6e6'
@@ -67,14 +75,13 @@ const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCar
                     }}>
 
                     <Grid item xs={2}>
-                        <StyledButton component={Link} to='/shop'>HANDLA</StyledButton>
+                        <StyledButton component={Link} to='/shop'>SHOP</StyledButton>
                     </Grid>
 
                     <Grid item xs display="flex" justifyContent="center" alignItems="center">
                         <Typography component={Link} sx={{ color: 'inherit', textDecoration: 'inherit' }} to="/" variant="h6">
-                            SURDEGSHÖRNAN
+                            GUSTAF LUND
                         </Typography>
-                        <SURDEGSVG />
                     </Grid>
 
                     <Grid item xs={2} display='flex' justifyContent='end' >

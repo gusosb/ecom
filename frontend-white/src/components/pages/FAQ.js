@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 
 
 const questions = [
-    { title: 'KAN JAG ÅNGRA MIN ORDER?', description: 'Du har alltid rätt att ångra ditt köp inom 14 dagar enligt lagen om distansavtal, kontakta oss genom epost på info@surdegshornan.se för att få hjälp med att skicka tillbaka din order.' }
+    { title: 'WHAT IS YOUR RETURN POLICY?', description: 'If your garment is unsatisfactory in any way you are free to return it within 30 days, providing the garment is unused. Contact us at info@gustaflund.com to return your order.' }
 ]
 
 const FAQ = () => {

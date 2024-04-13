@@ -67,8 +67,6 @@ const Review = ({ categories, queryClient, baseUrl }) => {
 
   const { itemid, orderid } = useParams();
 
-  console.log(itemid);
-
 
   const [isReviewed, setIsReviewed] = useState(false);
   const [rating, setRating] = useState(0);
@@ -81,8 +79,6 @@ const Review = ({ categories, queryClient, baseUrl }) => {
     return [];
   })
   ))[0];
-
-  console.log(itemToReview);
 
   const newReviewMutation = useMutation(addReview, {
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['categories'] }) },

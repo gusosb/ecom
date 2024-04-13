@@ -21,7 +21,6 @@ const Admin = ({ categories, queryClient }) => {
     const [subOne, setSubOne] = useState(categories.map(e => { return { name: '' } }))
     const [subTwo, setSubTwo] = useState(categories.flatMap(e => e.SubOne).map(b => { return { name: '' } }))
 
-    console.log(categories)
 
     const newCategoryMutation = useMutation(createCategory, {
         onSuccess: () => {

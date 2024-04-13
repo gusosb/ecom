@@ -9,11 +9,11 @@ const Returns = () => {
     return (
         <>
             <Box paddingTop={4} display='flex' justifyContent='center'>
-                <Typography variant="h5" gutterBottom>RETURER</Typography>
+                <Typography variant="h5" gutterBottom>RETURNS</Typography>
             </Box>
 
             <Box mx={windowSize > 800 ? 20 : 5} mt={4}>
-                <Typography variant="body1" gutterBottom>Du har alltid rätt att ångra ditt köp inom 14 dagar enligt lagen om distansavtal, kontakta oss genom epost på <a href="mailto:info@surdegshornan.se">info@surdegshornan.se</a> för att få hjälp med att skicka tillbaka din order. Returfrakten står du själv för och detta förusätter även att varorna är oanvända.</Typography>
+                <Typography variant="body1" gutterBottom>You are free to return your order within 30 days, providing the garments are unused, contact us by email at <a href='mailto:info@gustaflund.com'>info@gustaflund.se</a> for help with returning your order. When you return an order we charge a shipping fee of 100 SEK / 10 EUR.</Typography>
             </Box>
         </>
     );

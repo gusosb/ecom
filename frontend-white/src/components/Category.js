@@ -35,10 +35,8 @@ const Category = ({ categories, baseUrl, format }) => {
 
   const categoryName = useParams().categoryname;
   const selectedCategory = categories.find(category => category.name.toLowerCase() === categoryName?.toLowerCase()) || [];
-  console.log('selectedCategory', selectedCategory.length > 0);
 
   const items = selectedCategory.items || categories.flatMap(category => category.items);
-  console.log('items', items);
 
   const location = useLocation();
   const isShopRoute = location.pathname === '/shop';
@@ -113,7 +111,6 @@ const Category = ({ categories, baseUrl, format }) => {
       <Grid container>
 
         {items.map((item, index) => {
-          console.log('hovered[item.id]', hovered[item.id]);
 
           const hoverImage = item.images.find(e => e.isHover)?.path;
 

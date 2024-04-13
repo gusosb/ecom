@@ -16,22 +16,12 @@ const Confirmation = ({ format, baseUrl }) => {
     const stripe = useStripe();
     const [parameters] = useSearchParams();
 
-    const [paymentStatus, setPaymentStatus] = useState('')
     const [result, setResult] = useState('')
 
-    const paymentIntent = parameters.get('payment_intent');
     const clientSecret = parameters.get('payment_intent_client_secret');
-    const redirectStatus = parameters.get('redirect_status');
 
-    console.log(paymentIntent);
-    console.log(clientSecret);
-    console.log(redirectStatus);
-
-    // https://localhost:8000/confirmation?payment_intent=pi_3OvGGEHSZa4snN991nKbCyin&payment_intent_client_secret=pi_3OvGGEHSZa4snN991nKbCyin_secret_aoK2arwuLxC8L3NXzGnCxawT3&redirect_status=succeeded
-    // https://surdegshornan.se/confirmation?payment_intent=pi_3OvGGEHSZa4snN991nKbCyin&payment_intent_client_secret=pi_3OvGGEHSZa4snN991nKbCyin_secret_aoK2arwuLxC8L3NXzGnCxawT3&redirect_status=succeeded
     const checkPaymentMutation = useMutation(checkPayment, {
         onSuccess: (response) => {
-            console.log(response);
             setResult(response);
         },
     });
@@ -44,7 +34,6 @@ const Confirmation = ({ format, baseUrl }) => {
 
         stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
             console.log(paymentIntent.status);
-            setPaymentStatus(paymentIntent.status);
         });
     }, [stripe]);
 

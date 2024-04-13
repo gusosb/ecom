@@ -39,7 +39,6 @@ const AdminOrders = () => {
   })
 
   const orders = result.data || [];
-  console.log(orders);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [numberInput, setNumberInput] = useState('');
@@ -65,13 +64,8 @@ const AdminOrders = () => {
   };
 
   const sendTrackingNumber = async () => {
-    // Send request to backend with orderID and numberInput
-    console.log("Order ID:", orderID);
-    console.log("Tracking Number:", numberInput);
-    // Reset input fields
     setNumberInput('');
     setorderID(null);
-    // Close modal
     setModalOpen(false);
   };
 
