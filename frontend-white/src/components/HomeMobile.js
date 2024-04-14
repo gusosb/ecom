@@ -12,7 +12,7 @@ import { useState, useRef, useEffect } from 'react'
 
 
 const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCart, format, ShoppingCartIcon,
-    location, cartOpen, setCartOpen, toggleDrawer, Grid, Box, Button, IconButton, baseUrl, windowSize, SURDEGSVG, Helmet
+    location, cartOpen, setCartOpen, toggleDrawer, Grid, Box, Button, IconButton, baseUrl, windowSize, SURDEGSVG, Helmet, isLoading
 }) => {
 
     const footerRef = useRef(null);
@@ -22,7 +22,6 @@ const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCar
         footerRef?.current?.clientHeight && setFooterHeight(footerRef.current.clientHeight);
     }, [footerRef]);
 
-    console.log(location.pathname.startsWith('/product'));
     return (
         <>
             <Helmet>

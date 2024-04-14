@@ -106,7 +106,7 @@ const App = () => {
   }*/
 
 
-  if (result.isLoading) return 'Loading...';
+  //if (result.isLoading) return 'Loading...';
 
   return (
     <>
@@ -117,13 +117,13 @@ const App = () => {
             <Route path="/admin/items/:categoryid?/:itemid?/:variantid?" element={result.data && <AdminItems queryClient={queryClient} categories={result.data} />} />
             <Route path="/admin/orders" element={<AdminOrders queryClient={queryClient} categories={result.data} />} />
 
-            <Route path="/" element={<Home baseUrl={baseUrl} format={format} totalSumInCart={totalSumInCart} changeVariantQuantity={changeVariantQuantity} removeFromCart={removeFromCart} cart={cart} setCart={setCart} categories={result.data} token={token} notify={notify} setToken={setToken} errorMessage={errorMessage} />}>
+            <Route path="/" element={<Home isLoading={result.isLoading} baseUrl={baseUrl} format={format} totalSumInCart={totalSumInCart} changeVariantQuantity={changeVariantQuantity} removeFromCart={removeFromCart} cart={cart} setCart={setCart} categories={result.data} token={token} notify={notify} setToken={setToken} errorMessage={errorMessage} />}>
 
               {/*<Route index element={<FrontPage />} />*/}
               <Route index element={<Category format={format} baseUrl={baseUrl} categories={result.data || []} />} />
 
               <Route path="/checkout" element={<Checkout baseUrl={baseUrl} format={format} changeVariantQuantity={changeVariantQuantity} removeFromCart={removeFromCart} queryClient={queryClient} totalSumInCart={totalSumInCart} cart={cart} />} />
-              <Route path="/shop/:categoryname?" element={<Category format={format} baseUrl={baseUrl} categories={result.data || []} />} />
+              <Route path="/shop/:categoryname?" element={<Category isLoading={result.isLoading} format={format} baseUrl={baseUrl} categories={result.data || []} />} />
               <Route path="/product/:itemid/:itemname?" element={<Item baseUrl={baseUrl} format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} />} />
               {/* <Route path="/review/:itemid/:orderid/:itemname?" element={<Review baseUrl={baseUrl} format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} queryClient={queryClient} />} /> */}
               <Route path='/confirmation' element={<Confirmation setCart={setCart} format={format} baseUrl={baseUrl} />} />
