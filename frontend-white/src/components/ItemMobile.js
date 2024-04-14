@@ -46,7 +46,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
           {selectedItem.images.map((image, index) => {
             if (index === 0) return (
               <>
-                <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} preload />
                 <Box component={Typography} variant="h5" paddingTop={0} sx={{ textTransform: 'uppercase' }} display='flex' justifyContent='center' backgroundColor={backgroundColor}>
                   {selectedItem.name}
                 </Box>
@@ -68,7 +68,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
                 </Box>
               </>
             )
-            return <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} />
+            return <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} preload />
           })}
 
         </Grid>
