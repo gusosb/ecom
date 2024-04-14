@@ -1,13 +1,13 @@
 import { Link, useParams, useLocation } from "react-router-dom"
-import ReactMarkdown from 'react-markdown'
 import { useWindowSize, StyledButton, convertTaxRate } from '../helpers'
 import { styled } from '@mui/material/styles'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import CategoryMobile from './CategoryMobile'
 import { Typography } from "@mui/material"
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import '../styles.css';
+import Skeleton from '@mui/material/Skeleton';
 
 
 const Product = styled(Box)({
@@ -31,7 +31,17 @@ const ProductInfo = styled(Box)(({ theme }) => ({
   },
 }));
 
-const Category = ({ categories, baseUrl, format }) => {
+const ProductSkeleton = ({ height }) => (
+  <Product>
+    <Skeleton variant="rectangular" width="100%" height={height} />
+    <ProductInfo>
+      <Skeleton variant="text" width="80%" />
+      <Skeleton variant="text" width="60%" />
+    </ProductInfo>
+  </Product>
+);
+
+const Category = ({ categories, baseUrl, format, isLoading }) => {
 
   const categoryName = useParams().categoryname;
   const selectedCategory = categories.find(category => category.name.toLowerCase() === categoryName?.toLowerCase()) || [];
@@ -57,10 +67,9 @@ const Category = ({ categories, baseUrl, format }) => {
     }));
   };
 
-
   if (windowSize.width < 800) return <CategoryMobile items={items} isShopRoute={isShopRoute}
     windowSize={windowSize} baseUrl={baseUrl} format={format} ProductInfo={ProductInfo} Product={Product}
-    categories={categories} StyledButton={StyledButton} Typography={Typography} selectedCategory={selectedCategory}
+    categories={categories} StyledButton={StyledButton} Typography={Typography} selectedCategory={selectedCategory} isLoading={isLoading} ProductSkeleton={ProductSkeleton}
   />
 
 
@@ -110,53 +119,58 @@ const Category = ({ categories, baseUrl, format }) => {
 
       <Grid container>
 
-        {items.map((item, index) => {
+        {isLoading ? (
+          Array.from({ length: 4 }, (_, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <ProductSkeleton height={605} />
+            </Grid>
+          ))
+        ) : (
+          items.map((item, index) => {
+            const hoverImage = item.images.find(e => e.isHover)?.path;
 
-          const hoverImage = item.images.find(e => e.isHover)?.path;
+            return <Grid item xs={12} sm={6} md={3} key={index}>
+              <Product component={Link} to={`/product/${item.id}/${item.name}`}
+                onMouseEnter={() => changeHovered(item.id)}
+                onMouseLeave={() => changeHovered(item.id)}
+              >
+                <div style={{ width: '100%', paddingTop: '100%', position: 'relative' }}>
+                  {hoverImage && <img
+                    src={baseUrl + hoverImage}
+                    alt={item.name}
+                    style={{
+                      objectFit: 'cover',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      height: '100%',
+                      width: '100%',
+                      display: hovered[item.id] && hoverImage ? 'block' : 'none',
+                    }}
+                  />}
+                  <img
+                    src={baseUrl + item.images[0]?.path}
+                    alt={item.name}
+                    style={{
+                      objectFit: 'cover',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      height: '100%',
+                      width: '100%',
+                      display: hovered[item.id] && hoverImage ? 'none' : 'block',
+                    }}
+                  />
+                </div>
 
-          return <Grid item xs={12} sm={6} md={3} key={index}>
-            <Product component={Link} to={`/product/${item.id}/${item.name}`}
-              onMouseEnter={() => changeHovered(item.id)}
-              onMouseLeave={() => changeHovered(item.id)}
-            >
-
-              <div style={{ width: '100%', paddingTop: '100%', position: 'relative' }}>
-                {hoverImage && <img
-                  src={baseUrl + hoverImage}
-                  alt={item.name}
-                  style={{
-                    objectFit: 'cover',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    height: '100%',
-                    width: '100%',
-                    display: hovered[item.id] && hoverImage ? 'block' : 'none',
-                  }}
-                />}
-                <img
-                  src={baseUrl + item.images[0]?.path}
-                  alt={item.name}
-                  style={{
-                    objectFit: 'cover',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    height: '100%',
-                    width: '100%',
-                    display: hovered[item.id] && hoverImage ? 'none' : 'block',
-                  }}
-                />
-              </div>
-
-
-              <ProductInfo className="ProductInfo">
-                <Typography variant="subtitle1" sx={{ textTransform: 'uppercase' }}>{item.name}</Typography>
-                <Typography variant="body1">{format(item.price * (1 + convertTaxRate(item.vatRateSE)) / 100)} SEK</Typography>
-              </ProductInfo>
-            </Product>
-          </Grid>
-        }
+                <ProductInfo className="ProductInfo">
+                  <Typography variant="subtitle1" sx={{ textTransform: 'uppercase' }}>{item.name}</Typography>
+                  <Typography variant="body1">{format(item.price * (1 + convertTaxRate(item.vatRateSE)) / 100)} SEK</Typography>
+                </ProductInfo>
+              </Product>
+            </Grid>
+          }
+          )
         )}
 
       </Grid>

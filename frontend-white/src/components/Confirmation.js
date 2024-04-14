@@ -16,6 +16,7 @@ const Confirmation = ({ format, baseUrl }) => {
     const stripe = useStripe();
     const [parameters] = useSearchParams();
 
+    //const [paymentStatus, setPaymentStatus] = useState('')
     const [result, setResult] = useState('')
 
     const clientSecret = parameters.get('payment_intent_client_secret');
@@ -34,6 +35,7 @@ const Confirmation = ({ format, baseUrl }) => {
 
         stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
             console.log(paymentIntent.status);
+            //setPaymentStatus(paymentIntent.status);
         });
     }, [stripe]);
 

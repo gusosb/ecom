@@ -1,29 +1,36 @@
 import { Link, useOutletContext } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown';
 import { convertTaxRate } from '../helpers';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import FooterMobile from './FooterMobile';
 
-const CategoryMobile = ({ categories, StyledButton, Product, ProductInfo, Typography, selectedCategory, items, baseUrl, format, isShopRoute }) => {
+const CategoryMobile = ({ categories, StyledButton, Product, ProductInfo, Typography, selectedCategory, items, baseUrl, format, isShopRoute, ProductSkeleton, isLoading }) => {
 
-    const [, footerHeight] = useOutletContext();
+    //const [, footerHeight] = useOutletContext();
 
     return (
         <>
             <Box sx={{ minHeight: `calc(100vh - ${229}px)` }}>
                 <Grid container>
-                    {items.map((item, index) => (
-                        <Grid item xs={6} sm={6} md={3} key={index}>
-                            <Product component={Link} to={`/product/${item.id}/${item.name}`}>
-                                <img src={baseUrl + item.images[0]?.path} alt={item.name} style={{ objectFit: 'cover' }} />
-                                <ProductInfo className="ProductInfo">
-                                    <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>{item.name}</Typography>
-                                    <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{format(item.price * (1 + convertTaxRate(item.vatRateSE)) / 100)} SEK</Typography>
-                                </ProductInfo>
-                            </Product>
-                        </Grid>
-                    ))}
+                    {isLoading ? (
+                        Array.from({ length: 4 }, (_, index) => (
+                            <Grid item xs={6} sm={6} md={3} key={index}>
+                                <ProductSkeleton height={310} />
+                            </Grid>
+                        ))
+                    ) : (
+                        items.map((item, index) => (
+                            <Grid item xs={6} sm={6} md={3} key={index}>
+                                <Product component={Link} to={`/product/${item.id}/${item.name}`}>
+                                    <img src={baseUrl + item.images[0]?.path} alt={item.name} style={{ objectFit: 'cover' }} />
+                                    <ProductInfo className="ProductInfo">
+                                        <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>{item.name}</Typography>
+                                        <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{format(item.price * (1 + convertTaxRate(item.vatRateSE)) / 100)} SEK</Typography>
+                                    </ProductInfo>
+                                </Product>
+                            </Grid>
+                        ))
+                    )}
 
                 </Grid>
             </Box>

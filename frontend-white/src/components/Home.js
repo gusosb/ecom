@@ -19,7 +19,7 @@ import { Helmet } from 'react-helmet-async';
 
 
 
-const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSumInCart, format, baseUrl }) => {
+const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSumInCart, format, baseUrl, isLoading }) => {
 
     const [cartOpen, setCartOpen] = useState(false)
 
@@ -46,7 +46,7 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
 
     if (windowSize.width < 800) return <HomeMobile SURDEGSVG={SURDEGSVG} cart={cart} location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} toggleDrawer={toggleDrawer} totalSumInCart={totalSumInCart} changeVariantQuantity={changeVariantQuantity}
         PersonOutlineOutlinedIcon={PersonOutlineOutlinedIcon} ShoppingCartIcon={ShoppingCartIcon} placeholderLogo={placeholderLogo} format={format} categories={categories} Grid={Grid}
-        Box={Box} Button={Button} IconButton={IconButton} baseUrl={baseUrl} removeFromCart={removeFromCart} windowSize={windowSize} Helmet={Helmet}
+        Box={Box} Button={Button} IconButton={IconButton} baseUrl={baseUrl} removeFromCart={removeFromCart} windowSize={windowSize} Helmet={Helmet} isLoading={isLoading}
     />
 
     return (
