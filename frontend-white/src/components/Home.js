@@ -91,7 +91,7 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
 
                         <Grid item xs display='flex' justifyContent='end'>
                             <Box paddingRight={4}>
-                                <IconButton onClick={() => setCartOpen(!cartOpen)} color="inherit">
+                                <IconButton onClick={() => setCartOpen(!cartOpen)} color="inherit" aria-label="shopping-cart">
                                     <Badge badgeContent={cart && Object.keys(cart).length} color="secondary" sx={{ "& .MuiBadge-badge": {} }}>
                                         <ShoppingCartIcon />
                                     </Badge>
