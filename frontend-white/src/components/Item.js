@@ -1,5 +1,5 @@
 import { useParams, useOutletContext } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useWindowSize, CustomAccordion, VariantSelector, convertTaxRate, useCountryCurrency } from '../helpers';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -15,10 +15,15 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
 
     const [setCartOpen] = useOutletContext();
     const items = categories.flatMap(e => e.items);
-    const selectedItem = items.find(e => e.id === parseInt(itemid));
+    const selectedItem = items.find(e => e.id === parseInt(itemid)) || [];
 
-    const [variant, setVariant] = useState(selectedItem && selectedItem.variants.find(e => e.sellable > 0)?.id);
+    const [variant, setVariant] = useState(selectedItem && selectedItem?.variants?.find(e => e.sellable > 0)?.id);
     const [showVariants, setShowVariants] = useState(false);
+
+
+    useEffect(() => {
+        if (!variant) setVariant(selectedItem && selectedItem?.variants?.find(e => e.sellable > 0)?.id)
+    }, [selectedItem])
 
     const addToCart = () => {
         const values = { ...cart };
@@ -51,7 +56,7 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
         <>
             <Grid container>
                 <Grid item xs={12} md={6}>
-                    {selectedItem.images.map(image =>
+                    {selectedItem?.images?.map(image =>
                         <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} preload />
                     )}
                 </Grid>
@@ -89,7 +94,7 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
                                 </Markdown>
 
 
-                                {selectedItem.variants.length > 1 &&
+                                {selectedItem.variants?.length > 1 &&
                                     <Box marginTop={3} marginBottom={1}>
                                         <VariantSelector
                                             showVariants={showVariants}
