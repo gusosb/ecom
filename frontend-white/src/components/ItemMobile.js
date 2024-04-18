@@ -11,7 +11,7 @@ import '../styles.css';
 const backgroundColor = '#FEFCF9';
 
 
-const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expanded, handleAccordionChange, baseUrl }) => {
+const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expanded, handleAccordionChange, baseUrl, selectedCurrency }) => {
 
   const [sticky, setSticky] = useState(true);
   const [toggleDetails, setToggleDetails] = useState(false);
@@ -139,7 +139,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
                 fullWidth
                 onClick={addToCart}
               >
-                BUY – {format(selectedItem.price * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100)} SEK
+                BUY – {selectedCurrency === 'SEK' ? format(selectedItem.price * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100) : format(selectedItem.price_eur / 100)} {selectedCurrency}
               </Button>
             </Grid>
           </Grid>

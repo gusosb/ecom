@@ -48,6 +48,7 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
             variant={variant} selectedItem={selectedItem} setVariant={setVariant}
             format={format} addToCart={addToCart} expanded={expanded}
             handleAccordionChange={handleAccordionChange} baseUrl={baseUrl}
+            selectedCurrency={selectedCurrency}
         />
 
 
