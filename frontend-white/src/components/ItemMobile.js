@@ -17,15 +17,12 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
   const [toggleDetails, setToggleDetails] = useState(false);
   const [showVariants, setShowVariants] = useState(false);
 
-  console.log(selectedItem);
-
   const ref = useRef(undefined);
   const ref2 = useRef(undefined);
   const boxRef = useRef(null);
 
 
   const handleScroll = () => {
-    console.log(boxRef.current.offsetHeight);
     const acceptedHeihts = [0, 49];
     const y = window.innerHeight + window.pageYOffset - (acceptedHeihts.includes(boxRef.current.offsetHeight) ? 57 : -70);
     const ofstop = ref.current && ref.current.offsetTop + ref.current.offsetHeight + ref2.current.offsetHeight;
@@ -45,7 +42,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
       <Grid container>
         <Grid item xs={12} md={6} ref={ref}>
 
-          {selectedItem.images.map((image, index) => {
+          {selectedItem?.images?.map((image, index) => {
             if (index === 0) return (
               <>
                 <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} preload />
@@ -107,7 +104,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
               </>
             }
 
-            {selectedItem.variants.length > 1 && !toggleDetails &&
+            {selectedItem.variants?.length > 1 && !toggleDetails &&
               <VariantSelector
                 disableTopBorder={true}
                 showVariants={showVariants}
