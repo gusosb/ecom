@@ -50,7 +50,7 @@ const FooterMobile = () => {
 
           <CustomButton
             component='a'
-            href="https://www.instagram.com/surdegshornan"
+            href="https://www.instagram.com/gustaf-lund"
             target="_blank"
             rel="noopener noreferrer"
             sx={{

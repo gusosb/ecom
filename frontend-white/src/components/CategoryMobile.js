@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import FooterMobile from './FooterMobile';
 
-const CategoryMobile = ({ categories, StyledButton, Product, ProductInfo, Typography, selectedCategory, items, baseUrl, format, isShopRoute, ProductSkeleton, isLoading }) => {
+const CategoryMobile = ({ categories, StyledButton, Product, ProductInfo, Typography, selectedCategory, items, baseUrl, format, isShopRoute, ProductSkeleton, isLoading, selectedCurrency }) => {
 
     //const [, footerHeight] = useOutletContext();
 
@@ -25,7 +25,7 @@ const CategoryMobile = ({ categories, StyledButton, Product, ProductInfo, Typogr
                                     <img src={baseUrl + item.images[0]?.path} alt={item.name} style={{ objectFit: 'cover' }} />
                                     <ProductInfo className="ProductInfo">
                                         <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>{item.name}</Typography>
-                                        <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{format(item.price * (1 + convertTaxRate(item.vatRateSE)) / 100)} SEK</Typography>
+                                        <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>{selectedCurrency === 'SEK' ? format(item.price_sek * (1 + convertTaxRate(item.vatRateSE)) / 100) : format(item.price_eur / 100)} {selectedCurrency}</Typography>
                                     </ProductInfo>
                                 </Product>
                             </Grid>
@@ -61,7 +61,7 @@ const CategoryMobile = ({ categories, StyledButton, Product, ProductInfo, Typogr
                             },
                             pb: '2px',
                         }}
-                    >Allt</StyledButton>
+                    >ALL</StyledButton>
                     {categories.map(category =>
                         <StyledButton key={category.name} component={Link} to={`/shop/${category.name.toLowerCase()}`}
                             sx={{

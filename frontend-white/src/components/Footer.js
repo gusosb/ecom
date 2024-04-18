@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Link } from "react-router-dom";
-import { CustomButton } from '../helpers';
+import { CustomButton, CountryCurrencyModal } from '../helpers';
 
 
 const Footer = () => {
@@ -22,11 +22,11 @@ const Footer = () => {
                 flexDirection: 'column',
             }}>
                 <CustomButton component={Link} to='/customer-support/faq'>
-                    KUNDTJÄNST
+                    CUSTOMER SUPPORT
                 </CustomButton>
 
                 <CustomButton component={Link} to='/about-us'>
-                    OM OSS
+                    ABOUT US
                 </CustomButton>
 
                 {/* <CustomButton component={Link} to='/'>
@@ -40,7 +40,7 @@ const Footer = () => {
 
             <Box alignSelf='end'>
                 <Typography variant="body2" component="div" sx={{ textAlign: 'end' }}>
-                    © 2024 SURDEGSHÖRNAN
+                    © 2024 GUSTAF LUND
                 </Typography>
             </Box>
 
@@ -55,7 +55,7 @@ const Footer = () => {
 
                 <CustomButton
                     component='a'
-                    href="https://www.instagram.com/surdegshornan"
+                    href="https://www.instagram.com/gustaf-lund"
                     target="_blank"
                     rel="noopener noreferrer"
                     sx={{
@@ -81,9 +81,7 @@ const Footer = () => {
                 </CustomButton> */}
 
                 <Box sx={{ pt: 10 }}>
-                    <CustomButton sx={{ justifyContent: 'end' }} component='div'>
-                        SVERIGE / SEK
-                    </CustomButton>
+                    <CountryCurrencyModal /> {/* Replace CustomButton with CountryCurrencyModal */}
                 </Box>
             </Box>
         </Box>

@@ -136,7 +136,8 @@ const AdminItems = ({ queryClient }) => {
     const [sellable, setSellable] = useState(0)
     const [sku, setSku] = useState('')
     const [vatRateSE, setVatRateSE] = useState(0)
-    const [price, setPrice] = useState(0)
+    const [priceSEK, setPriceSEK] = useState(0)
+    const [priceEUR, setPriceEUR] = useState(0)
     const [name, setName] = useState('')
     const [brand, setBrand] = useState('')
     const [description, setDescription] = useState('')
@@ -145,7 +146,8 @@ const AdminItems = ({ queryClient }) => {
     useEffect(() => {
         setSellable(selectedItem.sellable)
         setVatRateSE(selectedItem.vatRateSE)
-        setPrice(selectedItem.price)
+        setPriceSEK(selectedItem.priceSEK)
+        setPriceEUR(selectedItem.priceEUR)
         setSku(selectedItem.sku)
         setName(selectedItem.name)
         setBrand(selectedItem.brand)
@@ -220,7 +222,8 @@ const AdminItems = ({ queryClient }) => {
     const updateItemVariables = {
         sellable,
         vatRateSE,
-        price,
+        price_sek: priceSEK,
+        price_eur: priceEUR,
         name,
         brand,
         description,
@@ -354,7 +357,9 @@ const AdminItems = ({ queryClient }) => {
                                                 <br />
                                                 <TextField value={vatRateSE} InputLabelProps={{ shrink: true }} onChange={({ target }) => setVatRateSE(target.value)} id="outlined-basic" label="Set vatRateSE" variant="filled" />
                                                 <br />
-                                                <TextField value={price} InputLabelProps={{ shrink: true }} onChange={({ target }) => setPrice(target.value)} id="outlined-basic" label="Set price" variant="filled" />
+                                                <TextField value={priceSEK} InputLabelProps={{ shrink: true }} onChange={({ target }) => setPriceSEK(target.value)} id="outlined-basic" label="Set price SEK" variant="filled" />
+                                                <br />
+                                                <TextField value={priceEUR} InputLabelProps={{ shrink: true }} onChange={({ target }) => setPriceEUR(target.value)} id="outlined-basic" label="Set price EUR" variant="filled" />
                                                 <br />
                                                 <TextField value={name} InputLabelProps={{ shrink: true }} onChange={({ target }) => setName(target.value)} id="outlined-basic" label="Set name" variant="filled" />
                                                 <br />

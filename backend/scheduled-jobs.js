@@ -15,6 +15,8 @@ const createSIEFile = async (orders) => {
     console.log('verificationCounter', verificationCounter);
 
     const todayDate = new Date().toISOString().slice(0, 10).replaceAll('-', '');
+    const exchangeRate = 11.68;
+
     try {
 
         const sieContent = `#FLAGGA 0
@@ -25,14 +27,21 @@ const createSIEFile = async (orders) => {
 #FNAMN "Evocorp AB"
 #VALUTA SEK
 #FTYP AB
-${orders.map(order =>
-            `#VER O ${verificationCounter++} ${order.createdAt.toISOString().slice(0, 10).replaceAll('-', '')} "${order.order_reference}"
+${orders.reduce((acc, order, index) => {
+            const verString = `#VER O ${verificationCounter++} ${order.createdAt.toISOString().slice(0, 10).replaceAll('-', '')} "${order.order_reference}"
 {
-#TRANS 1510 {} ${order.order_amount / 100} ${todayDate}
+${order.currency === 'EUR' ?
+                    `#TRANS 1510 {} ${order.order_amount * exchangeRate / 100} ${todayDate}
+#TRANS 3051 {} -${(order.order_amount - order.order_tax_amount) * exchangeRate / 100} ${todayDate}
+#TRANS 2611 {} -${order.order_tax_amount * exchangeRate / 100} ${todayDate}` :
+                    `#TRANS 1510 {} ${order.order_amount / 100} ${todayDate}
 #TRANS 3051 {} -${(order.order_amount - order.order_tax_amount) / 100} ${todayDate}
-#TRANS 2611 {} -${order.order_tax_amount / 100} ${todayDate}
-}`
-        )}`;
+#TRANS 2611 {} -${order.order_tax_amount / 100} ${todayDate}`
+                }
+}`;
+            return index === 0 ? verString : `${acc}\n${verString}`;
+        }, '')}`;
+
 
         console.log('sieContent', sieContent);
 
@@ -41,24 +50,25 @@ ${orders.map(order =>
         fs.writeFileSync(fileName, sieContent);
         console.log('SIE file created successfully.');
 
-        await Order.update({ is_posted: true }, {
-            where: {
-                id: orders.map(order => order.id)
-            }
-        });
+        // await Order.update({ is_posted: true }, {
+        //     where: {
+        //         id: orders.map(order => order.id)
+        //     }
+        // });
     } catch (error) {
         console.log('error in file creation!', error);
     }
 }
 
 // Runs every day at midnight
-cron.schedule('0 0 * * *', async () => {
+// cron.schedule('0 0 * * *', async () => {
+cron.schedule('* * * * *', async () => {
     console.log('Running scheduled create SIE job.');
 
     const orders = await Order.findAll({
         where: {
-            is_posted: true,
-            is_paid: true
+            is_posted: false,
+            // is_paid: true
         }
     });
 
@@ -78,8 +88,6 @@ cron.schedule('0 0 * * *', async () => {
 const routes = [
     { path: '/', name: 'Home' },
     { path: '/checkout', name: 'Checkout' },
-    { path: '/shop/:categoryname?', name: 'Shop' },
-    { path: '/product/:itemid/:itemname?', name: 'Product' },
     { path: '/confirmation', name: 'Confirmation' },
     { path: '/discover', name: 'Discover' },
     {
@@ -136,7 +144,7 @@ const saveSitemapToFile = async (xmlContent) => {
 };
 
 // Runs every day at midnight
-cron.schedule('* * * * *', async () => {
+cron.schedule('0 0 * * *', async () => {
     console.log('Running scheduled sitemap generation job.');
 
     try {

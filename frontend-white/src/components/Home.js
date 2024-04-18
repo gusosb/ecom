@@ -83,10 +83,9 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
                         </Grid>
 
                         <Grid item xs display="flex" justifyContent="center" alignItems="center">
-                            <Typography component={Link} sx={{ color: 'inherit', textDecoration: 'inherit' }} to="/" variant="h6">
-                                SURDEGSHÖRNAN
+                            <Typography component={Link} sx={{ color: 'inherit', textDecoration: 'inherit', fontSize: '30px' }} to="/" variant="h5">
+                                GUSTAF LUND
                             </Typography>
-                            <SURDEGSVG />
                         </Grid>
 
                         <Grid item xs display='flex' justifyContent='end'>

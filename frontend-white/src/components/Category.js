@@ -41,7 +41,7 @@ const ProductSkeleton = ({ height }) => (
   </Product>
 );
 
-const Category = ({ categories, baseUrl, format, isLoading }) => {
+const Category = ({ categories, baseUrl, format, isLoading, selectedCurrency }) => {
 
   const categoryName = useParams().categoryname;
   const selectedCategory = categories.find(category => category.name.toLowerCase() === categoryName?.toLowerCase()) || [];
@@ -70,6 +70,7 @@ const Category = ({ categories, baseUrl, format, isLoading }) => {
   if (windowSize.width < 800) return <CategoryMobile items={items} isShopRoute={isShopRoute}
     windowSize={windowSize} baseUrl={baseUrl} format={format} ProductInfo={ProductInfo} Product={Product}
     categories={categories} StyledButton={StyledButton} Typography={Typography} selectedCategory={selectedCategory} isLoading={isLoading} ProductSkeleton={ProductSkeleton}
+    selectedCurrency={selectedCurrency}
   />
 
 
@@ -96,7 +97,7 @@ const Category = ({ categories, baseUrl, format, isLoading }) => {
             },
             pb: '2px',
           }}
-        >Allt</StyledButton>
+        >ALL</StyledButton>
 
         {categories.map(category =>
           <StyledButton key={category.id} component={Link} to={`/shop/${category.name.toLowerCase()}`}
@@ -165,7 +166,7 @@ const Category = ({ categories, baseUrl, format, isLoading }) => {
 
                 <ProductInfo className="ProductInfo">
                   <Typography variant="subtitle1" sx={{ textTransform: 'uppercase' }}>{item.name}</Typography>
-                  <Typography variant="body1">{format(item.price * (1 + convertTaxRate(item.vatRateSE)) / 100)} SEK</Typography>
+                  <Typography variant="body1">{selectedCurrency === 'SEK' ? format(item.price_sek * (1 + convertTaxRate(item.vatRateSE)) / 100) : format(item.price_eur / 100)} {selectedCurrency}</Typography>
                 </ProductInfo>
               </Product>
             </Grid>

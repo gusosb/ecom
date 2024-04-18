@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-//export const baseUrl = 'http://localhost:3001'
-export const baseUrl = 'https://api.surdegshornan.se'
+export const baseUrl = 'http://localhost:3001'
+//export const baseUrl = 'https://api.surdegshornan.se'
 const token = localStorage.getItem('ecom-bunny-racer') || '';
 
 // export const getSite = () =>

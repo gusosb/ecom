@@ -80,6 +80,9 @@ Order.init({
   is_settled: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
+  },
+  currency: {
+    type: DataTypes.STRING,
   }
 }, {
   sequelize,

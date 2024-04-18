@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useEffect, Suspense, lazy, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCategories, baseUrl } from './requests';
+import { useCountryCurrency } from './helpers';
 
 import Category from './components/Category';
 import Item from './components/Item';
@@ -33,12 +34,14 @@ const App = () => {
   const [avoidReading, setAvoidReading] = useState(false);
   const [token, setToken] = useState(null);
 
+  const { selectedCurrency } = useCountryCurrency();
+
 
   //const [password, setPassword] = useState('');
 
-  //console.log('cart', cart);
+  console.log('cart', cart);
 
-  const totalSumInCart = cart && Object.keys(cart)?.length > 0 ? Object.keys(cart).reduce((acc, key) => acc + (cart[key].quantity * cart[key].price * (1 + (cart[key].vatRateSE / 100))), 0) : 0;
+  const totalSumInCart = cart && Object.keys(cart)?.length > 0 ? Object.keys(cart).reduce((acc, key) => acc + (selectedCurrency === 'SEK' ? cart[key].quantity * cart[key].price_sek * (1 + (cart[key].vatRateSE / 100)) : cart[key].quantity * cart[key].price_eur), 0) : 0;
 
   const notify = (message) => {
     setErrorMessage(message)
@@ -122,8 +125,8 @@ const App = () => {
               {/*<Route index element={<FrontPage />} />*/}
               <Route index element={<Category format={format} baseUrl={baseUrl} categories={result.data || []} />} />
 
-              <Route path="/checkout" element={<Checkout baseUrl={baseUrl} format={format} changeVariantQuantity={changeVariantQuantity} removeFromCart={removeFromCart} queryClient={queryClient} totalSumInCart={totalSumInCart} cart={cart} />} />
-              <Route path="/shop/:categoryname?" element={<Category isLoading={result.isLoading} format={format} baseUrl={baseUrl} categories={result.data || []} />} />
+              <Route path="/checkout" element={<Checkout selectedCurrency={selectedCurrency} baseUrl={baseUrl} format={format} changeVariantQuantity={changeVariantQuantity} removeFromCart={removeFromCart} queryClient={queryClient} totalSumInCart={totalSumInCart} cart={cart} />} />
+              <Route path="/shop/:categoryname?" element={<Category selectedCurrency={selectedCurrency} isLoading={result.isLoading} format={format} baseUrl={baseUrl} categories={result.data || []} />} />
               <Route path="/product/:itemid/:itemname?" element={<Item baseUrl={baseUrl} format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} />} />
               {/* <Route path="/review/:itemid/:orderid/:itemname?" element={<Review baseUrl={baseUrl} format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} queryClient={queryClient} />} /> */}
               <Route path='/confirmation' element={<Confirmation setCart={setCart} format={format} baseUrl={baseUrl} />} />

@@ -61,7 +61,7 @@ const appearance = {
 };
 
 
-const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQuantity, format, baseUrl }) => {
+const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQuantity, format, baseUrl, selectedCurrency }) => {
     const [payment, setPayment] = useState({});
     const [creatingOrder, setCreatingOrder] = useState(false);
     const [isInitialRender, setIsInitialRender] = useState(true);
@@ -87,16 +87,19 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
     let order_tax_amount = 0;
     const order_lines = Object.keys(cart).map(e => {
         const itemVariant = cart[e].variants?.find(b => b.id === parseInt(e));
-        const total_tax_amount = convertTaxRate(cart[e].vatRateSE) * cart[e].price * cart[e].quantity
-        order_tax_amount += total_tax_amount
+        const total_tax_amount = selectedCurrency === 'SEK'
+            ? convertTaxRate(cart[e].vatRateSE) * cart[e].price_sek * cart[e].quantity
+            : (cart[e].price_eur * cart[e].quantity * convertTaxRate(cart[e].vatRateSE)) / (1 + convertTaxRate(cart[e].vatRateSE));
+        order_tax_amount += total_tax_amount;
         return {
             type: 'physical',
             name: cart[e].name,
             quantity: cart[e].quantity,
             quantity_unit: 'pcs',
-            unit_price: cart[e].price * (1 + convertTaxRate(cart[e].vatRateSE)),
-            tax_rate: cart[e].vatRateSE,
-            total_amount: cart[e].quantity * cart[e].price * (1 + convertTaxRate(cart[e].vatRateSE)),
+            unit_price: selectedCurrency === 'SEK' ? cart[e].price_sek * (1 + convertTaxRate(cart[e].vatRateSE)) : cart[e].price_eur,
+            currency: selectedCurrency,
+            tax_rate: selectedCurrency === 'SEK' ? cart[e].vatRateSE : 0,
+            total_amount: selectedCurrency === 'SEK' ? cart[e].quantity * cart[e].price_sek * (1 + convertTaxRate(cart[e].vatRateSE)) : cart[e].quantity * cart[e].price_eur,
             total_tax_amount,
             variant: itemVariant.name,
             product_url: `${window.location.origin}/product/${cart[e].id}`,
@@ -128,13 +131,13 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
     const sendCreateOrder = () => {
         createOrderMutation.mutate({
             locale: navigator.language, order_amount: totalSumInCart, order_lines, order_tax_amount, email, phone, name, address, postalcode, city,
-            order_reference: options.clientSecret, payment_id: payment.paymentId, address2, state, country
+            order_reference: options.clientSecret, payment_id: payment.paymentId, address2, state, country, currency: selectedCurrency
         });
     }
 
     useEffect(() => {
         if (options.clientSecret) return;
-        initiateCheckoutMutation.mutate({ locale: navigator.language, order_amount: totalSumInCart, order_lines, order_tax_amount });
+        initiateCheckoutMutation.mutate({ locale: navigator.language, order_amount: totalSumInCart, order_lines, order_tax_amount, currency: selectedCurrency.toLowerCase() });
         setTimeout(() => {
             setLoadSkeleton(false);
             setShouldRenderForm(true);
@@ -146,7 +149,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
         if (!options.clientSecret) return;
         if (isInitialRender) return setIsInitialRender(false);
 
-        updatePaymentIntentMutation.mutate({ order_amount: totalSumInCart, order_lines, payment_id: payment.paymentId });
+        updatePaymentIntentMutation.mutate({ order_amount: totalSumInCart, order_lines, payment_id: payment.paymentId, currency: selectedCurrency.toLowerCase() });
     }, [totalSumInCart]); // eslint-disable-line
 
 
@@ -161,7 +164,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
         setCreatingOrder={setCreatingOrder} shouldRenderForm={shouldRenderForm}
         List={List} ListItem={ListItem} Box={Box} Link={Link} FlipNumber={FlipNumber}
         loadSkeleton={loadSkeleton} Skeleton={Skeleton} RemoveIcon={RemoveIcon} AddIcon={AddIcon} creatingOrder={creatingOrder}
-        baseUrl={baseUrl}
+        baseUrl={baseUrl} selectedCurrency={selectedCurrency}
     />
 
 
@@ -222,7 +225,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
                                                     </Grid>
                                                     <Grid item>
                                                         <Typography variant="body1" component="div" display='flex' justifyContent='center'>
-                                                            <FlipNumber currentNumber={format(cart[key].quantity * cart[key].price * (1 + convertTaxRate(cart[key].vatRateSE)) / 100)} />&nbsp;SEK
+                                                            <FlipNumber currentNumber={selectedCurrency === 'SEK' ? format(cart[key].quantity * cart[key].price_sek * (1 + convertTaxRate(cart[key].vatRateSE)) / 100) : cart[key].quantity * cart[key].price_eur / 100} />&nbsp;{selectedCurrency}
                                                         </Typography>
 
                                                         <Box display="flex" alignItems="center">
@@ -273,7 +276,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
                         {options.clientSecret && shouldRenderForm &&
                             <Elements stripe={stripePromise} options={options}>
                                 <CheckoutForm sendCreateOrder={sendCreateOrder} totalSumInCart={totalSumInCart} format={format} setEmail={setEmail} setName={setName} setAddress={setAddress} setPostalcode={setPostalcode} setCity={setCity} setPhone={setPhone} creatingOrder={creatingOrder} setCreatingOrder={setCreatingOrder} email={email}
-                                    setAddress2={setAddress2} setState={setState} setCountry={setCountry} />
+                                    setAddress2={setAddress2} setState={setState} setCountry={setCountry} selectedCurrency={selectedCurrency} />
                             </Elements>
                         }
                     </Grid>

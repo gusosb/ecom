@@ -12,7 +12,7 @@ import {
 
 
 
-const CheckoutForm = ({ sendCreateOrder, format, totalSumInCart, setEmail, setName, setAddress, setCountry, setAddress2, setPostalcode, setCity, setState, setPhone, setCreatingOrder, email }) => {
+const CheckoutForm = ({ sendCreateOrder, format, totalSumInCart, setEmail, setName, setAddress, setCountry, setAddress2, setPostalcode, setCity, setState, setPhone, setCreatingOrder, email, selectedCurrency }) => {
 
     const stripe = useStripe();
     const elements = useElements();
@@ -92,7 +92,7 @@ const CheckoutForm = ({ sendCreateOrder, format, totalSumInCart, setEmail, setNa
                             fullWidth
                             onClick={handlePay}>PAY&nbsp;
                             <FlipNumber currentNumber={format(totalSumInCart / 100)} />&nbsp;
-                            SEK</Button>
+                            {selectedCurrency}</Button>
 
 
                     </Box>

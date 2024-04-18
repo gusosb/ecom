@@ -1,6 +1,6 @@
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext, useContext } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
@@ -9,6 +9,9 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Box from '@mui/material/Box';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Modal from '@mui/material/Modal';
+
 
 export const useWindowSize = () => {
    const [windowSize, setWindowSize] = useState({
@@ -223,4 +226,64 @@ export const VariantSelector = ({ variant, setVariant, variants, showVariants, s
 
 export const convertTaxRate = (taxRate) => {
    return taxRate / 100;
-}
+};
+
+
+const CountryCurrencyContext = createContext();
+
+export const useCountryCurrency = () => useContext(CountryCurrencyContext);
+
+export const CountryCurrencyProvider = ({ children }) => {
+   const [selectedCountry, setSelectedCountry] = useState('SVERIGE');
+   const [selectedCurrency, setSelectedCurrency] = useState('SEK');
+
+   const updateCountryCurrency = (country, currency) => {
+      setSelectedCountry(country);
+      setSelectedCurrency(currency);
+   };
+
+   return (
+      <CountryCurrencyContext.Provider
+         value={{ selectedCountry, selectedCurrency, updateCountryCurrency }}
+      >
+         {children}
+      </CountryCurrencyContext.Provider>
+   );
+};
+
+export const CountryCurrencyModal = () => {
+   const { selectedCountry, selectedCurrency, updateCountryCurrency } = useCountryCurrency();
+   const [open, setOpen] = useState(false);
+
+   const handleOpen = () => { setOpen(true); };
+
+   const handleClose = () => { setOpen(false); };
+
+   const handleChange = (country, currency) => {
+      updateCountryCurrency(country, currency);
+      handleClose();
+   };
+
+   return (
+      <>
+         <CustomButton onClick={handleOpen}>{selectedCountry} / {selectedCurrency}</CustomButton>
+         <Modal open={open} onClose={handleClose}>
+            <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
+               <Typography variant="h6" component="div" gutterBottom>
+                  CHANGE COUNTRY
+               </Typography>
+               <CustomButton onClick={() => handleChange('SVERIGE', 'SEK')} sx={{ textTransform: 'none', textAlign: 'left', width: '100%' }}>
+                  <Typography variant="body1" component="span" sx={{ opacity: selectedCountry === 'SVERIGE' && selectedCurrency === 'SEK' ? 0.5 : 1 }}>
+                     SVERIGE / SEK
+                  </Typography>
+               </CustomButton>
+               <CustomButton onClick={() => handleChange('EUROPE', 'EUR')} sx={{ textTransform: 'none', textAlign: 'left', width: '100%' }}>
+                  <Typography variant="body1" component="span" sx={{ opacity: selectedCountry === 'EUROPE' && selectedCurrency === 'EUR' ? 0.5 : 1 }}>
+                     EUROPE / EUR
+                  </Typography>
+               </CustomButton>
+            </Box>
+         </Modal>
+      </>
+   );
+};

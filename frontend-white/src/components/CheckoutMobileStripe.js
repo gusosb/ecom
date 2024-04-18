@@ -7,7 +7,7 @@ import { convertTaxRate } from '../helpers';
 const CheckoutMobileAdyen = ({ cart, changeVariantQuantity, format, totalSumInCart,
     email, setEmail, setPhone, setAddress, setCity, setPostalcode, setCountry, setState, setAddress2,
     sendCreateOrder, setName, Elements, stripePromise, options, setCreatingOrder, shouldRenderForm,
-    List, ListItem, Box, Link, FlipNumber, loadSkeleton, Skeleton, RemoveIcon, AddIcon, creatingOrder, baseUrl
+    List, ListItem, Box, Link, FlipNumber, loadSkeleton, Skeleton, RemoveIcon, AddIcon, creatingOrder, baseUrl, selectedCurrency
 }) => {
 
     return (
@@ -66,7 +66,7 @@ const CheckoutMobileAdyen = ({ cart, changeVariantQuantity, format, totalSumInCa
                                         </Grid>
                                         <Grid item>
                                             <Typography variant="body1" component="div" display='flex' justifyContent='center'>
-                                                <FlipNumber currentNumber={format(cart[key].quantity * cart[key].price * (1 + convertTaxRate(cart[key].vatRateSE)) / 100)} />&nbsp;SEK
+                                                <FlipNumber currentNumber={selectedCurrency === 'SEK' ? format(cart[key].quantity * cart[key].price_sek * (1 + convertTaxRate(cart[key].vatRateSE)) / 100) : cart[key].quantity * cart[key].price_eur / 100} />&nbsp;{selectedCurrency}
                                             </Typography>
 
                                             <Box display="flex" alignItems="center">
@@ -111,7 +111,7 @@ const CheckoutMobileAdyen = ({ cart, changeVariantQuantity, format, totalSumInCa
                 {options.clientSecret && shouldRenderForm &&
                     <Elements stripe={stripePromise} options={options}>
                         <CheckoutForm sendCreateOrder={sendCreateOrder} totalSumInCart={totalSumInCart} format={format} setEmail={setEmail} setName={setName} setAddress={setAddress} setPostalcode={setPostalcode} setCity={setCity} setPhone={setPhone} creatingOrder={creatingOrder} setCreatingOrder={setCreatingOrder} email={email}
-                            setAddress2={setAddress2} setState={setState} setCountry={setCountry} />
+                            setAddress2={setAddress2} setState={setState} setCountry={setCountry} selectedCurrency={selectedCurrency} />
                     </Elements>
                 }
             </Grid>

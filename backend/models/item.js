@@ -13,7 +13,10 @@ Item.init({
   name: {
     type: DataTypes.STRING,
   },
-  price: {
+  price_sek: {
+    type: DataTypes.INTEGER,
+  },
+  price_eur: {
     type: DataTypes.INTEGER,
   },
   vatRateSE: {

@@ -6,6 +6,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import './styles.css';
 import { HelmetProvider } from 'react-helmet-async';
 
+import { CountryCurrencyProvider } from './helpers';
+
+import '@fontsource/jost';
 const queryClient = new QueryClient()
 
 const theme = createTheme({
@@ -22,7 +25,7 @@ const theme = createTheme({
     }
   },
   typography: {
-    fontFamily: ['Roboto', 'serif'].join(',')
+    fontFamily: ['Jost', 'Roboto', 'serif'].join(',') // Include Jost as the primary font
   }
 });
 
@@ -31,11 +34,13 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <HelmetProvider>
-          <App />
-        </HelmetProvider>
-      </ThemeProvider>
+      <CountryCurrencyProvider>
+        <ThemeProvider theme={theme}>
+          <HelmetProvider>
+            <App />
+          </HelmetProvider>
+        </ThemeProvider>
+      </CountryCurrencyProvider>
     </QueryClientProvider>
   </React.StrictMode>
 )

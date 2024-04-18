@@ -6,7 +6,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import FlipNumber from './FlipNumber';
-import { convertTaxRate } from '../../helpers';
+import { convertTaxRate, useCountryCurrency } from '../../helpers';
 
 
 
@@ -19,6 +19,8 @@ const CartDrawer = ({
 
     const isMobile = windowSize.width <= 800;
     const drawerWidth = isMobile ? windowSize.width : 600;
+
+    const { selectedCurrency } = useCountryCurrency();
 
     return (
         <Draws
@@ -98,7 +100,7 @@ const CartDrawer = ({
                                         </Grid>
                                         <Grid item>
                                             <Typography variant="body1" component="div" display='flex' justifyContent='center'>
-                                                <FlipNumber currentNumber={format(cart[key].quantity * cart[key].price * (1 + convertTaxRate(cart[key].vatRateSE)) / 100)} />&nbsp;SEK
+                                                <FlipNumber currentNumber={selectedCurrency === 'SEK' ? format(cart[key].quantity * cart[key].price_sek * (1 + convertTaxRate(cart[key].vatRateSE)) / 100) : format(cart[key].quantity * cart[key].price_eur / 100)} />&nbsp;{selectedCurrency}
                                             </Typography>
 
                                             <Box display="flex" alignItems="center">
@@ -130,7 +132,7 @@ const CartDrawer = ({
                         </Grid>
                         <Grid item>
                             <Typography variant="subtitle1" component="div">
-                                <FlipNumber currentNumber={format(totalSumInCart / 100)} />&nbsp;SEK
+                                <FlipNumber currentNumber={format(totalSumInCart / 100)} />&nbsp;{selectedCurrency}
                             </Typography>
                         </Grid>
 

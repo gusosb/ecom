@@ -40,12 +40,12 @@ ordersRouter.put('/admin/tracking/:id', async (request, response) => {
 
 ordersRouter.post('/create-payment-intent', async (request, response) => {
   const { locale, order_amount, order_tax_amount, order_lines,
-    email, phone, firstname, lastname, address, postalcode, city
+    email, phone, firstname, lastname, address, postalcode, city, currency
   } = request.body;
 
   const paymentIntent = await stripe.paymentIntents.create({
     amount: order_amount,
-    currency: "sek",
+    currency,
     automatic_payment_methods: {
       enabled: true,
     },
@@ -61,7 +61,7 @@ ordersRouter.post('/create-payment-intent', async (request, response) => {
 ordersRouter.post('/createorder', async (request, response) => {
 
   const { locale, order_amount, order_tax_amount, order_lines,
-    email, phone, name, address, postalcode, city, order_reference, payment_id
+    email, phone, name, address, postalcode, city, order_reference, payment_id, currency
   } = request.body;
 
   console.log('order_reference', order_reference);
@@ -70,7 +70,7 @@ ordersRouter.post('/createorder', async (request, response) => {
     where: { externalId: order_reference },
     defaults: {
       order_amount, order_tax_amount, externalId: order_reference,
-      email, phone, name, address, postalcode, city, payment_id
+      email, phone, name, address, postalcode, city, payment_id, currency
     }
   });
   console.log('created: ' + created);
@@ -92,13 +92,14 @@ ordersRouter.post('/createorder', async (request, response) => {
 ordersRouter.post('/update-payment-intent', async (request, response) => {
 
   const { locale, order_amount, order_tax_amount, order_lines,
-    email, phone, name, address, postalcode, city, order_reference, payment_id
+    email, phone, name, address, postalcode, city, order_reference, payment_id, currency
   } = request.body;
 
 
   const paymentIntent = await stripe.paymentIntents.update(
     payment_id,
     {
+      currency,
       amount: order_amount
     }
   );

@@ -1,6 +1,6 @@
 import { useParams, useOutletContext } from "react-router-dom";
 import { useState } from "react";
-import { useWindowSize, CustomAccordion, VariantSelector, convertTaxRate } from '../helpers';
+import { useWindowSize, CustomAccordion, VariantSelector, convertTaxRate, useCountryCurrency } from '../helpers';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -29,6 +29,8 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
 
     const windowSize = useWindowSize()
     const [expanded, setExpanded] = useState(false);
+
+    const { selectedCurrency } = useCountryCurrency();
 
     const handleAccordionChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
@@ -115,7 +117,7 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
                                     fullWidth
                                     onClick={addToCart}
                                 >
-                                    BUY – {format(selectedItem.price * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100)} SEK
+                                    BUY – {selectedCurrency === 'SEK' ? format(selectedItem.price_sek * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100) : format(selectedItem.price_eur / 100)} {selectedCurrency}
                                 </Button>
 
 
