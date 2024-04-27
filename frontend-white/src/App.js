@@ -1,7 +1,8 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect, Suspense, lazy, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCategories, baseUrl } from './requests';
+import GoogleAnalytics from './components/GoogleAnalytics';
 
 import Category from './components/Category';
 import Item from './components/Item';
@@ -111,6 +112,7 @@ const App = () => {
   return (
     <>
       <Router>
+        <GoogleAnalytics />
         <Suspense fallback={<></>}>
           <Routes>
 
