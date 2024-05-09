@@ -1,15 +1,21 @@
 import { useParams, useOutletContext } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useWindowSize, CustomAccordion, VariantSelector, convertTaxRate, useCountryCurrency } from '../helpers';
+
+import ItemMobile from './ItemMobile';
+import Markdown from 'react-markdown';
+
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import ItemMobile from './ItemMobile';
-import Markdown from 'react-markdown';
+import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 
-const Item = ({ cart, setCart, categories, format, baseUrl }) => {
+const Item = ({ cart, setCart, categories, format, baseUrl, handleRemindMe }) => {
 
     const { itemid } = useParams();
 
@@ -17,31 +23,44 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
     const items = categories.flatMap(e => e.items);
     const selectedItem = items.find(e => e.id === parseInt(itemid)) || [];
 
+    console.log('selectedItem', selectedItem);
+
+
     const [variant, setVariant] = useState(selectedItem && selectedItem?.variants?.find(e => e.sellable > 0)?.id);
     const [showVariants, setShowVariants] = useState(false);
+    const [reminderEmail, setReminderEmail] = useState('');
+    const [openReminder, setOpenReminder] = useState(false);
 
+    const emailFieldRef = useRef(null);
 
     useEffect(() => {
-        if (!variant) setVariant(selectedItem && selectedItem?.variants?.find(e => e.sellable > 0)?.id)
-    }, [selectedItem])
+        if (!variant) setVariant(selectedItem && selectedItem?.variants?.find(e => e.sellable > 0)?.id);
+    }, [selectedItem]);
+
+    console.log('variant', variant);
+
+    useEffect(() => {
+        if (openReminder && emailFieldRef.current) emailFieldRef.current.focus();
+    }, [openReminder]);
 
     const addToCart = () => {
         const values = { ...cart };
         values[variant] = { ...selectedItem, quantity: 1 };
         setCart(values);
         setCartOpen(true);
-    }
+    };
 
-    const windowSize = useWindowSize()
+    const windowSize = useWindowSize();
     const [expanded, setExpanded] = useState(false);
 
     const { selectedCurrency } = useCountryCurrency();
+
 
     const handleAccordionChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
 
-    if (!windowSize.width) return <>Loading...</>
+    if (!windowSize.width) return <>Loading...</>;
 
     if (windowSize.width < 800)
         return <ItemMobile
@@ -102,11 +121,10 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
                                             setShowVariants={setShowVariants}
                                             variant={variant}
                                             setVariant={setVariant}
-                                            variants={selectedItem.variants}
+                                            variants={selectedItem.variants.filter(e => e.sellable > 0)}
                                         />
                                     </Box>
                                 }
-
 
                                 <Button
                                     sx={{
@@ -121,40 +139,87 @@ const Item = ({ cart, setCart, categories, format, baseUrl }) => {
                                     }}
                                     variant="contained"
                                     fullWidth
-                                    onClick={addToCart}
+                                    onClick={selectedItem?.variants?.find(e => e.id === variant)?.sellable > 0 ? addToCart : () => setOpenReminder(true)}
                                 >
-                                    BUY – {selectedCurrency === 'SEK' ? format(selectedItem.price_sek * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100) : format(selectedItem.price_eur / 100)} {selectedCurrency}
+                                    {selectedItem?.variants?.find(e => e.id === variant)?.sellable > 0 ? 'BUY' : 'REMIND ME'} – {selectedCurrency === 'SEK' ? format(selectedItem.price_sek * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100) : format(selectedItem.price_eur / 100)} {selectedCurrency}
                                 </Button>
 
+                                <Modal open={openReminder} onClose={() => setOpenReminder(false)} keepMounted>
+                                    <Box
+                                        sx={{
+                                            position: 'absolute',
+                                            top: '50%',
+                                            left: '50%',
+                                            transform: 'translate(-50%, -50%)',
+                                            bgcolor: 'background.paper',
+                                            boxShadow: 24,
+                                            p: 4,
+                                            textAlign: 'center', // Center the content horizontally
+                                            width: '80%', // Set the width of the content
+                                            maxWidth: 400, // Limit the maximum width of the content
+                                            borderRadius: '6px' // Add border radius for a rounded appearance
+                                        }}
+                                    >
+                                        <IconButton
+                                            sx={{
+                                                position: 'absolute',
+                                                top: '8px',
+                                                right: '8px',
+                                                color: 'text.secondary',
+                                            }}
+                                            onClick={() => setOpenReminder(false)}
+                                        >
+                                            <CloseIcon />
+                                        </IconButton>
 
+                                        <TextField inputRef={emailFieldRef} value={reminderEmail} type='email' onChange={({ target }) => setReminderEmail(target.value)} id="reminder-email" label="EMAIL" variant="standard" fullWidth sx={{ mb: 2 }} />
+
+                                        <Button
+                                            sx={{
+                                                mt: 2,
+                                                backgroundColor: '#000',
+                                                color: '#fff',
+                                                '&:hover': {
+                                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                                },
+                                                padding: '12px',
+                                                borderRadius: '1',
+                                            }}
+                                            fullWidth
+                                            onClick={() => handleRemindMe({ email: reminderEmail, variantId: variant?.id })}
+                                        >
+                                            REMIND ME
+                                        </Button>
+                                    </Box>
+                                </Modal>
                                 <Box paddingTop={2}>
 
                                     <CustomAccordion
                                         first={true}
+                                        title='DETAILS'
+                                        expanded={expanded === 'DETAILS'}
+                                        handleChange={() => handleAccordionChange('DETAILS')}
+                                    >
+                                        <Typography>{selectedItem.details}</Typography>
+                                    </CustomAccordion>
+                                    <CustomAccordion
+                                        title="SIZE & FIT"
+                                        expanded={expanded === 'SIZE & FIT'}
+                                        handleChange={() => handleAccordionChange('SIZE & FIT')}
+                                    >
+                                        <Typography>{selectedItem.sizefit}</Typography>
+                                    </CustomAccordion>
+
+                                    <CustomAccordion
+                                        title="CARE"
                                         last={true}
-                                        title="BESKRIVNING"
-                                        expanded={expanded === 'BESKRIVNING'}
-                                        handleChange={() => handleAccordionChange('BESKRIVNING')}
+                                        expanded={expanded === 'CARE'}
+                                        handleChange={() => handleAccordionChange('CARE')}
                                     >
-                                        <Typography>{selectedItem.specification}</Typography>
+                                        <Typography>{selectedItem.care}</Typography>
                                     </CustomAccordion>
+
                                     {/* 
-                                    <CustomAccordion
-                                        title="HOW TO USE"
-                                        expanded={expanded === 'HOW TO USE'}
-                                        handleChange={() => handleAccordionChange('HOW TO USE')}
-                                    >
-                                        <Typography>Instructions on how to use the product...</Typography>
-                                    </CustomAccordion>
-
-                                    <CustomAccordion
-                                        title="SUSTAINABILITY"
-                                        expanded={expanded === 'SUSTAINABILITY'}
-                                        handleChange={() => handleAccordionChange('SUSTAINABILITY')}
-                                    >
-                                        <Typography>Sustainability information...</Typography>
-                                    </CustomAccordion>
-
                                     <CustomAccordion
                                         last={true}
                                         title="INGREDIENTS"

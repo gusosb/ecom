@@ -38,10 +38,16 @@ Item.init({
   description: {
     type: DataTypes.STRING,
   },
-  specification: {
+  sku: {
     type: DataTypes.STRING,
   },
-  sku: {
+  details: {
+    type: DataTypes.STRING,
+  },
+  sizefit: {
+    type: DataTypes.STRING,
+  },
+  care: {
     type: DataTypes.STRING,
   },
 }, {

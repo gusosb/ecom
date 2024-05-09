@@ -21,7 +21,7 @@ const Login = ({ setToken, notify, errorMessage }) => {
   const loginUserMutation = useMutation(loginUser, {
     onSuccess: ({ token }) => {
       setToken(token)
-      localStorage.setItem('ecom-bunny-racer', token)
+      localStorage.setItem('gustaflund-bunny-racer', token)
       navigate('/')
     },
   })

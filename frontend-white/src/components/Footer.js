@@ -55,7 +55,7 @@ const Footer = () => {
 
                 <CustomButton
                     component='a'
-                    href="https://www.instagram.com/gustaf-lund"
+                    href="https://www.instagram.com/realgustaflund"
                     target="_blank"
                     rel="noopener noreferrer"
                     sx={{
@@ -81,7 +81,7 @@ const Footer = () => {
                 </CustomButton> */}
 
                 <Box sx={{ pt: 10 }}>
-                    <CountryCurrencyModal /> {/* Replace CustomButton with CountryCurrencyModal */}
+                    <CountryCurrencyModal />
                 </Box>
             </Box>
         </Box>

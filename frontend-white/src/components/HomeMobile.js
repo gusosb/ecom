@@ -1,18 +1,19 @@
-import { Link, Outlet } from "react-router-dom"
-import FooterMobile from './FooterMobile'
+import { useState, useRef, useEffect } from 'react'
+import { Link, Outlet } from 'react-router-dom';
+import FooterMobile from './FooterMobile';
+import HelmetProvider from './blocks/HelmetProvider';
+import { StyledButton } from '../helpers';
 
-import CloseIcon from '@mui/icons-material/Close'
-import Badge from '@mui/material/Badge'
-import { StyledButton } from '../helpers'
+import CloseIcon from '@mui/icons-material/Close';
+import Badge from '@mui/material/Badge';
 import CartDrawer from './blocks/CartDrawer';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import { useState, useRef, useEffect } from 'react'
 
 
 
 const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCart, format, ShoppingCartIcon,
-    location, cartOpen, setCartOpen, toggleDrawer, Grid, Box, Button, IconButton, baseUrl, windowSize, SURDEGSVG, Helmet, isLoading
+    location, cartOpen, setCartOpen, toggleDrawer, Grid, Box, Button, IconButton, baseUrl, windowSize, SURDEGSVG, isLoading
 }) => {
 
     const footerRef = useRef(null);
@@ -24,13 +25,7 @@ const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCar
 
     return (
         <>
-            <Helmet>
-                <title>SURDEGSHÖRNAN - Baktillbehör för proffs och hemmabagare!</title>
-                <meta name="description" content="Surdegshörnan är din destination för högkvalitativa bakprodukter och tillbehör för att baka surdegsbröd hemma eller i yrkesköket. Upptäck vårt sortiment av jäskorgar, bakmattor, degskrapor och mycket mer!" />
-                <meta name="keywords" content="surdeg, surdegsbröd, jäskorg, bakmatta, degskrapa, bakverktyg, bagare, hemmabagare, baktillbehör" />
-                <meta name="author" content="Surdegshörnan" />
-                <link rel="canonical" href="https://www.surdegshornan.se/" />
-            </Helmet>
+            <HelmetProvider />
 
             <CartDrawer location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} cart={cart} format={format} removeFromCart={removeFromCart} Grid={Grid}
                 toggleDrawer={toggleDrawer} CloseIcon={CloseIcon} Box={Box} Link={Link}
@@ -51,12 +46,10 @@ const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCar
                     <Outlet context={[setCartOpen, footerHeight]} />
                 </Box>
 
-                {!location.pathname === '/' &&
-                    <Box paddingBottom={'37px'}>
-                        hej
-                        <FooterMobile />
-                    </Box>
-                }
+                <Box paddingBottom={'37px'}>
+                    <FooterMobile />
+                </Box>
+
                 {location.pathname.startsWith('/product') &&
                     <Box paddingBottom={'37px'}>
                         <FooterMobile />

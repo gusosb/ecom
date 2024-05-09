@@ -141,7 +141,9 @@ const AdminItems = ({ queryClient }) => {
     const [name, setName] = useState('')
     const [brand, setBrand] = useState('')
     const [description, setDescription] = useState('')
-    const [specification, setSpecification] = useState('')
+    const [details, setDetails] = useState('')
+    const [sizefit, setSizefit] = useState('')
+    const [care, setCare] = useState('')
 
     useEffect(() => {
         setSellable(selectedItem.sellable)
@@ -152,7 +154,9 @@ const AdminItems = ({ queryClient }) => {
         setName(selectedItem.name)
         setBrand(selectedItem.brand)
         setDescription(selectedItem.description || '')
-        setSpecification(selectedItem.specification || '')
+        setDetails(selectedItem.details || '')
+        setSizefit(selectedItem.sizefit || '')
+        setCare(selectedItem.care || '')
 
         !categoryName && setCategoryName(selectedCategory.name)
         !categoryDescription && setCategoryDescription(selectedCategory.description)
@@ -227,8 +231,10 @@ const AdminItems = ({ queryClient }) => {
         name,
         brand,
         description,
-        specification,
-        sku
+        sku,
+        details,
+        sizefit,
+        care,
     }
     const sendUpdateItem = () => {
         updateItemMutation.mutate({ id: parseInt(itemID), ...updateItemVariables })
@@ -435,9 +441,23 @@ const AdminItems = ({ queryClient }) => {
                                             <StyledTextarea
                                                 maxRows={4}
                                                 aria-label="maximum height"
-                                                placeholder="Enter item speficiation"
-                                                value={specification}
-                                                onChange={({ target }) => setSpecification(target.value)}
+                                                placeholder="Enter item details"
+                                                value={details}
+                                                onChange={({ target }) => setDetails(target.value)}
+                                            />
+                                            <StyledTextarea
+                                                maxRows={4}
+                                                aria-label="maximum height"
+                                                placeholder="Enter item size & fit"
+                                                value={sizefit}
+                                                onChange={({ target }) => setSizefit(target.value)}
+                                            />
+                                            <StyledTextarea
+                                                maxRows={4}
+                                                aria-label="maximum height"
+                                                placeholder="Enter item care"
+                                                value={care}
+                                                onChange={({ target }) => setCare(target.value)}
                                             />
                                         </Grid>
                                     </Grid>

@@ -16,7 +16,7 @@ const Returns = () => {
             </Box>
 
             <Box mx={windowSize > 800 ? 20 : 5} mt={4}>
-                <Typography variant="body1" gutterBottom>You are free to return your order within 30 days, providing the garments are unused, contact us by email at <a href='mailto:info@gustaflund.com'>info@gustaflund.se</a> for help with returning your order. When you return an order we charge a shipping fee of {selectedCurrency === 'SEK' ? 100 : 10} {selectedCurrency}.</Typography>
+                <Typography variant="body1" gutterBottom>You are free to return your order within 30 days, providing the garments are unused, use the enclosed return label to return your order. When you return an order we charge a shipping fee of {selectedCurrency === 'SEK' ? 100 : 10} {selectedCurrency}.</Typography>
             </Box>
         </>
     );

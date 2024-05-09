@@ -15,14 +15,13 @@ import { useWindowSize, StyledButton } from '../helpers'
 import CartDrawer from './blocks/CartDrawer';
 import Typography from '@mui/material/Typography';
 import { ReactComponent as SURDEGSVG } from '../images/sourdoughsvg.svg';
-import { Helmet } from 'react-helmet-async';
+import HelmetProvider from './blocks/HelmetProvider';
 
 
 
 const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSumInCart, format, baseUrl, isLoading }) => {
 
     const [cartOpen, setCartOpen] = useState(false)
-
 
     const toggleDrawer = () => (event) => {
         if (event?.type === 'keydown' && (event?.key === 'Tab' || event?.key === 'Shift')) return
@@ -46,18 +45,12 @@ const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSu
 
     if (windowSize.width < 800) return <HomeMobile SURDEGSVG={SURDEGSVG} cart={cart} location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} toggleDrawer={toggleDrawer} totalSumInCart={totalSumInCart} changeVariantQuantity={changeVariantQuantity}
         PersonOutlineOutlinedIcon={PersonOutlineOutlinedIcon} ShoppingCartIcon={ShoppingCartIcon} placeholderLogo={placeholderLogo} format={format} categories={categories} Grid={Grid}
-        Box={Box} Button={Button} IconButton={IconButton} baseUrl={baseUrl} removeFromCart={removeFromCart} windowSize={windowSize} Helmet={Helmet} isLoading={isLoading}
+        Box={Box} Button={Button} IconButton={IconButton} baseUrl={baseUrl} removeFromCart={removeFromCart} windowSize={windowSize} HelmetProvider={HelmetProvider} isLoading={isLoading}
     />
 
     return (
         <>
-            <Helmet>
-                <title>SURDEGSHÖRNAN - Baktillbehör för proffs och hemmabagare!</title>
-                <meta name="description" content="Surdegshörnan är din destination för högkvalitativa bakprodukter och tillbehör för att baka surdegsbröd hemma eller i yrkesköket. Upptäck vårt sortiment av jäskorgar, bakmattor, degskrapor och mycket mer!" />
-                <meta name="keywords" content="surdeg, surdegsbröd, jäskorg, bakmatta, degskrapa, bakverktyg, bagare, hemmabagare, baktillbehör" />
-                <meta name="author" content="Surdegshörnan" />
-                <link rel="canonical" href="https://www.surdegshornan.se/" />
-            </Helmet>
+            <HelmetProvider />
 
             <CartDrawer location={location} cartOpen={cartOpen} setCartOpen={setCartOpen} cart={cart} format={format} removeFromCart={removeFromCart} Grid={Grid}
                 toggleDrawer={toggleDrawer} CloseIcon={CloseIcon} Box={Box} Link={Link} windowSize={windowSize}

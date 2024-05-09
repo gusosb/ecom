@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-export const baseUrl = 'http://localhost:3001'
-//export const baseUrl = 'https://api.surdegshornan.se'
-const token = localStorage.getItem('ecom-bunny-racer') || '';
+//export const baseUrl = 'http://localhost:3001'
+export const baseUrl = 'https://api.gustaflund.com'
+const token = localStorage.getItem('gustaflund-bunny-racer') || '';
 
 // export const getSite = () =>
 //     /* axios.get(baseUrl + '/api/site', { headers: { 'Authorization': `bearer ${token}` } }).then(res => res.data) */
@@ -21,10 +21,10 @@ export const createNote = newNote =>
     axios.post(baseUrl, newNote).then(res => res.data)
 
 export const createCategory = newCategory =>
-    axios.post(`${baseUrl}/api/categories/admin`, newCategory).then(res => res.data)
+    axios.post(`${baseUrl}/api/categories/admin`, newCategory, { headers: { 'Authorization': `bearer ${token}` } }).then(res => res.data)
 
 export const updateCategory = category =>
-    axios.put(`${baseUrl}/api/categories/admin`, category).then(res => res.data)
+    axios.put(`${baseUrl}/api/categories/admin`, category, { headers: { 'Authorization': `bearer ${token}` } }).then(res => res.data)
 
 export const createItem = newItem =>
     axios.post(`${baseUrl}/api/items`, newItem, { headers: { 'Authorization': `bearer ${token}`, 'Content-Type': "multipart/form-data" } }).then(res => res.data)
@@ -70,6 +70,10 @@ export const updateTracking = order => // => Updates the tracking number on the 
 
 export const addReview = data =>
     axios.post(baseUrl + `/api/items/reviews/${data.id}`, data).then(res => res.data)
+
+
+export const addReminder = data =>
+    axios.post(baseUrl + `/api/items/remindme/${data.itemid}`, data).then(res => res.data)
 
 
 // STRIPE

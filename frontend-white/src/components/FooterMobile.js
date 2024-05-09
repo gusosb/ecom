@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box'
 import { Link } from "react-router-dom"
-import { CustomButton } from '../helpers'
+import { CustomButton, CountryCurrencyModal } from '../helpers'
 
 
 const FooterMobile = () => {
@@ -50,7 +50,7 @@ const FooterMobile = () => {
 
           <CustomButton
             component='a'
-            href="https://www.instagram.com/gustaf-lund"
+            href="https://www.instagram.com/realgustaflund"
             target="_blank"
             rel="noopener noreferrer"
             sx={{
@@ -75,6 +75,8 @@ const FooterMobile = () => {
             TIKTOK
           </CustomButton> */}
 
+
+          <CountryCurrencyModal />
 
         </Box>
       </Box>

@@ -29,21 +29,10 @@ const images = [
 const FrontPage = () => {
 
   return (
-    <ImageList variant="quilted" cols={3} sx={{ marginTop: 0 }}>
-      {images.map((image) => (
-        <ImageListItem key={image.id} cols={image.cols} rows={image.rows}>
-          <img
-            src={`${image.src}?w=164&h=164&fit=crop&auto=format`}
-            srcSet={`${image.src}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-            alt={image.alt}
-            loading="lazy"
-            style={{
-              borderRadius: '4px',
-            }}
-          />
-        </ImageListItem>
-      ))}
-    </ImageList>
+    <>
+      friontpage!
+
+    </>
   );
 };
 

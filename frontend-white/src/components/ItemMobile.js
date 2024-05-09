@@ -77,27 +77,27 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
           <Box width='100%' ref={boxRef}>
             {toggleDetails &&
               <>
-                {/* <CustomAccordion
-                  title="DESCRIPTION"
-                  expanded={expanded === 'DESCRIPTION'}
-                  handleChange={() => handleAccordionChange('DESCRIPTION')}
+                <CustomAccordion
+                  title="DETAILS"
+                  expanded={expanded === 'DETAILS'}
+                  handleChange={() => handleAccordionChange('DETAILS')}
                 >
-                  <Typography>Some description here...</Typography>
+                  <Typography>{selectedItem.details}</Typography>
                 </CustomAccordion>
 
                 <CustomAccordion
-                  last={true}
                   title="SIZE & FIT"
                   expanded={expanded === 'SIZE & FIT'}
                   handleChange={() => handleAccordionChange('SIZE & FIT')}
                 >
-                  <Typography>Size & fitting ...</Typography>
-                </CustomAccordion> */}
+                  <Typography>{selectedItem.specification}</Typography>
+                </CustomAccordion>
+
                 <CustomAccordion
                   last={true}
-                  title="BESKRIVNING"
-                  expanded={expanded === 'BESKRIVNING'}
-                  handleChange={() => handleAccordionChange('BESKRIVNING')}
+                  title="CARE"
+                  expanded={expanded === 'CARE'}
+                  handleChange={() => handleAccordionChange('CARE')}
                 >
                   <Typography>{selectedItem.specification}</Typography>
                 </CustomAccordion>
@@ -139,7 +139,7 @@ const ItemMobile = ({ variant, selectedItem, setVariant, format, addToCart, expa
                 fullWidth
                 onClick={addToCart}
               >
-                BUY – {selectedCurrency === 'SEK' ? format(selectedItem.price * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100) : format(selectedItem.price_eur / 100)} {selectedCurrency}
+                BUY – {selectedCurrency === 'SEK' ? format(selectedItem.price_sek * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100) : format(selectedItem.price_eur / 100)} {selectedCurrency}
               </Button>
             </Grid>
           </Grid>

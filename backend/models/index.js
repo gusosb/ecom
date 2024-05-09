@@ -7,6 +7,7 @@ const Order = require('./order')
 const OrderItem = require('./orderitem')
 const Variant = require('./variant')
 const Review = require('./review')
+const Reminder = require('./reminder')
 
 const { sequelize } = require('../util/db')
 
@@ -30,6 +31,9 @@ Variant.belongsTo(Item)
 
 Item.hasMany(Review)
 Review.belongsTo(Item)
+
+Reminder.belongsTo(Item)
+Item.hasMany(Reminder)
 
 // sequelize.sync()
 sequelize.sync({ alter: true })

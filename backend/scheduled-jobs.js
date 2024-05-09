@@ -60,9 +60,9 @@ ${order.currency === 'EUR' ?
     }
 }
 
-// Runs every day at midnight
-// cron.schedule('0 0 * * *', async () => {
-cron.schedule('* * * * *', async () => {
+//cron.schedule('* * * * *', async () => { // => Runs every minute
+
+cron.schedule('0 0 * * *', async () => { // Runs every day at midnight
     console.log('Running scheduled create SIE job.');
 
     const orders = await Order.findAll({

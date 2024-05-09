@@ -188,7 +188,7 @@ export const VariantSelector = ({ variant, setVariant, variants, showVariants, s
                   }}
                />
                <Typography variant="body1" component="div">
-                  {variants.find(v => v.id === variant).name}
+                  {variants.find(v => v.id === variant)?.name}
                </Typography>
             </Box>
             <IconButton disableRipple sx={{ ...rotateStyle, padding: 0, margin: 0 }}>
@@ -217,7 +217,7 @@ export const VariantSelector = ({ variant, setVariant, variants, showVariants, s
                         marginRight: '8px',
                      }}
                   />
-                  <Typography variant="body1" component="div">{v.name}</Typography>
+                  <Typography variant="body1" component="div">{v?.name}</Typography>
                </Box>
             ))}
       </>

@@ -1,7 +1,8 @@
 const itemsRouter = require('express').Router()
 const { auth } = require('./auth')
 const multer = require('multer')
-const { Item, Image, Variant, Review, Order } = require('../models')
+const { Item, Image, Variant, Review, Order } = require('../models');
+const Reminder = require('../models/reminder');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -48,6 +49,31 @@ itemsRouter.post('/reviews/:id', async (request, response) => {
   await Review.create({ itemId, ...request.body, name })
 
   response.status(201).json()
+})
+
+
+// => create reminder for stock
+itemsRouter.post('/remindme/:id', async (request, response) => {
+  const itemId = request.params.id;
+
+  const { email } = request.body;
+
+  try {
+    // Find the item with the given email and itemId
+    const [reminder, created] = await Reminder.findOrCreate({
+      where: { email, itemId },
+      defaults: { email, itemId }
+    });
+
+    if (created) {
+      response.status(201).json({ message: 'Reminder created successfully.' });
+    } else {
+      response.status(200).json({ message: 'Reminder already exists for this item.' });
+    }
+  } catch (error) {
+    console.error('Error creating reminder:', error);
+    response.status(500).json({ error: 'Internal server error' });
+  }
 })
 
 

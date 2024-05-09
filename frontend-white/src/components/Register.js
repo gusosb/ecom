@@ -24,7 +24,7 @@ const Register = ({ setToken, notify, errorMessage }) => {
   const createUserMutation = useMutation(createUser, {
     onSuccess: ({ token }) => {
       setToken(token)
-      localStorage.setItem('ecom-bunny-racer', token)
+      localStorage.setItem('gustaflund-bunny-racer', token)
       navigate('/')
     },
   })

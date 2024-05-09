@@ -14,7 +14,7 @@ const Contact = () => {
 
             <Box mx={windowSize > 800 ? 20 : 5} mt={4}>
 
-                <Typography variant="body1" gutterBottom>We are happy to answer any questions you might have, please contact us by email, <a href="mailto:info@gustaflund.se">info@gustaflund.se</a></Typography>
+                <Typography variant="body1" gutterBottom>We are happy to answer any questions you might have, please contact us by email, <a href="mailto:info@gustaflund.com">info@gustaflund.com</a></Typography>
 
             </Box>
         </>

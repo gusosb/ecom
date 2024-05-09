@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import ReactGA from "react-ga4";
 
-function GoogleAnalytics() {
+const GoogleAnalytics = () => {
     const location = useLocation();
 
     useEffect(() => {
-        ReactGA.initialize('G-EN26L7HCFT');
+        ReactGA.initialize('G-04GDTVYW1R');
     }, []);
 
     useEffect(() => {
