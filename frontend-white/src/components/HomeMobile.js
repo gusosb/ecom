@@ -46,16 +46,11 @@ const HomeMobile = ({ cart, removeFromCart, changeVariantQuantity, totalSumInCar
                     <Outlet context={[setCartOpen, footerHeight]} />
                 </Box>
 
-                <Box paddingBottom={'37px'}>
-                    <FooterMobile />
-                </Box>
-
-                {location.pathname.startsWith('/product') &&
+                {!location.pathname.startsWith('/shop') &&
                     <Box paddingBottom={'37px'}>
                         <FooterMobile />
                     </Box>
                 }
-
 
 
                 <Grid container borderTop={1} paddingTop={1} paddingBottom={1} borderColor='#e6e6e6'

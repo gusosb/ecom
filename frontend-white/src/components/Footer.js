@@ -21,20 +21,18 @@ const Footer = () => {
                 display: 'flex',
                 flexDirection: 'column',
             }}>
+                <CustomButton component={Link} to='/the-cashmere'>
+                    THE CASHMERE
+                </CustomButton>
                 <CustomButton component={Link} to='/customer-support/faq'>
                     CUSTOMER SUPPORT
                 </CustomButton>
-
-                <CustomButton component={Link} to='/about-us'>
+                {/*<CustomButton component={Link} to='/about-us'>
                     ABOUT US
+                 </CustomButton>*/}
+                <CustomButton component={Link} to='/terms-and-conditions'>
+                    TERMS & CONDITIONS
                 </CustomButton>
-
-                {/* <CustomButton component={Link} to='/'>
-                    SUSTAINABILITY
-                </CustomButton>
-                <CustomButton component={Link} to='/'>
-                    LEGAL
-                </CustomButton> */}
 
             </Box>
 

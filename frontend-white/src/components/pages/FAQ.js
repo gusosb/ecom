@@ -12,7 +12,7 @@ const FAQ = () => {
     const { selectedCurrency } = useCountryCurrency();
 
     const questions = [
-        { title: 'WHAT IS YOUR RETURN POLICY?', description: `If your garment is unsatisfactory in any way you are free to return it within 30 days, providing the garment is unused. Use the enclosed return label to return your order, when you return an order we charge a shipping fee of ${selectedCurrency === 'SEK' ? 100 : 10} ${selectedCurrency}.` }
+        { title: 'WHAT IS YOUR RETURN POLICY?', description: `If your garment is unsatisfactory in any way you are free to return it within 30 days, providing the garment is unused. Use the enclosed return label to return your order, when you return an entire order we charge a shipping fee of ${selectedCurrency === 'SEK' ? 100 : 10} ${selectedCurrency}.` }
     ];
 
 

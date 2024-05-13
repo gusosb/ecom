@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { initiateCheckout, createOrder, updatePayment } from '../requests';
 import { useMutation } from '@tanstack/react-query';
-import { useWindowSize, convertTaxRate } from '../helpers';
+import { useWindowSize, convertTaxRate, vatRates } from '../helpers';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -65,6 +65,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
     const [payment, setPayment] = useState({});
     const [creatingOrder, setCreatingOrder] = useState(false);
     const [isInitialRender, setIsInitialRender] = useState(true);
+
     const [shouldRenderForm, setShouldRenderForm] = useState(false);
     const [loadSkeleton, setLoadSkeleton] = useState(true);
 
@@ -82,24 +83,44 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
     const [address2, setAddress2] = useState('');
     const [state, setState] = useState('');
     const [country, setCountry] = useState('');
+    console.log('country', country);
+
+
+    const formatAmount = (amt) => parseInt(amt.toFixed(0));
 
 
     let order_tax_amount = 0;
     const order_lines = Object.keys(cart).map(e => {
         const itemVariant = cart[e].variants?.find(b => b.id === parseInt(e));
-        const total_tax_amount = selectedCurrency === 'SEK'
-            ? convertTaxRate(cart[e].vatRateSE) * cart[e].price_sek * cart[e].quantity
-            : (cart[e].price_eur * cart[e].quantity * convertTaxRate(cart[e].vatRateSE)) / (1 + convertTaxRate(cart[e].vatRateSE));
+        const ossVatRate = convertTaxRate(vatRates[country]?.vatRate) / 100 || 0;
+        console.log('ossVatRate', ossVatRate);
+        const vatRateSE = convertTaxRate(cart[e].vatRateSE);
+
+        const ossAmount = formatAmount((cart[e].price_eur * cart[e].quantity * ossVatRate) / (1 + ossVatRate))
+        const sekVatAmount = formatAmount(vatRateSE * cart[e].price_sek * cart[e].quantity);
+        const sekVatEURAmount = formatAmount((cart[e].price_eur * cart[e].quantity * vatRateSE) / (1 + vatRateSE));
+
+        console.log('ossAmount', ossAmount);
+        console.log('sekVatAmount', sekVatAmount);
+
+        console.log('sekVatEURAmount', sekVatEURAmount);
+
+
+        const total_tax_amount = country === 'SE' && selectedCurrency === 'SEK'
+            ? sekVatAmount
+            // : (cart[e].price_eur * cart[e].quantity * vatRateSE) / (1 + vatRateSE);
+            : country === 'SE' && selectedCurrency !== 'SEK' ? sekVatEURAmount
+                : ossAmount;
         order_tax_amount += total_tax_amount;
         return {
             type: 'physical',
             name: cart[e].name,
             quantity: cart[e].quantity,
             quantity_unit: 'pcs',
-            unit_price: selectedCurrency === 'SEK' ? cart[e].price_sek * (1 + convertTaxRate(cart[e].vatRateSE)) : cart[e].price_eur,
+            unit_price: selectedCurrency === 'SEK' ? cart[e].price_sek * (1 + vatRateSE) : cart[e].price_eur,
             currency: selectedCurrency,
             tax_rate: selectedCurrency === 'SEK' ? cart[e].vatRateSE : 0,
-            total_amount: selectedCurrency === 'SEK' ? cart[e].quantity * cart[e].price_sek * (1 + convertTaxRate(cart[e].vatRateSE)) : cart[e].quantity * cart[e].price_eur,
+            total_amount: country === 'SE' && selectedCurrency === 'SEK' ? cart[e].quantity * cart[e].price_sek * (1 + vatRateSE) : country === 'SE' && selectedCurrency !== 'SEK' ? cart[e].quantity * cart[e].price_eur * (1 + vatRateSE) : cart[e].quantity * cart[e].price_eur,
             total_tax_amount,
             variant: itemVariant.name,
             product_url: `${window.location.origin}/product/${cart[e].id}`,
@@ -108,6 +129,9 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
             image_path: baseUrl + cart[e].images[0]?.path // => setting the first image as default orderitem image
         };
     });
+
+    console.log('order_lines', order_lines);
+
 
     const initiateCheckoutMutation = useMutation(initiateCheckout, {
         onSuccess: (response) => {
@@ -139,9 +163,10 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
         if (options.clientSecret) return;
         initiateCheckoutMutation.mutate({ locale: navigator.language, order_amount: totalSumInCart, order_lines, order_tax_amount, currency: selectedCurrency.toLowerCase() });
         setTimeout(() => {
-            setLoadSkeleton(false);
             setShouldRenderForm(true);
-        }, 1000);
+            setLoadSkeleton(false);
+            setIsInitialRender(false);
+        }, 500);
     }, []); // eslint-disable-line
 
 
@@ -150,7 +175,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
         if (isInitialRender) return setIsInitialRender(false);
 
         updatePaymentIntentMutation.mutate({ order_amount: totalSumInCart, order_lines, payment_id: payment.paymentId, currency: selectedCurrency.toLowerCase() });
-    }, [totalSumInCart]); // eslint-disable-line
+    }, [totalSumInCart, selectedCurrency]); // eslint-disable-line
 
 
     const windowSize = useWindowSize();
@@ -180,7 +205,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
                         <Grid container spacing={0}>
 
                             <Grid item xs >
-                                <Typography sx={{ borderBottom: '1px solid #e6e6e6' }} paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>ORDERSAMMANSTÄLLNING</Typography>
+                                <Typography sx={{ borderBottom: '1px solid #e6e6e6' }} paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>ORDER SUMMARY</Typography>
 
                                 <List>
                                     {cart && Object.keys(cart).map((key, i) => {
@@ -257,7 +282,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
                     <Grid item xs paddingBottom={4}>
 
                         <Grid item xs sx={{ borderBottom: '1px solid #e6e6e6', marginBottom: 2 }}>
-                            <Typography paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>KUNDINFORMATION</Typography>
+                            <Typography paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>CUSTOMER INFORMATION</Typography>
                         </Grid>
                         {loadSkeleton &&
                             <>

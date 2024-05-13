@@ -11,6 +11,11 @@ import {
 } from '@stripe/react-stripe-js';
 
 
+const allowedCountries = [
+    'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR',
+    'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL',
+    'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'CH', 'SE'
+]
 
 const CheckoutForm = ({ sendCreateOrder, format, totalSumInCart, setEmail, setName, setAddress, setCountry, setAddress2, setPostalcode, setCity, setState, setPhone, setCreatingOrder, email, selectedCurrency }) => {
 
@@ -49,7 +54,7 @@ const CheckoutForm = ({ sendCreateOrder, format, totalSumInCart, setEmail, setNa
 
                     <AddressElement
                         options={{
-                            mode: 'shipping', allowedCountries: ['SE'], fields: { phone: 'always' },
+                            mode: 'shipping', allowedCountries, fields: { phone: 'always' },
                             validation: {
                                 phone: {
                                     required: 'always',

@@ -15,7 +15,7 @@ const CheckoutMobileAdyen = ({ cart, changeVariantQuantity, format, totalSumInCa
             <Grid container>
 
                 <Grid item xs={12} sx={{ borderBottom: '1px solid #e6e6e6', pt: 4, pl: 2 }}>
-                    <Typography paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>ORDERSAMMANSTÄLLNING</Typography>
+                    <Typography paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>ORDER SUMMARY</Typography>
                 </Grid>
                 <Grid item xs={12}>
 
@@ -91,7 +91,7 @@ const CheckoutMobileAdyen = ({ cart, changeVariantQuantity, format, totalSumInCa
 
 
                 <Grid item xs={12} sx={{ borderBottom: '1px solid #e6e6e6', marginBottom: 2, pt: 5, pl: 2 }}>
-                    <Typography paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>KUNDINFORMATION</Typography>
+                    <Typography paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>CUSTOMER INFORMATION</Typography>
                 </Grid>
 
 

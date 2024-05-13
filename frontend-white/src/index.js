@@ -8,7 +8,7 @@ import { HelmetProvider } from 'react-helmet-async';
 
 import { CountryCurrencyProvider } from './helpers';
 
-//import '@fontsource/jost';
+import '@fontsource/jost';
 const queryClient = new QueryClient()
 
 const theme = createTheme({

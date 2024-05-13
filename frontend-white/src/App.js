@@ -18,6 +18,8 @@ const FrontPage = lazy(() => import('./components/FrontPage'));
 const Confirmation = lazy(() => import('./components/ConfirmationWrapper'));
 const CustomerSupport = lazy(() => import('./components/CustomerSupport'));
 const Discover = lazy(() => import('./components/Discover'));
+const TheCashmere = lazy(() => import('./components/TheCashmere'));
+const Terms = lazy(() => import('./components/Terms'));
 
 const FAQ = lazy(() => import('./components/pages/FAQ'));
 const Returns = lazy(() => import('./components/pages/Returns'));
@@ -47,7 +49,7 @@ const App = () => {
   const handleRemindMe = ({ email, variantId }) => {
     console.log(email);
     console.log('variantId', variantId);
-    
+
     newReminderMutation.mutate({ email, variantId })
   };
 
@@ -148,7 +150,9 @@ const App = () => {
               <Route path='/login' element={token ? <Navigate replace to="/" /> : <Login notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
               <Route path='/register' element={!token ? <Register notify={notify} setToken={setToken} errorMessage={errorMessage} /> : <Navigate replace to="/" />} />
 
-              <Route path='/discover' element={!token ? <Discover notify={notify} setToken={setToken} errorMessage={errorMessage} /> : <Navigate replace to="/" />} />
+              <Route path='/discover' element={<Discover notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
+              <Route path='/the-cashmere' element={<TheCashmere notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
+              <Route path='/terms-and-conditions' element={<Terms notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
 
               <Route path='/customer-support' element={<CustomerSupport notify={notify} setToken={setToken} errorMessage={errorMessage} />}>
                 <Route path='faq' element={<FAQ notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
