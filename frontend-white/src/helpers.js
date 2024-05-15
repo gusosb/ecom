@@ -9,7 +9,6 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Box from '@mui/material/Box';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Modal from '@mui/material/Modal';
 
 
@@ -19,21 +18,16 @@ export const useWindowSize = () => {
       height: undefined,
    });
    useEffect(() => {
-      // Handler to call on window resize
       const handleResize = () => {
-         // Set window width/height to state
          setWindowSize({
             width: window.innerWidth,
             height: window.innerHeight,
          });
       };
-      // Add event listener
       window.addEventListener("resize", handleResize);
-      // Call handler right away so state gets updated with initial window size
       handleResize();
-      // Remove event listener on cleanup
       return () => window.removeEventListener("resize", handleResize);
-   }, []); // Empty array ensures that effect is only run on mount
+   }, []);
    return windowSize;
 };
 
@@ -382,6 +376,8 @@ export const CountryCurrencyModal = () => {
 
    const handleOpen = () => { setOpen(true); };
 
+   const windowSize = useWindowSize();
+
    const handleClose = () => { setOpen(false); };
 
    const handleChange = (country, currency) => {
@@ -393,7 +389,7 @@ export const CountryCurrencyModal = () => {
       <>
          <CustomButton onClick={handleOpen}>{selectedCountry} / {selectedCurrency}</CustomButton>
          <Modal open={open} onClose={handleClose}>
-            <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
+            <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: windowSize.width > 800 ? 4 : 2 }}>
                <Typography variant="h6" component="div" gutterBottom>
                   CHANGE COUNTRY
                </Typography>

@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography';
 import { Link } from "react-router-dom"
 import { CustomButton, CountryCurrencyModal } from '../helpers'
 
@@ -19,31 +20,29 @@ const FooterMobile = () => {
         }}
       >
         <Box sx={{
+          height: '120px',
           display: 'flex',
-          flexDirection: 'column', // stacks buttons vertically
+          flexDirection: 'column',
         }}>
           <CustomButton component={Link} to='/customer-support/faq'>
             CUSTOMER SUPPORT
           </CustomButton>
 
-          <CustomButton component={Link} to='/about-us' >
+          <CustomButton component={Link} to='/terms-and-conditions'>
+            TERMS & CONDITIONS
+          </CustomButton>
+
+          <CustomButton component={Link} to='/about-us'>
             ABOUT US
           </CustomButton>
 
-          {/* <CustomButton component={Link} to='/' >
-            SUSTAINABILITY
-          </CustomButton>
-          <CustomButton component={Link} to='/' >
-            LEGAL
-          </CustomButton> */}
-
         </Box>
+
 
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
             height: '100%',
           }}
         >
@@ -54,7 +53,6 @@ const FooterMobile = () => {
             target="_blank"
             rel="noopener noreferrer"
             sx={{
-              mt: 'auto',
               justifyContent: 'end'
             }}
           >

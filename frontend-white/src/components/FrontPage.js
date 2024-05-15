@@ -30,7 +30,62 @@ const FrontPage = () => {
 
   return (
     <>
-      friontpage!
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
+      frontpage!
+      <br />
 
     </>
   );

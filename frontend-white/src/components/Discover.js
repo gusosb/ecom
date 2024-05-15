@@ -11,7 +11,7 @@ const Discover = () => {
 
     return (
         <Grid container justifyContent='center'>
-            discover!
+
         </Grid>
     );
 };

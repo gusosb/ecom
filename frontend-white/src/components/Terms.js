@@ -1,4 +1,4 @@
-import { useWindowSize } from '../helpers'
+import { useWindowSize, useCountryCurrency } from '../helpers'
 
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -7,6 +7,8 @@ import Box from '@mui/material/Box';
 const Terms = () => {
 
     const windowSize = useWindowSize();
+
+    const { selectedCurrency } = useCountryCurrency();
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -71,8 +73,8 @@ const Terms = () => {
                     We ship from our warehouse in Göteborg, Sweden.
                     Shipments are sent with PostNord.
                     Normal dispatch from GUSTAF LUND takes place within 1-2 business days.
-                    In the case of GUSTAF LUND being unable to deliver within the agreed time, the customer will be informed promptly of the reasons for the delay.
-                    In the case of delayed delivery, the customer is entitled to cancel the purchase at no cost.
+                    In the case of GUSTAF LUND being unable to dispatch the order within the agreed time, the customer will be informed promptly of the reasons for the delay.
+                    In the case of delayed order dispatch, the customer is entitled to cancel the purchase at no cost.
                 </Typography>
                 <br />
                 <Typography variant='body2' fontWeight='bold' fontSize={16}>§5.1 Unclaimed Shipments</Typography>
@@ -87,7 +89,7 @@ const Terms = () => {
                 <Typography variant='body2' fontWeight='bold' fontSize={17}>§6 Returns</Typography>
                 <br />
                 <Typography variant='body1'>
-                    You may return the goods to us by any secure means within 30 days (beginning on the day you received your order).
+                    You may return the goods to us by any secure means within 14 days (beginning on the day you received your order).
                     Returned goods must be unused and in the original packaging with all hang tags still attached.
                     Please note that the original packaging is part of the product. Be careful when you try on the products at home; some are especially fragile.
                     <br />
@@ -97,7 +99,7 @@ const Terms = () => {
                     Enclosed in your order is a return form and return shipping label.
                     To return your order, please fill in the return form and pack your goods as they were received by GUSTAF LUND.
                     Enclose the return form and put the return shipping label on the outside of the package.
-                    Submit the package at your closest service point. Please note that we charge for return shipping when returning a full order.
+                    Submit the package at your closest service point. Please note that we charge {selectedCurrency === 'SEK' ? 100 : 10} {selectedCurrency} for return shipping when returning a full order.
                 </Typography>
                 <br />
                 <Typography variant='body2' fontWeight='bold' fontSize={16}>§6.1 Exchange Policy</Typography>
@@ -126,7 +128,7 @@ const Terms = () => {
                 <Typography variant='body1'>
                     If the package is damaged upon receipt, please report it immediately to the post representative where it was picked up.
                     As a customer, you have no obligation to accept damaged goods. In the case of hidden damages, these should be reported within seven working days of receipt.
-                    Please contact our Customer Service Team at customerservice@lisa-yang.com and explain the damage.
+                    Please contact our Customer Service Team at customerservice@gustaflund.com and explain the damage.
                     All complaints must be approved by GUSTAF LUND before the goods are sent back.
                     Always save the original packaging.
                 </Typography>
@@ -139,7 +141,7 @@ const Terms = () => {
                 <br />
                 <br />
                 <Typography variant='body1'>
-                    Last modification date: 12th of May, 2024.
+                    Last modification date: 13th of May, 2024.
                 </Typography>
 
             </Box>

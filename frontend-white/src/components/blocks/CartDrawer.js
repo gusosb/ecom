@@ -12,10 +12,10 @@ import { convertTaxRate, useCountryCurrency } from '../../helpers';
 
 const CartDrawer = ({
     cart, cartOpen, setCartOpen, format, Grid, CloseIcon,
-    Box, Link, changeVariantQuantity, totalSumInCart, Button, swipeable, SwipeableDrawer, baseUrl, windowSize
+    Box, Link, changeVariantQuantity, totalSumInCart, Button, swipeable, SwipeableDrawer, baseUrl, windowSize, drawerOpen
 }) => {
 
-    const Draws = swipeable ? SwipeableDrawer : Drawer;
+    const Draws = (swipeable && !drawerOpen) ? SwipeableDrawer : Drawer;
 
     const isMobile = windowSize.width <= 800;
     const drawerWidth = isMobile ? windowSize.width : 600;

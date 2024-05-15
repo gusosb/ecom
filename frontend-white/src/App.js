@@ -8,20 +8,28 @@ import GoogleAnalytics from './components/GoogleAnalytics';
 import Category from './components/Category';
 import Item from './components/Item';
 import Checkout from './components/CheckoutStripe';
+import Discover from './components/Discover';
+import TheCashmere from './components/TheCashmere';
+import CustomerSupport from './components/CustomerSupport';
+import Terms from './components/Terms';
+//import FrontPage from './components/FrontPage';
+//import Home from './components/Home';
+import FAQ from './components/pages/FAQ';
 
 const Login = lazy(() => import('./components/Login'));
 const Register = lazy(() => import('./components/Register'));
 const Home = lazy(() => import('./components/Home'));
 const AdminItems = lazy(() => import('./components/AdminItems'));
 const AdminOrders = lazy(() => import('./components/AdminOrders'));
-const FrontPage = lazy(() => import('./components/FrontPage'));
 const Confirmation = lazy(() => import('./components/ConfirmationWrapper'));
-const CustomerSupport = lazy(() => import('./components/CustomerSupport'));
-const Discover = lazy(() => import('./components/Discover'));
-const TheCashmere = lazy(() => import('./components/TheCashmere'));
-const Terms = lazy(() => import('./components/Terms'));
+const FrontPage = lazy(() => import('./components/FrontPage'));
+//const CustomerSupport = lazy(() => import('./components/CustomerSupport'));
+//const Discover = lazy(() => import('./components/Discover'));
+//const TheCashmere = lazy(() => import('./components/TheCashmere'));
+//const Terms = lazy(() => import('./components/Terms'));
+const About = lazy(() => import('./components/About'));
 
-const FAQ = lazy(() => import('./components/pages/FAQ'));
+//const FAQ = lazy(() => import('./components/pages/FAQ'));
 const Returns = lazy(() => import('./components/pages/Returns'));
 const Contact = lazy(() => import('./components/pages/Contact'));
 
@@ -153,6 +161,7 @@ const App = () => {
               <Route path='/discover' element={<Discover notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
               <Route path='/the-cashmere' element={<TheCashmere notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
               <Route path='/terms-and-conditions' element={<Terms notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
+              <Route path='/about-us' element={<About notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
 
               <Route path='/customer-support' element={<CustomerSupport notify={notify} setToken={setToken} errorMessage={errorMessage} />}>
                 <Route path='faq' element={<FAQ notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
