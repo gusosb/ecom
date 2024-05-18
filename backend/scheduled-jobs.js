@@ -1,6 +1,9 @@
 const cron = require('node-cron');
 const fs = require('fs');
-const { Order, Item, Category } = require('./models')
+const { Order, Item, Category } = require('./models');
+const { Op } = require('sequelize');
+
+const { countries } = require('./helpers.js');
 
 
 
@@ -27,16 +30,29 @@ const createSIEFile = async (orders) => {
 #FNAMN "Evocorp AB"
 #VALUTA SEK
 #FTYP AB
+#KONTO 1501 "Kundfordringar - Stripe"
+#KONTO 2611 "Utgående moms på försäljning inom Sverige, 25 %"
+#KONTO 3001 "Försäljning inom Sverige, 25 % moms"
+#KONTO 3001 "Försäljning inom Sverige, 25 % moms"
+${countries.reduce((acc, country) => `${acc}\n#KONTO ${country.vatAccountNumber} "${country.vatAccountName}"`, '')}
+
 ${orders.reduce((acc, order, index) => {
-            const verString = `#VER O ${verificationCounter++} ${order.createdAt.toISOString().slice(0, 10).replaceAll('-', '')} "${order.order_reference}"
+            const country = countries[order.country];
+            console.log('country', country);
+            const vatRateEUR = country.vatRate;
+            const paidDate = order.paid_at.toISOString().slice(0, 10).replaceAll('-', '');
+            console.log('vatRateEUR', vatRateEUR);
+
+            const verString = `#VER O ${verificationCounter++} ${paidDate} "${order.order_reference}"
 {
 ${order.currency === 'EUR' ?
-                    `#TRANS 1510 {} ${order.order_amount * exchangeRate / 100} ${todayDate}
-#TRANS 3051 {} -${(order.order_amount - order.order_tax_amount) * exchangeRate / 100} ${todayDate}
-#TRANS 2611 {} -${order.order_tax_amount * exchangeRate / 100} ${todayDate}` :
-                    `#TRANS 1510 {} ${order.order_amount / 100} ${todayDate}
-#TRANS 3051 {} -${(order.order_amount - order.order_tax_amount) / 100} ${todayDate}
-#TRANS 2611 {} -${order.order_tax_amount / 100} ${todayDate}`
+                    `#TRANS 1501 {} ${order.order_amount * exchangeRate / 100} ${paidDate}
+#TRANS 3001 {} -${(order.order_amount - order.order_tax_amount) * exchangeRate / 100} ${paidDate}
+#TRANS ${vatRateEUR} {} -${order.order_tax_amount * exchangeRate / 100} ${paidDate}`
+
+                    : `#TRANS 1501 {} ${order.order_amount / 100} ${paidDate}
+#TRANS 3051 {} -${(order.order_amount - order.order_tax_amount) / 100} ${paidDate}
+#TRANS 2611 {} -${order.order_tax_amount / 100} ${paidDate}`
                 }
 }`;
             return index === 0 ? verString : `${acc}\n${verString}`;
@@ -50,11 +66,6 @@ ${order.currency === 'EUR' ?
         fs.writeFileSync(fileName, sieContent);
         console.log('SIE file created successfully.');
 
-        // await Order.update({ is_posted: true }, {
-        //     where: {
-        //         id: orders.map(order => order.id)
-        //     }
-        // });
     } catch (error) {
         console.log('error in file creation!', error);
     }
@@ -62,13 +73,15 @@ ${order.currency === 'EUR' ?
 
 //cron.schedule('* * * * *', async () => { // => Runs every minute
 
+//cron.schedule('30 0 * * *', async () =&gt; { // Runs every day at 00:30
+
 cron.schedule('0 0 * * *', async () => { // Runs every day at midnight
     console.log('Running scheduled create SIE job.');
 
     const orders = await Order.findAll({
         where: {
+            is_paid: true,
             is_posted: false,
-            // is_paid: true
         }
     });
 
@@ -76,7 +89,12 @@ cron.schedule('0 0 * * *', async () => { // Runs every day at midnight
 
     if (orders.length < 1) return;
 
-
     await createSIEFile(orders);
+
+    await Order.update({ is_posted: true }, {
+        where: {
+            id: orders.map(order => order.id)
+        }
+    });
 
 });

@@ -18,10 +18,6 @@ Order.init({
     type: DataTypes.STRING,
     unique: true
   },
-  is_paid: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
-  },
   // BEGIN ADDRESS FIELDS
   email: {
     type: DataTypes.STRING
@@ -66,6 +62,14 @@ Order.init({
   tracking: {
     type: DataTypes.STRING,
   },
+  is_paid: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  paid_at: {
+    type: DataTypes.DATE,
+    allowNull: true
+  },
   is_fulfilled: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
@@ -90,8 +94,11 @@ Order.init({
   timestamps: true,
   modelName: 'order',
   hooks: {
-    beforeCreate: (order, options) => {
+    beforeCreate: (order) => {
       order.order_reference = `GL-${generateRandomUniqueNumber()}`;
+    },
+    beforeUpdate: (order) => {
+      if (order.changed('is_paid') && order.is_paid) order.paid_at = new Date();
     }
   }
 });
