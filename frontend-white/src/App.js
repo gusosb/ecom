@@ -106,34 +106,12 @@ const App = () => {
       if (localtoken && localtoken !== 'undefined') setToken(localtoken);
     }
     if (!cart?.length && !avoidReading) {
-      const localCart = JSON.parse(localStorage.getItem('ecomcart-white'));
+      const localCart = JSON.parse(localStorage.getItem('ecomcart-white-gustaflund'));
       setCart(localCart);
       setAvoidReading(true);
-    } else localStorage.setItem('ecomcart-white', JSON.stringify(cart));
+    } else localStorage.setItem('ecomcart-white-gustaflund', JSON.stringify(cart));
 
   }, [token, cart, avoidReading]);
-
-
-  /*const handleSubmit = (e) => {
-    e.preventDefault();
-    if (password === 'ostost1337') {
-      setPassword('ostost1337'); // Update state in your App component
-    } else {
-      alert('Incorrect password');
-    }
-  };
-
-  if (password !== 'ostost1337') {
-    return (
-      <form onSubmit={handleSubmit}>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Login</button>
-      </form>
-    )
-  }*/
-
-
-  //if (result.isLoading) return 'Loading...';
 
   return (
     <>

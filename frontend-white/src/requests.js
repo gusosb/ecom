@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-//export const baseUrl = 'http://localhost:3001'
-export const baseUrl = 'https://api.gustaflund.com'
+export const baseUrl = 'http://localhost:3001'
+//export const baseUrl = 'https://api.gustaflund.com'
 const token = localStorage.getItem('gustaflund-bunny-racer') || '';
 
 // export const getSite = () =>

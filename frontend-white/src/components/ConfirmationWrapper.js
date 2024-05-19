@@ -11,7 +11,7 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 const ConfirmationWrapper = ({ format, setCart }) => {
     useEffect(() => {
         setCart({});
-        localStorage.removeItem("ecomcart-white");
+        localStorage.removeItem('ecomcart-white-gustaflund');
     }, []);
 
     return <>

@@ -30,63 +30,6 @@ const FrontPage = () => {
 
   return (
     <>
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-      frontpage!
-      <br />
-
     </>
   );
 };

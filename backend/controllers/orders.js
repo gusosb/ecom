@@ -60,7 +60,7 @@ ordersRouter.post('/create-payment-intent', async (request, response) => {
 
 ordersRouter.post('/createorder', async (request, response) => {
 
-  const { locale, order_amount, order_tax_amount, order_lines,
+  const { locale, order_amount, order_tax_amount, order_lines, country,
     email, phone, name, address, postalcode, city, order_reference, payment_id, currency
   } = request.body;
 
@@ -70,17 +70,12 @@ ordersRouter.post('/createorder', async (request, response) => {
     where: { externalId: order_reference },
     defaults: {
       order_amount, order_tax_amount, externalId: order_reference,
-      email, phone, name, address, postalcode, city, payment_id, currency
+      email, phone, name, address, postalcode, city, payment_id, currency, country
     }
   });
   console.log('created: ' + created);
-  if (!created) {
-    await OrderItem.destroy({
-      where: {
-        orderId: order.id
-      },
-    });
-  }
+  if (!created) await OrderItem.destroy({ where: { orderId: order.id }, });
+
   console.log('order: ' + order);
 
   const orderLines = order_lines.map(e => { return { ...e, orderId: order.id } });

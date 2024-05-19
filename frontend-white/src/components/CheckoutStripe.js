@@ -166,7 +166,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
             setShouldRenderForm(true);
             setLoadSkeleton(false);
             setIsInitialRender(false);
-        }, 500);
+        }, 800);
     }, []); // eslint-disable-line
 
 

@@ -1,0 +1,51 @@
+#FLAGGA 0
+#PROGRAM "EVOCORP-EXPORTER" 0.1
+#FORMAT PC8
+#GEN 20240518
+#ORGNR 559457-6927
+#FNAMN "Evocorp AB"
+#VALUTA SEK
+#FTYP AB
+#KONTO 1501 "Kundfordringar - Stripe"
+#KONTO 2611 "Utgående moms på försäljning inom Sverige, 25 %"
+#KONTO 3001 "Försäljning inom Sverige, 25 % moms"
+#KONTO 2651 "20 % OSS moms, Österrike (AT)"
+#KONTO 2652 "21 % OSS moms, Belgien (BE)"
+#KONTO 2653 "20 % OSS moms, Bulgarien (BG)"
+#KONTO 2654 "25 % OSS moms, Kroatien (HR)"
+#KONTO 2655 "19 % OSS moms, Cypern (CY)"
+#KONTO 2656 "21 % OSS moms, Tjeckien (CZ)"
+#KONTO 2657 "25 % OSS moms, Danmark (DK)"
+#KONTO 2658 "20 % OSS moms, Estland (EE)"
+#KONTO 2659 "24 % OSS moms, Finland (FI)"
+#KONTO 2678 "20 % OSS moms, Frankrike (FR)"
+#KONTO 2661 "19 % OSS moms, Tyskland (DE)"
+#KONTO 2662 "24 % OSS moms, Grekland (GR)"
+#KONTO 2663 "27 % OSS moms, Ungern (HU)"
+#KONTO 2664 "23 % OSS moms, Irland (IE)"
+#KONTO 2665 "22 % OSS moms, Italien (IT)"
+#KONTO 2666 "21 % OSS moms, Lettland (LV)"
+#KONTO 2667 "21 % OSS moms, Litauen (LT)"
+#KONTO 2668 "16 % OSS moms, Luxemburg (LU)"
+#KONTO 2669 "18 % OSS moms, Malta (MT)"
+#KONTO 2679 "21 % OSS moms, Nederländerna (NL)"
+#KONTO 2671 "23 % OSS moms, Polen (PL)"
+#KONTO 2672 "23 % OSS moms, Portugal (PT)"
+#KONTO 2673 "19 % OSS moms, Rumänien (RO)"
+#KONTO 2674 "20 % OSS moms, Slovakien (SK)"
+#KONTO 2675 "22 % OSS moms, Slovenien (SI)"
+#KONTO 2676 "21 % OSS moms, Spanien (ES)"
+#KONTO 2677 "7.7 % OSS moms, Schweiz (CH)"
+#KONTO 2611 "Utgående moms på försäljning inom Sverige, 25 %"
+#VER EVO 1 20240518 "GL-751630"
+{
+#TRANS 1501 {} 1800 20240518
+#TRANS 3001 {} -1440 20240518
+#TRANS 2611 {} -360 20240518
+}
+#VER EVO 2 20240518 "GL-209918"
+{
+#TRANS 1501 {} 1635.2 20240518
+#TRANS 3001 {} -1362.7056 20240518
+#TRANS 2651 {} -272.4944 20240518
+}

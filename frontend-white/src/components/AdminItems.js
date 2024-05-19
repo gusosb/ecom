@@ -148,8 +148,8 @@ const AdminItems = ({ queryClient }) => {
     useEffect(() => {
         setSellable(selectedItem.sellable)
         setVatRateSE(selectedItem.vatRateSE)
-        setPriceSEK(selectedItem.priceSEK)
-        setPriceEUR(selectedItem.priceEUR)
+        setPriceSEK(selectedItem.price_sek)
+        setPriceEUR(selectedItem.price_eur)
         setSku(selectedItem.sku)
         setName(selectedItem.name)
         setBrand(selectedItem.brand)

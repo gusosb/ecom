@@ -32,26 +32,24 @@ const createSIEFile = async (orders) => {
 #FTYP AB
 #KONTO 1501 "Kundfordringar - Stripe"
 #KONTO 2611 "Utgående moms på försäljning inom Sverige, 25 %"
-#KONTO 3001 "Försäljning inom Sverige, 25 % moms"
-#KONTO 3001 "Försäljning inom Sverige, 25 % moms"
-${countries.reduce((acc, country) => `${acc}\n#KONTO ${country.vatAccountNumber} "${country.vatAccountName}"`, '')}
-
+#KONTO 3001 "Försäljning inom Sverige, 25 % moms"${Object.values(countries).reduce((acc, country) => `${acc}\n#KONTO ${country.vatAccountNumber} "${country.vatAccountName}"`, '')}
 ${orders.reduce((acc, order, index) => {
-            const country = countries[order.country];
-            console.log('country', country);
-            const vatRateEUR = country.vatRate;
-            const paidDate = order.paid_at.toISOString().slice(0, 10).replaceAll('-', '');
-            console.log('vatRateEUR', vatRateEUR);
+            console.log('createSIEFile - order', order);
 
-            const verString = `#VER O ${verificationCounter++} ${paidDate} "${order.order_reference}"
+            const country = countries[order.country] || [];
+            console.log('country', country);
+            const vatAccountNumber = country.vatAccountNumber;
+            const paidDate = order.paid_at.toISOString().slice(0, 10).replaceAll('-', '');
+
+            const verString = `#VER EVO ${verificationCounter++} ${paidDate} "${order.order_reference}"
 {
 ${order.currency === 'EUR' ?
                     `#TRANS 1501 {} ${order.order_amount * exchangeRate / 100} ${paidDate}
 #TRANS 3001 {} -${(order.order_amount - order.order_tax_amount) * exchangeRate / 100} ${paidDate}
-#TRANS ${vatRateEUR} {} -${order.order_tax_amount * exchangeRate / 100} ${paidDate}`
+#TRANS ${vatAccountNumber} {} -${order.order_tax_amount * exchangeRate / 100} ${paidDate}`
 
                     : `#TRANS 1501 {} ${order.order_amount / 100} ${paidDate}
-#TRANS 3051 {} -${(order.order_amount - order.order_tax_amount) / 100} ${paidDate}
+#TRANS 3001 {} -${(order.order_amount - order.order_tax_amount) / 100} ${paidDate}
 #TRANS 2611 {} -${order.order_tax_amount / 100} ${paidDate}`
                 }
 }`;
@@ -71,11 +69,9 @@ ${order.currency === 'EUR' ?
     }
 }
 
-//cron.schedule('* * * * *', async () => { // => Runs every minute
 
-//cron.schedule('30 0 * * *', async () =&gt; { // Runs every day at 00:30
-
-cron.schedule('0 0 * * *', async () => { // Runs every day at midnight
+//cron.schedule('0 0 * * *', async () => { // Runs every day at midnight
+cron.schedule('* * * * *', async () => { // => Runs every minute
     console.log('Running scheduled create SIE job.');
 
     const orders = await Order.findAll({
@@ -91,10 +87,10 @@ cron.schedule('0 0 * * *', async () => { // Runs every day at midnight
 
     await createSIEFile(orders);
 
-    await Order.update({ is_posted: true }, {
-        where: {
-            id: orders.map(order => order.id)
-        }
-    });
+    /* await Order.update({ is_posted: true }, {
+         where: {
+             id: orders.map(order => order.id)
+         }
+     });*/
 
 });
