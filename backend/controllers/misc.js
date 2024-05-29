@@ -24,10 +24,10 @@ miscRouter.post("/email", async (request, response) => {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error);
-      response.status(500).json();
+      return response.status(500).json();
     } else {
       console.log("Email sent: " + info.response);
-      response.status(201).json();
+      return response.status(201).json();
     }
   });
 });
