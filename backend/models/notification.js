@@ -2,9 +2,9 @@ const { Model, DataTypes } = require('sequelize')
 
 const { sequelize } = require('../util/db')
 
-class Reminder extends Model { }
+class Notification extends Model { }
 
-Reminder.init({
+Notification.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -17,14 +17,14 @@ Reminder.init({
     sequelize,
     underscored: true,
     timestamps: false,
-    modelName: 'reminder',
+    modelName: 'notification',
     indexes: [
         {
             name: "unq_emailitem",
             unique: true,
-            fields: ['email', 'item_id']
+            fields: ['email', 'variant_id']
         }
     ]
 })
 
-module.exports = Reminder
+module.exports = Notification

@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect, Suspense, lazy, useState } from 'react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { getCategories, baseUrl, addReminder } from './requests';
+import { getCategories, baseUrl, addNotify } from './requests';
 import { useCountryCurrency } from './helpers';
 import GoogleAnalytics from './components/GoogleAnalytics';
 
@@ -48,22 +48,10 @@ const App = () => {
   const { selectedCurrency } = useCountryCurrency();
 
 
-  const newReminderMutation = useMutation(addReminder, {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admincategories'] })
-    },
-  });
-
-  const handleRemindMe = ({ email, variantId }) => {
-    console.log(email);
-    console.log('variantId', variantId);
-
-    newReminderMutation.mutate({ email, variantId })
-  };
+  const newNotificationMutation = useMutation(addNotify);
 
   //const [password, setPassword] = useState('');
 
-  console.log('cart', cart);
 
   const totalSumInCart = cart && Object.keys(cart)?.length > 0 ? Object.keys(cart).reduce((acc, key) => acc + (selectedCurrency === 'SEK' ? cart[key].quantity * cart[key].price_sek * (1 + (cart[key].vatRateSE / 100)) : cart[key].quantity * cart[key].price_eur), 0) : 0;
 
@@ -130,7 +118,7 @@ const App = () => {
 
               <Route path="/checkout" element={<Checkout selectedCurrency={selectedCurrency} baseUrl={baseUrl} format={format} changeVariantQuantity={changeVariantQuantity} removeFromCart={removeFromCart} queryClient={queryClient} totalSumInCart={totalSumInCart} cart={cart} />} />
               <Route path="/shop/:categoryname?" element={<Category selectedCurrency={selectedCurrency} isLoading={result.isLoading} format={format} baseUrl={baseUrl} categories={result.data || []} />} />
-              <Route path="/product/:itemid/:itemname?" element={<Item handleRemindMe={handleRemindMe} baseUrl={baseUrl} format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} />} />
+              <Route path="/product/:itemid/:itemname?" element={<Item errorMessage={errorMessage} setErrorMessage={setErrorMessage} newNotificationMutation={newNotificationMutation} baseUrl={baseUrl} format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} />} />
               {/* <Route path="/review/:itemid/:orderid/:itemname?" element={<Review baseUrl={baseUrl} format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} queryClient={queryClient} />} /> */}
               <Route path='/confirmation' element={<Confirmation setCart={setCart} format={format} baseUrl={baseUrl} />} />
               <Route path='/login' element={token ? <Navigate replace to="/" /> : <Login notify={notify} setToken={setToken} errorMessage={errorMessage} />} />

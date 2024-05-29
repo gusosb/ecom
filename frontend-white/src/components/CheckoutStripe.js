@@ -83,7 +83,6 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
     const [address2, setAddress2] = useState('');
     const [state, setState] = useState('');
     const [country, setCountry] = useState('');
-    console.log('country', country);
 
 
     const formatAmount = (amt) => parseInt(amt.toFixed(0));
@@ -93,18 +92,11 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
     const order_lines = Object.keys(cart).map(e => {
         const itemVariant = cart[e].variants?.find(b => b.id === parseInt(e));
         const ossVatRate = convertTaxRate(vatRates[country]?.vatRate) / 100 || 0;
-        console.log('ossVatRate', ossVatRate);
         const vatRateSE = convertTaxRate(cart[e].vatRateSE);
 
         const ossAmount = formatAmount((cart[e].price_eur * cart[e].quantity * ossVatRate) / (1 + ossVatRate))
         const sekVatAmount = formatAmount(vatRateSE * cart[e].price_sek * cart[e].quantity);
         const sekVatEURAmount = formatAmount((cart[e].price_eur * cart[e].quantity * vatRateSE) / (1 + vatRateSE));
-
-        console.log('ossAmount', ossAmount);
-        console.log('sekVatAmount', sekVatAmount);
-
-        console.log('sekVatEURAmount', sekVatEURAmount);
-
 
         const total_tax_amount = country === 'SE' && selectedCurrency === 'SEK'
             ? sekVatAmount
@@ -130,9 +122,6 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
         };
     });
 
-    console.log('order_lines', order_lines);
-
-
     const initiateCheckoutMutation = useMutation(initiateCheckout, {
         onSuccess: (response) => {
             setPayment(response);
@@ -140,11 +129,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
         },
     });
 
-    const updatePaymentIntentMutation = useMutation(updatePayment, {
-        onSuccess: (response) => {
-            console.log('order updated!');
-        },
-    });
+    const updatePaymentIntentMutation = useMutation(updatePayment);
 
     const createOrderMutation = useMutation(createOrder, {
         onSuccess: (response) => {

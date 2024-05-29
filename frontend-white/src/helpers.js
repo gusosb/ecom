@@ -11,6 +11,8 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
+import Tooltip from '@mui/material/Tooltip';
+
 
 export const useWindowSize = () => {
    const [windowSize, setWindowSize] = useState({
@@ -107,7 +109,7 @@ export const CustomAccordion = ({ title, children, expanded, handleChange, first
             aria-controls="panel1bh-content"
             id="panel1bh-header"
             sx={{
-               minHeight: 56, // Ensure a consistent height for the summary
+               minHeight: 56,
                ...(last && {
                   borderBottom: '1px solid #e6e6e6',
                }),
@@ -115,7 +117,7 @@ export const CustomAccordion = ({ title, children, expanded, handleChange, first
                   minHeight: 56,
                },
                '& .MuiAccordionSummary-content': {
-                  margin: '0 !important', // Remove vertical margins to prevent height change
+                  margin: '0 !important',
                   '&.Mui-expanded': {
                      margin: '0 !important',
                   },
@@ -153,11 +155,14 @@ export const VariantSelector = ({ variant, setVariant, variants, showVariants, s
       setShowVariants(false);
    };
 
+   const sizeOrder = { 'XS': 1, 'SMALL': 2, 'MEDIUM': 3, 'LARGE': 4, 'XL': 5 };
+   variants.sort((a, b) => sizeOrder[a.name] - sizeOrder[b.name]);
+
    const rotateStyle = {
       transition: 'transform 0.25s',
       transform: showVariants ? 'rotate(180deg)' : 'rotate(0deg)',
    };
-
+   const currentVariant = variants.find(v => v.id === variant) || [];
    return (
       <>
          <Box
@@ -168,6 +173,7 @@ export const VariantSelector = ({ variant, setVariant, variants, showVariants, s
                padding: !disableTopBorder ? '16px' : '12px',
                paddingLeft: 0,
                borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+               backgroundColor: currentVariant.sellable < 1 && 'rgba(0, 0, 0, 0.04)',
                borderTop: !disableTopBorder && '1px solid rgba(0, 0, 0, 0.12)',
                cursor: 'pointer',
             }}
@@ -182,12 +188,27 @@ export const VariantSelector = ({ variant, setVariant, variants, showVariants, s
                   }}
                />
                <Typography variant="body1" component="div">
-                  {variants.find(v => v.id === variant)?.name}
+                  {currentVariant.name}
                </Typography>
             </Box>
-            <IconButton disableRipple sx={{ ...rotateStyle, padding: 0, margin: 0 }}>
-               {showVariants ? <RemoveIcon /> : <AddIcon />}
-            </IconButton>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+               {currentVariant.sellable < 1 && (
+                  <Tooltip title='SOLD OUT'>
+                     <Box
+                        sx={{
+                           width: '7px',
+                           height: '7px',
+                           borderRadius: '50%',
+                           backgroundColor: 'red',
+                           marginRight: '8px',
+                        }}
+                     />
+                  </Tooltip>
+               )}
+               <IconButton disableRipple sx={{ ...rotateStyle, padding: 0, margin: 0 }}>
+                  {showVariants ? <RemoveIcon /> : <AddIcon />}
+               </IconButton>
+            </Box>
          </Box>
          {showVariants &&
             variants.map((v) => (
@@ -196,22 +217,33 @@ export const VariantSelector = ({ variant, setVariant, variants, showVariants, s
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
+                     justifyContent: 'space-between', // Added this to space out the elements
                      padding: !disableTopBorder ? '16px 0px' : '12px 0px',
                      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+                     backgroundColor: v.sellable < 1 && 'rgba(0, 0, 0, 0.04)',
                      '&:hover': {
                         backgroundColor: 'rgba(0, 0, 0, 0.04)',
                      },
                   }}
                   onClick={() => selectVariant(v.id)}
                >
-                  <Box
-                     sx={{
-                        width: '24px',
-                        height: '24px',
-                        marginRight: '8px',
-                     }}
-                  />
-                  <Typography variant="body1" component="div">{v?.name}</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                     <Box sx={{ width: '24px', height: '24px', marginRight: '8px', }} />
+                     <Typography variant="body1" component="div">{v?.name}</Typography>
+                  </Box>
+                  {v.sellable < 1 && (
+                     <Tooltip title='SOLD OUT'>
+                        <Box
+                           sx={{
+                              width: '7px',
+                              height: '7px',
+                              borderRadius: '50%',
+                              backgroundColor: 'red',
+                              marginRight: '24px',
+                           }}
+                        />
+                     </Tooltip>
+                  )}
                </Box>
             ))}
       </>
@@ -332,6 +364,11 @@ export const vatRates = {
       vatRate: 770
    },
 };
+
+export const validateEmail = (email) => {
+   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+   return re.test(String(email).toLowerCase());
+}
 
 const CountryCurrencyContext = createContext();
 

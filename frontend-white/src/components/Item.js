@@ -1,6 +1,6 @@
 import { useParams, useOutletContext } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import { useWindowSize, CustomAccordion, VariantSelector, convertTaxRate, useCountryCurrency } from '../helpers';
+import { useWindowSize, CustomAccordion, VariantSelector, convertTaxRate, useCountryCurrency, validateEmail } from '../helpers';
 
 import ItemMobile from './ItemMobile';
 import Markdown from 'react-markdown';
@@ -15,7 +15,10 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 
-const Item = ({ cart, setCart, categories, format, baseUrl, handleRemindMe }) => {
+
+
+
+const Item = ({ cart, setCart, categories, format, baseUrl, newNotificationMutation }) => {
 
     const { itemid } = useParams();
 
@@ -23,25 +26,38 @@ const Item = ({ cart, setCart, categories, format, baseUrl, handleRemindMe }) =>
     const items = categories.flatMap(e => e.items);
     const selectedItem = items.find(e => e.id === parseInt(itemid)) || [];
 
-    console.log('selectedItem', selectedItem);
+    const firstVariant = selectedItem?.variants?.find(e => e.sellable > 0)?.id || selectedItem?.variants?.[0]?.id;
 
-
-    const [variant, setVariant] = useState(selectedItem && selectedItem?.variants?.find(e => e.sellable > 0)?.id);
+    const [variant, setVariant] = useState(firstVariant);
     const [showVariants, setShowVariants] = useState(false);
-    const [reminderEmail, setReminderEmail] = useState('');
-    const [openReminder, setOpenReminder] = useState(false);
+    const [notificationEmail, setNotificationEmail] = useState('');
+    const [openNotification, setOpenNotification] = useState(false);
+    const [notificationSent, setNotificationSent] = useState(false);
+
+    const [errorMessage, setErrorMessage] = useState('');
 
     const emailFieldRef = useRef(null);
 
+
+    const handleSendNotify = () => {
+        if (validateEmail(notificationEmail)) {
+            newNotificationMutation.mutate({ email: notificationEmail, variantId: variant });
+            setNotificationSent(true);
+        } else {
+            setErrorMessage("Please enter a valid email address.");
+            setTimeout(() => {
+                setErrorMessage('');
+            }, 5000);
+        }
+    }
+
     useEffect(() => {
-        if (!variant) setVariant(selectedItem && selectedItem?.variants?.find(e => e.sellable > 0)?.id);
+        if (!variant) setVariant(firstVariant);
     }, [selectedItem]);
 
-    console.log('variant', variant);
-
     useEffect(() => {
-        if (openReminder && emailFieldRef.current) emailFieldRef.current.focus();
-    }, [openReminder]);
+        if (openNotification && emailFieldRef.current) emailFieldRef.current.focus();
+    }, [openNotification]);
 
     const addToCart = () => {
         const values = { ...cart };
@@ -121,7 +137,7 @@ const Item = ({ cart, setCart, categories, format, baseUrl, handleRemindMe }) =>
                                             setShowVariants={setShowVariants}
                                             variant={variant}
                                             setVariant={setVariant}
-                                            variants={selectedItem.variants.filter(e => e.sellable > 0)}
+                                            variants={selectedItem.variants}
                                         />
                                     </Box>
                                 }
@@ -139,12 +155,12 @@ const Item = ({ cart, setCart, categories, format, baseUrl, handleRemindMe }) =>
                                     }}
                                     variant="contained"
                                     fullWidth
-                                    onClick={selectedItem?.variants?.find(e => e.id === variant)?.sellable > 0 ? addToCart : () => setOpenReminder(true)}
+                                    onClick={selectedItem?.variants?.find(e => e.id === variant)?.sellable > 0 ? addToCart : () => setOpenNotification(true)}
                                 >
-                                    {selectedItem?.variants?.find(e => e.id === variant)?.sellable > 0 ? 'BUY' : 'REMIND ME'} – {selectedCurrency === 'SEK' ? format(selectedItem.price_sek * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100) : format(selectedItem.price_eur / 100)} {selectedCurrency}
+                                    {selectedItem?.variants?.find(e => e.id === variant)?.sellable > 0 ? 'BUY' : 'Notify  me'} – {selectedCurrency === 'SEK' ? format(selectedItem.price_sek * (1 + convertTaxRate(selectedItem.vatRateSE)) / 100) : format(selectedItem.price_eur / 100)} {selectedCurrency}
                                 </Button>
 
-                                <Modal open={openReminder} onClose={() => setOpenReminder(false)} keepMounted>
+                                <Modal open={openNotification} onClose={() => setOpenNotification(false)} keepMounted>
                                     <Box
                                         sx={{
                                             position: 'absolute',
@@ -167,28 +183,41 @@ const Item = ({ cart, setCart, categories, format, baseUrl, handleRemindMe }) =>
                                                 right: '8px',
                                                 color: 'text.secondary',
                                             }}
-                                            onClick={() => setOpenReminder(false)}
+                                            onClick={() => setOpenNotification(false)}
                                         >
                                             <CloseIcon />
                                         </IconButton>
 
-                                        <TextField inputRef={emailFieldRef} value={reminderEmail} type='email' onChange={({ target }) => setReminderEmail(target.value)} id="reminder-email" label="EMAIL" variant="standard" fullWidth sx={{ mb: 2 }} />
+                                        <TextField
+                                            disabled={notificationSent && true}
+                                            inputRef={emailFieldRef}
+                                            value={notificationEmail}
+                                            type='email'
+                                            onChange={({ target }) => setNotificationEmail(target.value)}
+                                            id="Notification-email"
+                                            label="EMAIL"
+                                            variant="standard"
+                                            fullWidth
+                                            sx={{ mb: 2 }}
+                                            error={!!errorMessage}
+                                            helperText={errorMessage}
+                                        />
 
                                         <Button
                                             sx={{
                                                 mt: 2,
-                                                backgroundColor: '#000',
+                                                backgroundColor: notificationSent ? 'green' : '#000',
                                                 color: '#fff',
                                                 '&:hover': {
-                                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                                    backgroundColor: notificationSent ? 'darkgreen' : 'rgba(0, 0, 0, 0.8)',
                                                 },
                                                 padding: '12px',
                                                 borderRadius: '1',
                                             }}
                                             fullWidth
-                                            onClick={() => handleRemindMe({ email: reminderEmail, variantId: variant?.id })}
+                                            onClick={notificationSent ? null : () => handleSendNotify()}
                                         >
-                                            REMIND ME
+                                            {notificationSent ? 'We will notify you!' : 'Notify me'}
                                         </Button>
                                     </Box>
                                 </Modal>

@@ -23,6 +23,12 @@ app.use('/api/categories', categoriesRouter);
 app.use('/api/items', itemsRouter);
 app.use('/api/site', siteRouter);
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+connectToDatabase()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    })
+    .catch((err) => {
+        console.error('Failed to connect to the database', err);
+    });

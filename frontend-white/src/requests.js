@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-export const baseUrl = 'http://localhost:3001'
-//export const baseUrl = 'https://api.gustaflund.com'
+//export const baseUrl = 'http://localhost:3001'
+export const baseUrl = 'https://api.gustaflund.com'
 const token = localStorage.getItem('gustaflund-bunny-racer') || '';
 
 // export const getSite = () =>
@@ -72,8 +72,8 @@ export const addReview = data =>
     axios.post(baseUrl + `/api/items/reviews/${data.id}`, data).then(res => res.data)
 
 
-export const addReminder = data =>
-    axios.post(baseUrl + `/api/items/remindme/${data.itemid}`, data).then(res => res.data)
+export const addNotify = data =>
+    axios.post(baseUrl + `/api/items/notify-me/${data.variantId}`, data).then(res => res.data)
 
 
 // STRIPE

@@ -66,15 +66,15 @@ const CartDrawer = ({
                                     sx={{
                                         pt: i === 0 ? 1 : 2,
                                         pb: 2,
-                                        position: 'relative', // Relative positioning for the pseudo-element
-                                        '&::after': { // Pseudo-element for the custom divider
+                                        position: 'relative',
+                                        '&::after': {
                                             content: '""',
                                             position: 'absolute',
                                             bottom: 0,
-                                            left: 16, // Adjust the space on the left
-                                            right: 16, // Adjust the space on the right
-                                            borderBottom: '1px solid rgba(0, 0, 0, 0.12)', // Your divider style
-                                            width: 'calc(100% - 32px)' // Adjust the width based on left and right space
+                                            left: 16,
+                                            right: 16,
+                                            borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+                                            width: 'calc(100% - 32px)'
                                         }
                                     }}
                                 >
@@ -82,7 +82,6 @@ const CartDrawer = ({
                                         <Grid item xs='auto'>
                                             <Box component={Link} to={`/product/${cart[key].id}/${cart[key].name}`} onClick={() => setCartOpen(false)}>
                                                 <img
-                                                    //src='https://cdn.obayaty.com/images/vid8gs32/production/86551ad9f40d15aec2bc6d8a64ad88756f9d7e22-2560x3200.jpg?w=1920&fit=max&auto=format'
                                                     src={baseUrl + path}
                                                     alt={itemVariant.name}
                                                     style={{ width: '110px' }}
