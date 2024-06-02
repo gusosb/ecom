@@ -1,30 +1,33 @@
-const { Model, DataTypes } = require('sequelize')
+const { Model, DataTypes } = require('sequelize');
 
-const { sequelize } = require('../util/db')
+const { sequelize } = require('../util/db');
 
-class Notification extends Model { }
+class Notification extends Model {}
 
-Notification.init({
+Notification.init(
+  {
     id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
     },
     email: {
-        type: DataTypes.STRING,
-    },
-}, {
+      type: DataTypes.STRING
+    }
+  },
+  {
     sequelize,
     underscored: true,
     timestamps: false,
     modelName: 'notification',
     indexes: [
-        {
-            name: "unq_emailitem",
-            unique: true,
-            fields: ['email', 'variant_id']
-        }
+      {
+        name: 'unq_emailitem',
+        unique: true,
+        fields: ['email', 'variant_id']
+      }
     ]
-})
+  }
+);
 
-module.exports = Notification
+module.exports = Notification;

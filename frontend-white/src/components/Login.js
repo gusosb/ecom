@@ -1,39 +1,35 @@
-import { useState } from "react"
-import { useNavigate, Link } from 'react-router-dom'
-import { useMutation } from '@tanstack/react-query'
-import { loginUser } from '../requests'
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import { loginUser } from '../requests';
 
-import Button from '@mui/material/Button'
-import TextField from '@mui/material/TextField'
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
 
 const Login = ({ setToken, notify, errorMessage }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const loginUserMutation = useMutation(loginUser, {
     onSuccess: ({ token }) => {
-      setToken(token)
-      localStorage.setItem('gustaflund-bunny-racer', token)
-      navigate('/')
-    },
-  })
-
+      setToken(token);
+      localStorage.setItem('gustaflund-bunny-racer', token);
+      navigate('/');
+    }
+  });
 
   const submit = async (event) => {
-    if (!email || !password) return
+    if (!email || !password) return;
 
-    event.preventDefault()
-    loginUserMutation.mutate({ email, password })
-
-  }
+    event.preventDefault();
+    loginUserMutation.mutate({ email, password });
+  };
 
   return (
     <>
@@ -43,10 +39,9 @@ const Login = ({ setToken, notify, errorMessage }) => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            mt: 5,
+            mt: 5
           }}
         >
-
           <Typography component="h1" variant="h5">
             Logga in
           </Typography>
@@ -62,7 +57,8 @@ const Login = ({ setToken, notify, errorMessage }) => {
               label="Epostadress"
               name="email"
               autoComplete="email"
-              autoFocus />
+              autoFocus
+            />
             <TextField
               margin="normal"
               required
@@ -73,13 +69,15 @@ const Login = ({ setToken, notify, errorMessage }) => {
               id="password"
               autoComplete="current-password"
               value={password}
-              onChange={({ target }) => setPassword(target.value)} />
+              onChange={({ target }) => setPassword(target.value)}
+            />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               onClick={submit}
-              sx={{ mt: 3, mb: 2 }}>
+              sx={{ mt: 3, mb: 2 }}
+            >
               Sign In
             </Button>
             <Grid container>
@@ -99,11 +97,9 @@ const Login = ({ setToken, notify, errorMessage }) => {
           <Typography variant="h6" sx={{ color: '#E5202E' }}>
             {errorMessage}
           </Typography>
-
-
         </Box>
       </Container>
     </>
-  )
-}
-export default Login
+  );
+};
+export default Login;

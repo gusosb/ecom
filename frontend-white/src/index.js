@@ -1,15 +1,15 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import './styles.css';
 import { HelmetProvider } from 'react-helmet-async';
 
 import { CountryCurrencyProvider } from './helpers';
 
 import '@fontsource/jost';
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 const theme = createTheme({
   palette: {
@@ -18,7 +18,7 @@ const theme = createTheme({
       background: '#faf9f8'
     },
     secondary: {
-      main: '#fbdd7e',
+      main: '#fbdd7e'
     },
     white: {
       main: '#FFFFFF'
@@ -29,8 +29,7 @@ const theme = createTheme({
   }
 });
 
-
-const root = ReactDOM.createRoot(document.getElementById('root'))
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
@@ -43,4 +42,4 @@ root.render(
       </CountryCurrencyProvider>
     </QueryClientProvider>
   </React.StrictMode>
-)
+);

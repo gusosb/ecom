@@ -1,54 +1,50 @@
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography';
-import { Link } from "react-router-dom"
-import { CustomButton, CountryCurrencyModal } from '../helpers'
-
+import Box from '@mui/material/Box';
+import { Link } from 'react-router-dom';
+import { CustomButton, CountryCurrencyModal } from '../helpers';
 
 const FooterMobile = () => {
-
   return (
     <>
       <Box
-        component='footer'
+        component="footer"
         sx={{
           borderTop: 1,
           borderColor: '#e6e6e6',
           display: 'flex',
           justifyContent: 'space-between',
           padding: '20px',
-          pt: 2,
+          pt: 2
         }}
       >
-        <Box sx={{
-          height: '120px',
-          display: 'flex',
-          flexDirection: 'column',
-        }}>
-          <CustomButton component={Link} to='/customer-support/faq'>
+        <Box
+          sx={{
+            height: '120px',
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+        >
+          <CustomButton component={Link} to="/customer-support/faq">
             CUSTOMER SUPPORT
           </CustomButton>
 
-          <CustomButton component={Link} to='/terms-and-conditions'>
+          <CustomButton component={Link} to="/terms-and-conditions">
             TERMS & CONDITIONS
           </CustomButton>
 
-          <CustomButton component={Link} to='/about-us'>
+          <CustomButton component={Link} to="/about-us">
             ABOUT US
           </CustomButton>
-
         </Box>
-
 
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            height: '100%',
+            height: '100%'
           }}
         >
-
           <CustomButton
-            component='a'
+            component="a"
             href="https://www.instagram.com/realgustaflund"
             target="_blank"
             rel="noopener noreferrer"
@@ -73,13 +69,11 @@ const FooterMobile = () => {
             TIKTOK
           </CustomButton> */}
 
-
           <CountryCurrencyModal />
-
         </Box>
       </Box>
     </>
   );
-}
+};
 
 export default FooterMobile;

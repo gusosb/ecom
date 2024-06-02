@@ -1,20 +1,23 @@
-const { Model, DataTypes } = require('sequelize')
+const { Model, DataTypes } = require('sequelize');
 
-const { sequelize } = require('../util/db')
+const { sequelize } = require('../util/db');
 
 class Site extends Model {}
 
-Site.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+Site.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    }
   },
-}, {
-  sequelize,
-  underscored: true,
-  timestamps: false,
-  modelName: 'site',
-})
+  {
+    sequelize,
+    underscored: true,
+    timestamps: false,
+    modelName: 'site'
+  }
+);
 
-module.exports = Site
+module.exports = Site;

@@ -1,15 +1,13 @@
-import { useState } from "react"
-import { useMutation } from '@tanstack/react-query'
-import { addReview } from '../requests'
-import { useParams } from "react-router-dom"
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { addReview } from '../requests';
+import { useParams } from 'react-router-dom';
 
-import { styled } from '@mui/system'
-import Button from '@mui/material/Button'
-import Grid from '@mui/material/Grid'
-import Rating from '@mui/material/Rating'
-import { TextareaAutosize } from '@mui/base/TextareaAutosize'
-import productPlaceholder from '../images/6872_100-Whey-Gold-Std-912-g-Vanilla-Ice-Cream_0922.webp'
-
+import { styled } from '@mui/system';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Rating from '@mui/material/Rating';
+import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 
 const blue = {
   100: '#DAECFF',
@@ -17,7 +15,7 @@ const blue = {
   400: '#3399FF',
   500: '#007FFF',
   600: '#0072E5',
-  900: '#003A75',
+  900: '#003A75'
 };
 
 const grey = {
@@ -30,7 +28,7 @@ const grey = {
   600: '#57606a',
   700: '#424a53',
   800: '#32383f',
-  900: '#24292f',
+  900: '#24292f'
 };
 
 const StyledTextarea = styled(TextareaAutosize)(
@@ -60,53 +58,68 @@ const StyledTextarea = styled(TextareaAutosize)(
   &:focus-visible {
     outline: 0;
   }
-`,
+`
 );
 
 const Review = ({ categories, queryClient, baseUrl }) => {
-
   const { itemid, orderid } = useParams();
-
 
   const [isReviewed, setIsReviewed] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
 
-  const itemToReview = categories.flatMap(a => a.SubOne.flatMap(b => b.SubTwo.flatMap(c => {
-    if (c.items.find(d => d.id === parseInt(itemid))) {
-      return { ...c.items.find(d => d.id === parseInt(itemid)), subTwo: c.id, subOne: b.id, top: a.id };
-    }
-    return [];
-  })
-  ))[0];
+  const itemToReview = categories.flatMap((a) =>
+    a.SubOne.flatMap((b) =>
+      b.SubTwo.flatMap((c) => {
+        if (c.items.find((d) => d.id === parseInt(itemid))) {
+          return {
+            ...c.items.find((d) => d.id === parseInt(itemid)),
+            subTwo: c.id,
+            subOne: b.id,
+            top: a.id
+          };
+        }
+        return [];
+      })
+    )
+  )[0];
 
   const newReviewMutation = useMutation(addReview, {
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['categories'] }) },
-  })
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+    }
+  });
 
   const sendReview = () => {
-    newReviewMutation.mutate({ id: parseInt(itemid), comment, rating, orderId: orderid })
-    setIsReviewed(true)
-  }
-
+    newReviewMutation.mutate({ id: parseInt(itemid), comment, rating, orderId: orderid });
+    setIsReviewed(true);
+  };
 
   return (
     <>
-      <Grid container display='flex' justifyContent='center'>
-        {isReviewed ? <>Tack för din recension!</>
-          :
+      <Grid container display="flex" justifyContent="center">
+        {isReviewed ? (
+          <>Tack för din recension!</>
+        ) : (
           <>
-            <Grid item xs={12} display='center' justifyContent='center'>
+            <Grid item xs={12} display="center" justifyContent="center">
               <h3 style={{ marginTop: 0 }}> {itemToReview.name}</h3>
             </Grid>
 
-            <Grid item xs={12} display='center' justifyContent='center'>
-              <img style={{ maxHeight: '300px', maxWidth: '100%', objectFit: 'contain' }} src={baseUrl + itemToReview.images[0].path} />
+            <Grid item xs={12} display="center" justifyContent="center">
+              <img
+                style={{ maxHeight: '300px', maxWidth: '100%', objectFit: 'contain' }}
+                src={baseUrl + itemToReview.images[0].path}
+              />
             </Grid>
-            <Grid item xs={12} display='center' justifyContent='center' mt={1}>
-              <Rating name="select-rating" value={rating} onChange={(e, newValue) => setRating(newValue)} />
+            <Grid item xs={12} display="center" justifyContent="center" mt={1}>
+              <Rating
+                name="select-rating"
+                value={rating}
+                onChange={(e, newValue) => setRating(newValue)}
+              />
             </Grid>
-            <Grid item xs={12} display='center' justifyContent='center' mt={1}>
+            <Grid item xs={12} display="center" justifyContent="center" mt={1}>
               <StyledTextarea
                 maxRows={4}
                 aria-label="review-description"
@@ -116,14 +129,23 @@ const Review = ({ categories, queryClient, baseUrl }) => {
               />
             </Grid>
 
-            <Grid item xs={12} display='center' justifyContent='center' mt={1}>
-              <Button sx={{ height: '100%' }} fullWidth variant="contained" color="primary" disableElevation onClick={sendReview}>skicka recension</Button>
+            <Grid item xs={12} display="center" justifyContent="center" mt={1}>
+              <Button
+                sx={{ height: '100%' }}
+                fullWidth
+                variant="contained"
+                color="primary"
+                disableElevation
+                onClick={sendReview}
+              >
+                skicka recension
+              </Button>
             </Grid>
           </>
-        }
+        )}
       </Grid>
     </>
-  )
-}
+  );
+};
 
-export default Review
+export default Review;
