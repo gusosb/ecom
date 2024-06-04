@@ -84,8 +84,6 @@ categoriesRouter.get('/admin/new', async (request, response) => {
     ]
   });
 
-  console.log('categories admin new', categories);
-
   response.json(categories);
 });
 

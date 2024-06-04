@@ -84,11 +84,7 @@ const AdminOrders = () => {
         <TableBody>
           {orders.map((order, index) => (
             <>
-              <TableRow
-                key={order.externalId}
-                onClick={() => handleRowClick(index)}
-                sx={{ cursor: 'pointer' }}
-              >
+              <TableRow key={order.externalId} onClick={() => handleRowClick(index)} sx={{ cursor: 'pointer' }}>
                 <TableCell component="th" scope="row">
                   {order.externalId}
                 </TableCell>
@@ -96,18 +92,10 @@ const AdminOrders = () => {
                 <TableCell align="right">{order.order_reference}</TableCell>
                 <TableCell align="right">{order.order_amount / 100}</TableCell>
                 <TableCell align="right">
-                  {order.isPaid ? (
-                    <CheckCircleOutlineIcon sx={{ color: 'green' }} />
-                  ) : (
-                    <DoNotDisturbIcon sx={{ color: 'red' }} />
-                  )}
+                  {order.isPaid ? <CheckCircleOutlineIcon sx={{ color: 'green' }} /> : <DoNotDisturbIcon sx={{ color: 'red' }} />}
                 </TableCell>
                 <TableCell align="right">
-                  {order.is_fulfilled ? (
-                    <CheckCircleOutlineIcon sx={{ color: 'green' }} />
-                  ) : (
-                    <DoNotDisturbIcon sx={{ color: 'red' }} />
-                  )}
+                  {order.is_fulfilled ? <CheckCircleOutlineIcon sx={{ color: 'green' }} /> : <DoNotDisturbIcon sx={{ color: 'red' }} />}
                 </TableCell>
               </TableRow>
               {openRow === index && (
@@ -162,12 +150,7 @@ const AdminOrders = () => {
         </TableBody>
       </Table>
       {/* Modal for entering a number */}
-      <Modal
-        open={modalOpen}
-        onClose={handleModalClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <Modal open={modalOpen} onClose={handleModalClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box
           sx={{
             position: 'absolute',

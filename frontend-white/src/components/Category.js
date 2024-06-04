@@ -42,9 +42,7 @@ const ProductSkeleton = ({ height }) => (
 
 const Category = ({ categories, baseUrl, format, isLoading, selectedCurrency }) => {
   const categoryName = useParams().categoryname;
-  const selectedCategory =
-    categories.find((category) => category.name.toLowerCase() === categoryName?.toLowerCase()) ||
-    [];
+  const selectedCategory = categories.find((category) => category.name.toLowerCase() === categoryName?.toLowerCase()) || [];
 
   const items = selectedCategory.items || categories.flatMap((category) => category.items);
 

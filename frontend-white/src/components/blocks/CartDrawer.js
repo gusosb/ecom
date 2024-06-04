@@ -90,16 +90,8 @@ const CartDrawer = ({
                   >
                     <Grid container spacing={2} alignItems="center">
                       <Grid item xs="auto">
-                        <Box
-                          component={Link}
-                          to={`/p/${cart[key].id}/${cart[key].name}`}
-                          onClick={() => setCartOpen(false)}
-                        >
-                          <img
-                            src={baseUrl + path}
-                            alt={itemVariant.name}
-                            style={{ width: '110px' }}
-                          />
+                        <Box component={Link} to={`/p/${cart[key].id}/${cart[key].name}`} onClick={() => setCartOpen(false)}>
+                          <img src={baseUrl + path} alt={itemVariant.name} style={{ width: '110px' }} />
                         </Box>
                       </Grid>
                       <Grid item xs>
@@ -121,21 +113,11 @@ const CartDrawer = ({
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <Typography
-                          variant="body1"
-                          component="div"
-                          display="flex"
-                          justifyContent="center"
-                        >
+                        <Typography variant="body1" component="div" display="flex" justifyContent="center">
                           <FlipNumber
                             currentNumber={
                               selectedCurrency === 'SEK'
-                                ? format(
-                                    (cart[key].quantity *
-                                      cart[key].price_sek *
-                                      (1 + convertTaxRate(cart[key].vatRateSE))) /
-                                      100
-                                  )
+                                ? format((cart[key].quantity * cart[key].price_sek * (1 + convertTaxRate(cart[key].vatRateSE))) / 100)
                                 : format((cart[key].quantity * cart[key].price_eur) / 100)
                             }
                           />
@@ -143,19 +125,13 @@ const CartDrawer = ({
                         </Typography>
 
                         <Box display="flex" alignItems="center">
-                          <IconButton
-                            sx={{ padding: 0 }}
-                            onClick={() => changeVariantQuantity(-1, key)}
-                          >
+                          <IconButton sx={{ padding: 0 }} onClick={() => changeVariantQuantity(-1, key)}>
                             <RemoveIcon />
                           </IconButton>
                           <Typography variant="body2" component="div" sx={{ mx: 1 }}>
                             {cart[key]?.quantity}
                           </Typography>
-                          <IconButton
-                            sx={{ padding: 0 }}
-                            onClick={() => changeVariantQuantity(1, key)}
-                          >
+                          <IconButton sx={{ padding: 0 }} onClick={() => changeVariantQuantity(1, key)}>
                             <AddIcon />
                           </IconButton>
                         </Box>

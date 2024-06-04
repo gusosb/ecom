@@ -115,14 +115,9 @@ const App = () => {
           <Routes>
             <Route
               path="/admin/items/:categoryid?/:itemid?/:variantid?"
-              element={
-                result.data && <AdminItems queryClient={queryClient} categories={result.data} />
-              }
+              element={result.data && <AdminItems queryClient={queryClient} categories={result.data} />}
             />
-            <Route
-              path="/admin/orders"
-              element={<AdminOrders queryClient={queryClient} categories={result.data} />}
-            />
+            <Route path="/admin/orders" element={<AdminOrders queryClient={queryClient} categories={result.data} />} />
 
             <Route
               path="/"
@@ -145,12 +140,7 @@ const App = () => {
               }
             >
               <Route index element={<FrontPage />} />
-              <Route
-                index
-                element={
-                  <Category format={format} baseUrl={baseUrl} categories={result.data || []} />
-                }
-              />
+              <Route index element={<Category format={format} baseUrl={baseUrl} categories={result.data || []} />} />
 
               <Route
                 path="/checkout"
@@ -196,84 +186,26 @@ const App = () => {
                 }
               />
               {/* <Route path="/review/:itemid/:orderid/:itemname?" element={<Review baseUrl={baseUrl} format={format} categories={result.data || []} changeVariantQuantity={changeVariantQuantity} cart={cart} setCart={setCart} queryClient={queryClient} />} /> */}
-              <Route
-                path="/confirmation"
-                element={<Confirmation setCart={setCart} format={format} baseUrl={baseUrl} />}
-              />
+              <Route path="/confirmation" element={<Confirmation setCart={setCart} format={format} baseUrl={baseUrl} />} />
               <Route
                 path="/login"
-                element={
-                  token ? (
-                    <Navigate replace to="/" />
-                  ) : (
-                    <Login notify={notify} setToken={setToken} errorMessage={errorMessage} />
-                  )
-                }
+                element={token ? <Navigate replace to="/" /> : <Login notify={notify} setToken={setToken} errorMessage={errorMessage} />}
               />
               <Route
                 path="/register"
-                element={
-                  !token ? (
-                    <Register notify={notify} setToken={setToken} errorMessage={errorMessage} />
-                  ) : (
-                    <Navigate replace to="/" />
-                  )
-                }
+                element={!token ? <Register notify={notify} setToken={setToken} errorMessage={errorMessage} /> : <Navigate replace to="/" />}
               />
 
-              <Route
-                path="/discover"
-                element={
-                  <Discover notify={notify} setToken={setToken} errorMessage={errorMessage} />
-                }
-              />
-              <Route
-                path="/the-cashmere"
-                element={
-                  <TheCashmere notify={notify} setToken={setToken} errorMessage={errorMessage} />
-                }
-              />
-              <Route
-                path="/terms-and-conditions"
-                element={<Terms notify={notify} setToken={setToken} errorMessage={errorMessage} />}
-              />
-              <Route
-                path="/about-us"
-                element={<About notify={notify} setToken={setToken} errorMessage={errorMessage} />}
-              />
+              <Route path="/discover" element={<Discover notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
+              <Route path="/the-cashmere" element={<TheCashmere notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
+              <Route path="/terms-and-conditions" element={<Terms notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
+              <Route path="/about-us" element={<About notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
 
-              <Route
-                path="/customer-support"
-                element={
-                  <CustomerSupport
-                    notify={notify}
-                    setToken={setToken}
-                    errorMessage={errorMessage}
-                  />
-                }
-              >
-                <Route
-                  path="faq"
-                  element={<FAQ notify={notify} setToken={setToken} errorMessage={errorMessage} />}
-                />
-                <Route
-                  path="returns"
-                  element={
-                    <Returns notify={notify} setToken={setToken} errorMessage={errorMessage} />
-                  }
-                />
-                <Route
-                  path="contact-us"
-                  element={
-                    <Contact notify={notify} setToken={setToken} errorMessage={errorMessage} />
-                  }
-                />
-                <Route
-                  path="track-my-order"
-                  element={
-                    <Contact notify={notify} setToken={setToken} errorMessage={errorMessage} />
-                  }
-                />
+              <Route path="/customer-support" element={<CustomerSupport notify={notify} setToken={setToken} errorMessage={errorMessage} />}>
+                <Route path="faq" element={<FAQ notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
+                <Route path="returns" element={<Returns notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
+                <Route path="contact-us" element={<Contact notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
+                <Route path="track-my-order" element={<Contact notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
               </Route>
             </Route>
 

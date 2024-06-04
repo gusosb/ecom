@@ -105,12 +105,7 @@ const HomeMobile = ({
               </IconButton>
             )}
 
-            <Drawer
-              ModalProps={{ keepMounted: false }}
-              sx={{ zIndex: 100 }}
-              open={drawerOpen}
-              onClose={() => setDrawerOpen(false)}
-            >
+            <Drawer ModalProps={{ keepMounted: false }} sx={{ zIndex: 100 }} open={drawerOpen} onClose={() => setDrawerOpen(false)}>
               <Box
                 sx={{
                   minWidth: windowSize.width - 50,
@@ -120,13 +115,7 @@ const HomeMobile = ({
                 }}
               >
                 <List sx={{ width: '100%' }}>
-                  <ListItem
-                    button
-                    onClick={() => setDrawerOpen(false)}
-                    component={Link}
-                    to="/shop"
-                    sx={{ py: 0 }}
-                  >
+                  <ListItem button onClick={() => setDrawerOpen(false)} component={Link} to="/shop" sx={{ py: 0 }}>
                     <ListItemText
                       primary={
                         <Typography variant="body1" style={{ fontSize: '1.5rem' }}>
@@ -135,13 +124,7 @@ const HomeMobile = ({
                       }
                     />
                   </ListItem>
-                  <ListItem
-                    button
-                    onClick={() => setDrawerOpen(false)}
-                    component={Link}
-                    to="/discover"
-                    sx={{ py: 0 }}
-                  >
+                  <ListItem button onClick={() => setDrawerOpen(false)} component={Link} to="/discover" sx={{ py: 0 }}>
                     <ListItemText
                       primary={
                         <Typography variant="body1" style={{ fontSize: '1.5rem' }}>
@@ -150,13 +133,7 @@ const HomeMobile = ({
                       }
                     />
                   </ListItem>
-                  <ListItem
-                    button
-                    onClick={() => setDrawerOpen(false)}
-                    component={Link}
-                    to="/the-cashmere"
-                    sx={{ py: 0 }}
-                  >
+                  <ListItem button onClick={() => setDrawerOpen(false)} component={Link} to="/the-cashmere" sx={{ py: 0 }}>
                     <ListItemText
                       primary={
                         <Typography variant="body1" style={{ fontSize: '1.5rem' }}>
@@ -175,13 +152,7 @@ const HomeMobile = ({
                     }}
                   />
 
-                  <ListItem
-                    button
-                    onClick={() => setDrawerOpen(false)}
-                    component={Link}
-                    to="/customer-support/faq"
-                    sx={{ py: 0 }}
-                  >
+                  <ListItem button onClick={() => setDrawerOpen(false)} component={Link} to="/customer-support/faq" sx={{ py: 0 }}>
                     <ListItemText
                       primary={
                         <Typography variant="body1" style={{ fontSize: '1.0rem' }}>
@@ -190,13 +161,7 @@ const HomeMobile = ({
                       }
                     />
                   </ListItem>
-                  <ListItem
-                    button
-                    onClick={() => setDrawerOpen(false)}
-                    component={Link}
-                    to="/terms-and-conditions"
-                    sx={{ py: 0 }}
-                  >
+                  <ListItem button onClick={() => setDrawerOpen(false)} component={Link} to="/terms-and-conditions" sx={{ py: 0 }}>
                     <ListItemText
                       primary={
                         <Typography variant="body1" style={{ fontSize: '1.0rem' }}>
@@ -235,16 +200,8 @@ const HomeMobile = ({
 
           <Grid item xs={2} display="flex" justifyContent="end">
             <Box sx={{ pr: 2 }}>
-              <IconButton
-                onClick={() => setCartOpen(!cartOpen)}
-                color="inherit"
-                aria-label="shopping-cart"
-              >
-                <Badge
-                  badgeContent={cart && Object.keys(cart).length}
-                  color="secondary"
-                  sx={{ '& .MuiBadge-badge': {} }}
-                >
+              <IconButton onClick={() => setCartOpen(!cartOpen)} color="inherit" aria-label="shopping-cart">
+                <Badge badgeContent={cart && Object.keys(cart).length} color="secondary" sx={{ '& .MuiBadge-badge': {} }}>
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>

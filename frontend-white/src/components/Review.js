@@ -107,17 +107,10 @@ const Review = ({ categories, queryClient, baseUrl }) => {
             </Grid>
 
             <Grid item xs={12} display="center" justifyContent="center">
-              <img
-                style={{ maxHeight: '300px', maxWidth: '100%', objectFit: 'contain' }}
-                src={baseUrl + itemToReview.images[0].path}
-              />
+              <img style={{ maxHeight: '300px', maxWidth: '100%', objectFit: 'contain' }} src={baseUrl + itemToReview.images[0].path} />
             </Grid>
             <Grid item xs={12} display="center" justifyContent="center" mt={1}>
-              <Rating
-                name="select-rating"
-                value={rating}
-                onChange={(e, newValue) => setRating(newValue)}
-              />
+              <Rating name="select-rating" value={rating} onChange={(e, newValue) => setRating(newValue)} />
             </Grid>
             <Grid item xs={12} display="center" justifyContent="center" mt={1}>
               <StyledTextarea
@@ -130,14 +123,7 @@ const Review = ({ categories, queryClient, baseUrl }) => {
             </Grid>
 
             <Grid item xs={12} display="center" justifyContent="center" mt={1}>
-              <Button
-                sx={{ height: '100%' }}
-                fullWidth
-                variant="contained"
-                color="primary"
-                disableElevation
-                onClick={sendReview}
-              >
+              <Button sx={{ height: '100%' }} fullWidth variant="contained" color="primary" disableElevation onClick={sendReview}>
                 skicka recension
               </Button>
             </Grid>

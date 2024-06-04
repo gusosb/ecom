@@ -51,8 +51,7 @@ const appearance = {
     '.Tab--selected, .Tab--selected:focus, .Tab--selected:hover': {
       border: 'none',
       backgroundColor: '#fff',
-      boxShadow:
-        '0 0 0 1.5px var(--colorPrimaryText), 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 7px rgba(18, 42, 66, 0.04)'
+      boxShadow: '0 0 0 1.5px var(--colorPrimaryText), 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 7px rgba(18, 42, 66, 0.04)'
     },
     '.Label': {
       fontWeight: '500'
@@ -60,15 +59,7 @@ const appearance = {
   }
 };
 
-const CheckoutStripe = ({
-  cart,
-  totalSumInCart,
-  removeFromCart,
-  changeVariantQuantity,
-  format,
-  baseUrl,
-  selectedCurrency
-}) => {
+const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQuantity, format, baseUrl, selectedCurrency }) => {
   const [payment, setPayment] = useState({});
   const [creatingOrder, setCreatingOrder] = useState(false);
   const [isInitialRender, setIsInitialRender] = useState(true);
@@ -101,13 +92,9 @@ const CheckoutStripe = ({
       const ossVatRate = convertTaxRate(vatRates[country]?.vatRate) / 100 || 0;
       const vatRateSE = convertTaxRate(cart[e].vatRateSE);
 
-      const ossAmount = formatAmount(
-        (cart[e].price_eur * cart[e].quantity * ossVatRate) / (1 + ossVatRate)
-      );
+      const ossAmount = formatAmount((cart[e].price_eur * cart[e].quantity * ossVatRate) / (1 + ossVatRate));
       const sekVatAmount = formatAmount(vatRateSE * cart[e].price_sek * cart[e].quantity);
-      const sekVatEURAmount = formatAmount(
-        (cart[e].price_eur * cart[e].quantity * vatRateSE) / (1 + vatRateSE)
-      );
+      const sekVatEURAmount = formatAmount((cart[e].price_eur * cart[e].quantity * vatRateSE) / (1 + vatRateSE));
 
       const total_tax_amount =
         country === 'SE' && selectedCurrency === 'SEK'
@@ -122,8 +109,7 @@ const CheckoutStripe = ({
         name: cart[e].name,
         quantity: cart[e].quantity,
         quantity_unit: 'pcs',
-        unit_price:
-          selectedCurrency === 'SEK' ? cart[e].price_sek * (1 + vatRateSE) : cart[e].price_eur,
+        unit_price: selectedCurrency === 'SEK' ? cart[e].price_sek * (1 + vatRateSE) : cart[e].price_eur,
         currency: selectedCurrency,
         tax_rate: selectedCurrency === 'SEK' ? cart[e].vatRateSE : 0,
         total_amount:
@@ -256,24 +242,12 @@ const CheckoutStripe = ({
 
   return (
     <Grid container display="flex" justifyContent="center" marginTop={5}>
-      <Grid
-        display="flex"
-        item
-        xs={12}
-        style={{ maxWidth: 1300, height: '100%' }}
-        sx={{ m: 20, mt: 0, mb: 0 }}
-      >
+      <Grid display="flex" item xs={12} style={{ maxWidth: 1300, height: '100%' }} sx={{ m: 20, mt: 0, mb: 0 }}>
         <Grid container spacing={10} paddingTop={4}>
           <Grid item xs={6}>
             <Grid container spacing={0}>
               <Grid item xs>
-                <Typography
-                  sx={{ borderBottom: '1px solid #e6e6e6' }}
-                  paddingBottom={1}
-                  component="h1"
-                  variant="h6"
-                  style={{ fontWeight: 400 }}
-                >
+                <Typography sx={{ borderBottom: '1px solid #e6e6e6' }} paddingBottom={1} component="h1" variant="h6" style={{ fontWeight: 400 }}>
                   ORDER SUMMARY
                 </Typography>
 
@@ -321,30 +295,16 @@ const CheckoutStripe = ({
                               >
                                 {cart[key]?.name}
                               </Typography>
-                              <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                textTransform="uppercase"
-                              >
+                              <Typography variant="body2" color="textSecondary" textTransform="uppercase">
                                 {hasMultipleVariants && itemVariant?.name}
                               </Typography>
                             </Grid>
                             <Grid item>
-                              <Typography
-                                variant="body1"
-                                component="div"
-                                display="flex"
-                                justifyContent="center"
-                              >
+                              <Typography variant="body1" component="div" display="flex" justifyContent="center">
                                 <FlipNumber
                                   currentNumber={
                                     selectedCurrency === 'SEK'
-                                      ? format(
-                                          (cart[key].quantity *
-                                            cart[key].price_sek *
-                                            (1 + convertTaxRate(cart[key].vatRateSE))) /
-                                            100
-                                        )
+                                      ? format((cart[key].quantity * cart[key].price_sek * (1 + convertTaxRate(cart[key].vatRateSE))) / 100)
                                       : (cart[key].quantity * cart[key].price_eur) / 100
                                   }
                                 />
@@ -352,19 +312,13 @@ const CheckoutStripe = ({
                               </Typography>
 
                               <Box display="flex" alignItems="center">
-                                <IconButton
-                                  sx={{ padding: 0 }}
-                                  onClick={() => changeVariantQuantity(-1, key)}
-                                >
+                                <IconButton sx={{ padding: 0 }} onClick={() => changeVariantQuantity(-1, key)}>
                                   <RemoveIcon />
                                 </IconButton>
                                 <Typography variant="body2" sx={{ mx: 1 }}>
                                   {cart[key]?.quantity}
                                 </Typography>
-                                <IconButton
-                                  sx={{ padding: 0 }}
-                                  onClick={() => changeVariantQuantity(1, key)}
-                                >
+                                <IconButton sx={{ padding: 0 }} onClick={() => changeVariantQuantity(1, key)}>
                                   <AddIcon />
                                 </IconButton>
                               </Box>
@@ -387,29 +341,11 @@ const CheckoutStripe = ({
             {loadSkeleton && (
               <>
                 <Box sx={{ m: 2 }}>
-                  <Skeleton
-                    variant="text"
-                    animation="wave"
-                    width="80%"
-                    height={24}
-                    sx={{ mb: 2 }}
-                  />
+                  <Skeleton variant="text" animation="wave" width="80%" height={24} sx={{ mb: 2 }} />
                   <Skeleton variant="rectangular" animation="wave" height={56} sx={{ mb: 2 }} />
-                  <Skeleton
-                    variant="text"
-                    animation="wave"
-                    width="80%"
-                    height={24}
-                    sx={{ mb: 2 }}
-                  />
+                  <Skeleton variant="text" animation="wave" width="80%" height={24} sx={{ mb: 2 }} />
                   <Skeleton variant="rectangular" animation="wave" height={56} sx={{ mb: 2 }} />
-                  <Skeleton
-                    variant="text"
-                    animation="wave"
-                    width="60%"
-                    height={24}
-                    sx={{ mb: 2 }}
-                  />
+                  <Skeleton variant="text" animation="wave" width="60%" height={24} sx={{ mb: 2 }} />
                   <Skeleton variant="rectangular" animation="wave" height={56} sx={{ mb: 2 }} />
                   <Skeleton variant="rectangular" animation="wave" height={150} sx={{ mb: 2 }} />
                   <Skeleton variant="rectangular" animation="wave" height={56} />

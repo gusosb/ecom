@@ -71,13 +71,7 @@ const Login = ({ setToken, notify, errorMessage }) => {
               value={password}
               onChange={({ target }) => setPassword(target.value)}
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick={submit}
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button type="submit" fullWidth variant="contained" onClick={submit} sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
             <Grid container>

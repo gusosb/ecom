@@ -2,9 +2,6 @@ const ordersRouter = require('express').Router();
 const { auth } = require('./auth');
 const { Order, OrderItem } = require('../models');
 
-const { v4: uuidv4 } = require('uuid');
-const { Op } = require('sequelize');
-
 const stripe = require('stripe')(process.env.STRIPE_KEY);
 
 ordersRouter.get('/admin', async (request, response) => {
@@ -36,20 +33,8 @@ ordersRouter.put('/admin/tracking/:id', async (request, response) => {
 // STRIPE
 
 ordersRouter.post('/create-payment-intent', async (request, response) => {
-  const {
-    locale,
-    order_amount,
-    order_tax_amount,
-    order_lines,
-    email,
-    phone,
-    firstname,
-    lastname,
-    address,
-    postalcode,
-    city,
-    currency
-  } = request.body;
+  const { locale, order_amount, order_tax_amount, order_lines, email, phone, firstname, lastname, address, postalcode, city, currency } =
+    request.body;
 
   const paymentIntent = await stripe.paymentIntents.create({
     amount: order_amount,

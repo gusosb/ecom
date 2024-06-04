@@ -43,12 +43,8 @@ const ItemMobile = ({
 
   const handleScroll = () => {
     const acceptedHeihts = [0, 49];
-    const y =
-      window.innerHeight +
-      window.pageYOffset -
-      (acceptedHeihts.includes(boxRef.current.offsetHeight) ? 57 : -70);
-    const ofstop =
-      ref.current && ref.current.offsetTop + ref.current.offsetHeight + ref2.current.offsetHeight;
+    const y = window.innerHeight + window.pageYOffset - (acceptedHeihts.includes(boxRef.current.offsetHeight) ? 57 : -70);
+    const ofstop = ref.current && ref.current.offsetTop + ref.current.offsetHeight + ref2.current.offsetHeight;
     setSticky(y < ofstop);
   };
 
@@ -68,12 +64,7 @@ const ItemMobile = ({
             if (index === 0)
               return (
                 <>
-                  <img
-                    src={baseUrl + image.path}
-                    alt="Product"
-                    style={{ width: '100%', height: 'auto', display: 'block' }}
-                    preload
-                  />
+                  <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} preload />
                   <Box
                     component={Typography}
                     variant="h5"
@@ -100,12 +91,8 @@ const ItemMobile = ({
                     <Box mx={5} mb={4}>
                       <Markdown
                         components={{
-                          p: ({ node, ...props }) => (
-                            <Typography fontSize={20} variant="body1" gutterBottom {...props} />
-                          ),
-                          h1: ({ node, ...props }) => (
-                            <Typography variant="body2" gutterBottom {...props} />
-                          )
+                          p: ({ node, ...props }) => <Typography fontSize={20} variant="body1" gutterBottom {...props} />,
+                          h1: ({ node, ...props }) => <Typography variant="body2" gutterBottom {...props} />
                         }}
                       >
                         {selectedItem.description}
@@ -114,14 +101,7 @@ const ItemMobile = ({
                   </Box>
                 </>
               );
-            return (
-              <img
-                src={baseUrl + image.path}
-                alt="Product"
-                style={{ width: '100%', height: 'auto', display: 'block' }}
-                preload
-              />
-            );
+            return <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} preload />;
           })}
         </Grid>
 
@@ -136,28 +116,15 @@ const ItemMobile = ({
           <Box width="100%" ref={boxRef}>
             {toggleDetails && (
               <>
-                <CustomAccordion
-                  title="DETAILS"
-                  expanded={expanded === 'DETAILS'}
-                  handleChange={() => handleAccordionChange('DETAILS')}
-                >
+                <CustomAccordion title="DETAILS" expanded={expanded === 'DETAILS'} handleChange={() => handleAccordionChange('DETAILS')}>
                   <Typography>{selectedItem.details}</Typography>
                 </CustomAccordion>
 
-                <CustomAccordion
-                  title="SIZE & FIT"
-                  expanded={expanded === 'SIZE & FIT'}
-                  handleChange={() => handleAccordionChange('SIZE & FIT')}
-                >
+                <CustomAccordion title="SIZE & FIT" expanded={expanded === 'SIZE & FIT'} handleChange={() => handleAccordionChange('SIZE & FIT')}>
                   <Typography>{selectedItem.specification}</Typography>
                 </CustomAccordion>
 
-                <CustomAccordion
-                  last={true}
-                  title="CARE"
-                  expanded={expanded === 'CARE'}
-                  handleChange={() => handleAccordionChange('CARE')}
-                >
+                <CustomAccordion last={true} title="CARE" expanded={expanded === 'CARE'} handleChange={() => handleAccordionChange('CARE')}>
                   <Typography>{selectedItem.specification}</Typography>
                 </CustomAccordion>
               </>
@@ -177,12 +144,7 @@ const ItemMobile = ({
 
           <Grid container spacing={2}>
             <Grid item xs={4} margin={2} marginRight={0}>
-              <DetailsButton
-                sx={{ padding: '6px' }}
-                variant="outlined"
-                fullWidth
-                onClick={() => setToggleDetails(!toggleDetails)}
-              >
+              <DetailsButton sx={{ padding: '6px' }} variant="outlined" fullWidth onClick={() => setToggleDetails(!toggleDetails)}>
                 {toggleDetails ? 'CLOSE' : 'DETAILS'}
               </DetailsButton>
             </Grid>
@@ -199,20 +161,11 @@ const ItemMobile = ({
                 }}
                 variant="contained"
                 fullWidth
-                onClick={
-                  selectedItem?.variants?.find((e) => e.id === variant)?.sellable > 0
-                    ? addToCart
-                    : () => setOpenNotification(true)
-                }
+                onClick={selectedItem?.variants?.find((e) => e.id === variant)?.sellable > 0 ? addToCart : () => setOpenNotification(true)}
               >
-                {selectedItem?.variants?.find((e) => e.id === variant)?.sellable > 0
-                  ? 'BUY'
-                  : 'Notify  me'}{' '}
-                –{' '}
+                {selectedItem?.variants?.find((e) => e.id === variant)?.sellable > 0 ? 'BUY' : 'Notify  me'} –{' '}
                 {selectedCurrency === 'SEK'
-                  ? format(
-                      (selectedItem.price_sek * (1 + convertTaxRate(selectedItem.vatRateSE))) / 100
-                    )
+                  ? format((selectedItem.price_sek * (1 + convertTaxRate(selectedItem.vatRateSE))) / 100)
                   : format(selectedItem.price_eur / 100)}{' '}
                 {selectedCurrency}
               </Button>

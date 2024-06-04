@@ -13,17 +13,7 @@ import {
   updateCategory,
   baseUrl
 } from '../requests';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  Navigate,
-  useParams,
-  Outlet,
-  useOutletContext,
-  useNavigate
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useParams, Outlet, useOutletContext, useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/system';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
@@ -340,11 +330,7 @@ const AdminItems = ({ queryClient }) => {
                   label="New Category Name"
                   variant="outlined"
                 />
-                <Button
-                  sx={{ ml: 2 }}
-                  variant="contained"
-                  onClick={() => sendUpdateCategory(selectedCategory.id)}
-                >
+                <Button sx={{ ml: 2 }} variant="contained" onClick={() => sendUpdateCategory(selectedCategory.id)}>
                   Change Category Name
                 </Button>
                 <br />
@@ -375,12 +361,7 @@ const AdminItems = ({ queryClient }) => {
                 />
                 <Button variant="contained" component="label">
                   Image
-                  <input
-                    type="file"
-                    onChange={({ target }) => changeNewItem(target.files[0], 'file')}
-                    hidden
-                    accept="image/*"
-                  />
+                  <input type="file" onChange={({ target }) => changeNewItem(target.files[0], 'file')} hidden accept="image/*" />
                 </Button>
 
                 <Button variant="contained" onClick={sendItem}>
@@ -420,15 +401,9 @@ const AdminItems = ({ queryClient }) => {
                             <TableCell align="right">{row.vatRateSE}</TableCell>
                             <TableCell align="right">
                               {row.isActive ? (
-                                <CheckIcon
-                                  onClick={() => changeStatus(row.id)}
-                                  sx={{ color: 'green' }}
-                                />
+                                <CheckIcon onClick={() => changeStatus(row.id)} sx={{ color: 'green' }} />
                               ) : (
-                                <CloseIcon
-                                  onClick={() => changeStatus(row.id)}
-                                  sx={{ color: 'red' }}
-                                />
+                                <CloseIcon onClick={() => changeStatus(row.id)} sx={{ color: 'red' }} />
                               )}
                             </TableCell>
                           </TableRow>
@@ -523,12 +498,7 @@ const AdminItems = ({ queryClient }) => {
                           <br />
                           <Button variant="contained" component="label">
                             Select Image
-                            <input
-                              type="file"
-                              onChange={({ target }) => setNewImage(target.files[0])}
-                              hidden
-                              accept="image/*"
-                            />
+                            <input type="file" onChange={({ target }) => setNewImage(target.files[0])} hidden accept="image/*" />
                           </Button>
                           <br />
                           <br />
@@ -555,11 +525,7 @@ const AdminItems = ({ queryClient }) => {
                           <br />
                           <List aria-label="variants">
                             {selectedItem.variants.map((e) => (
-                              <ListItemButton
-                                selected={e.id === variantID}
-                                component={Link}
-                                to={`/admin/items/${topCategoryID}/${itemID}/${e.id}`}
-                              >
+                              <ListItemButton selected={e.id === variantID} component={Link} to={`/admin/items/${topCategoryID}/${itemID}/${e.id}`}>
                                 <ListItemText primary={e.name} />
                               </ListItemButton>
                             ))}
@@ -596,11 +562,7 @@ const AdminItems = ({ queryClient }) => {
                           {selectedItem.images.map((image) => (
                             <>
                               {/* <img src={image.path} alt='' /> */}
-                              <img
-                                style={{ objectFit: 'contain', maxWidth: '300px' }}
-                                src={baseUrl + image.path}
-                                alt=""
-                              />
+                              <img style={{ objectFit: 'contain', maxWidth: '300px' }} src={baseUrl + image.path} alt="" />
                               <br />
                               <Button onClick={() => sendDeleteImage(image.id)} variant="contained">
                                 Delete image
@@ -663,11 +625,7 @@ const AdminItems = ({ queryClient }) => {
                 <Button variant="contained" onClick={() => sendCategory('top')}>
                   Create top Category
                 </Button>
-                <Button
-                  sx={{ ml: 2 }}
-                  variant="contained"
-                  onClick={() => sendCategory('SubOne', categoryID)}
-                >
+                <Button sx={{ ml: 2 }} variant="contained" onClick={() => sendCategory('SubOne', categoryID)}>
                   Create sub Category
                 </Button>
                 <br />

@@ -1,13 +1,6 @@
 import { useParams, useOutletContext } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import {
-  useWindowSize,
-  CustomAccordion,
-  VariantSelector,
-  convertTaxRate,
-  useCountryCurrency,
-  validateEmail
-} from '../helpers';
+import { useWindowSize, CustomAccordion, VariantSelector, convertTaxRate, useCountryCurrency, validateEmail } from '../helpers';
 
 import ItemMobile from './ItemMobile';
 import Markdown from 'react-markdown';
@@ -28,8 +21,7 @@ const Item = ({ cart, setCart, categories, format, baseUrl, newNotificationMutat
   const items = categories.flatMap((e) => e.items);
   const selectedItem = items.find((e) => e.id === parseInt(itemid)) || [];
 
-  const firstVariant =
-    selectedItem?.variants?.find((e) => e.sellable > 0)?.id || selectedItem?.variants?.[0]?.id;
+  const firstVariant = selectedItem?.variants?.find((e) => e.sellable > 0)?.id || selectedItem?.variants?.[0]?.id;
 
   const [variant, setVariant] = useState(firstVariant);
   const [showVariants, setShowVariants] = useState(false);
@@ -110,12 +102,7 @@ const Item = ({ cart, setCart, categories, format, baseUrl, newNotificationMutat
       <Grid container>
         <Grid item xs={12} md={6}>
           {selectedItem?.images?.map((image) => (
-            <img
-              src={baseUrl + image.path}
-              alt="Product"
-              style={{ width: '100%', height: 'auto', display: 'block' }}
-              preload
-            />
+            <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} preload />
           ))}
         </Grid>
         <Grid item xs={12} md={6}>
@@ -150,12 +137,8 @@ const Item = ({ cart, setCart, categories, format, baseUrl, newNotificationMutat
 
                 <Markdown
                   components={{
-                    p: ({ node, ...props }) => (
-                      <Typography fontSize={15} variant="body1" gutterBottom {...props} />
-                    ),
-                    h1: ({ node, ...props }) => (
-                      <Typography variant="body2" gutterBottom {...props} />
-                    )
+                    p: ({ node, ...props }) => <Typography fontSize={15} variant="body1" gutterBottom {...props} />,
+                    h1: ({ node, ...props }) => <Typography variant="body2" gutterBottom {...props} />
                   }}
                 >
                   {selectedItem.description}
@@ -186,30 +169,16 @@ const Item = ({ cart, setCart, categories, format, baseUrl, newNotificationMutat
                   }}
                   variant="contained"
                   fullWidth
-                  onClick={
-                    selectedItem?.variants?.find((e) => e.id === variant)?.sellable > 0
-                      ? addToCart
-                      : () => setOpenNotification(true)
-                  }
+                  onClick={selectedItem?.variants?.find((e) => e.id === variant)?.sellable > 0 ? addToCart : () => setOpenNotification(true)}
                 >
-                  {selectedItem?.variants?.find((e) => e.id === variant)?.sellable > 0
-                    ? 'BUY'
-                    : 'Notify  me'}{' '}
-                  –{' '}
+                  {selectedItem?.variants?.find((e) => e.id === variant)?.sellable > 0 ? 'BUY' : 'Notify  me'} –{' '}
                   {selectedCurrency === 'SEK'
-                    ? format(
-                        (selectedItem.price_sek * (1 + convertTaxRate(selectedItem.vatRateSE))) /
-                          100
-                      )
+                    ? format((selectedItem.price_sek * (1 + convertTaxRate(selectedItem.vatRateSE))) / 100)
                     : format(selectedItem.price_eur / 100)}{' '}
                   {selectedCurrency}
                 </Button>
 
-                <Modal
-                  open={openNotification}
-                  onClose={() => setOpenNotification(false)}
-                  keepMounted
-                >
+                <Modal open={openNotification} onClose={() => setOpenNotification(false)} keepMounted>
                   <Box
                     sx={{
                       position: 'absolute',
@@ -279,20 +248,11 @@ const Item = ({ cart, setCart, categories, format, baseUrl, newNotificationMutat
                   >
                     <Typography>{selectedItem.details}</Typography>
                   </CustomAccordion>
-                  <CustomAccordion
-                    title="SIZE & FIT"
-                    expanded={expanded === 'SIZE & FIT'}
-                    handleChange={() => handleAccordionChange('SIZE & FIT')}
-                  >
+                  <CustomAccordion title="SIZE & FIT" expanded={expanded === 'SIZE & FIT'} handleChange={() => handleAccordionChange('SIZE & FIT')}>
                     <Typography>{selectedItem.sizefit}</Typography>
                   </CustomAccordion>
 
-                  <CustomAccordion
-                    title="CARE"
-                    last={true}
-                    expanded={expanded === 'CARE'}
-                    handleChange={() => handleAccordionChange('CARE')}
-                  >
+                  <CustomAccordion title="CARE" last={true} expanded={expanded === 'CARE'} handleChange={() => handleAccordionChange('CARE')}>
                     <Typography>{selectedItem.care}</Typography>
                   </CustomAccordion>
 

@@ -3,12 +3,13 @@ const { auth } = require('./auth');
 const multer = require('multer');
 const { Item, Image, Variant, Review, Order } = require('../models');
 const Notification = require('../models/notification');
+const { generateEmailTemplate } = require('../helpers.js');
 
 const nodemailer = require('nodemailer');
 
-// Create a transporter
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: process.env.EMAIL_HOST,
+  port: process.env.EMAIL_PORT,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
@@ -106,17 +107,30 @@ itemsRouter.put('/variant/:id', async (request, response) => {
 
   const id = request.params.id;
 
-  const [item, isCreated] = await Variant.upsert({ ...request.body, id });
-
   const { sellable } = request.body;
 
   const variant = await Variant.findByPk(id);
-  if (variant.sellable === 0 && sellable > 0) {
+  console.log('variant.sellable', variant.sellable);
+  console.log('sellable', parseFloat(sellable));
+
+  if (parseFloat(variant.sellable) === 0 && parseFloat(sellable) > 0) {
     const notifications = await Notification.findAll({ where: { variantId: id } });
     console.log('notifications', notifications);
-    if (notifications.length > 0) return response.status(200).json();
+
+    if (notifications.length > 0) {
+      // => logic for sending notification
+      const bcc = notifications.map((notification) => notification.email);
+      const html = await generateEmailTemplate({ itemId: variant.itemId, template: 'backInStock' });
+
+      const mailOptions = { from: process.env.EMAIL_USER, bcc, subject: 'Item back in stock', html };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) return console.log(error);
+        console.log('Email sent: ' + info.response);
+      });
+    }
   }
 
+  const [item, isCreated] = await Variant.upsert({ ...request.body, id });
   response.status(200).json();
 });
 

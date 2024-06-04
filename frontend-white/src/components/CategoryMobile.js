@@ -34,16 +34,9 @@ const CategoryMobile = ({
             : items.map((item, index) => (
                 <Grid item xs={6} sm={6} md={3} key={index}>
                   <Product component={Link} to={`/p/${item.id}/${item.name}`}>
-                    <img
-                      src={baseUrl + item.images[0]?.path}
-                      alt={item.name}
-                      style={{ objectFit: 'cover' }}
-                    />
+                    <img src={baseUrl + item.images[0]?.path} alt={item.name} style={{ objectFit: 'cover' }} />
                     <ProductInfo className="ProductInfo">
-                      <Typography
-                        variant="subtitle1"
-                        sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}
-                      >
+                      <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>
                         {item.name}
                       </Typography>
                       <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>

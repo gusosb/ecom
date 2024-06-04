@@ -101,21 +101,11 @@ const CheckoutMobileStripe = ({
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <Typography
-                          variant="body1"
-                          component="div"
-                          display="flex"
-                          justifyContent="center"
-                        >
+                        <Typography variant="body1" component="div" display="flex" justifyContent="center">
                           <FlipNumber
                             currentNumber={
                               selectedCurrency === 'SEK'
-                                ? format(
-                                    (cart[key].quantity *
-                                      cart[key].price_sek *
-                                      (1 + convertTaxRate(cart[key].vatRateSE))) /
-                                      100
-                                  )
+                                ? format((cart[key].quantity * cart[key].price_sek * (1 + convertTaxRate(cart[key].vatRateSE))) / 100)
                                 : (cart[key].quantity * cart[key].price_eur) / 100
                             }
                           />
@@ -123,19 +113,13 @@ const CheckoutMobileStripe = ({
                         </Typography>
 
                         <Box display="flex" alignItems="center">
-                          <IconButton
-                            sx={{ padding: 0 }}
-                            onClick={() => changeVariantQuantity(-1, key)}
-                          >
+                          <IconButton sx={{ padding: 0 }} onClick={() => changeVariantQuantity(-1, key)}>
                             <RemoveIcon />
                           </IconButton>
                           <Typography variant="body2" sx={{ mx: 1 }}>
                             {cart[key]?.quantity}
                           </Typography>
-                          <IconButton
-                            sx={{ padding: 0 }}
-                            onClick={() => changeVariantQuantity(1, key)}
-                          >
+                          <IconButton sx={{ padding: 0 }} onClick={() => changeVariantQuantity(1, key)}>
                             <AddIcon />
                           </IconButton>
                         </Box>

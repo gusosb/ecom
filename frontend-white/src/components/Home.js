@@ -17,16 +17,7 @@ import Typography from '@mui/material/Typography';
 import { ReactComponent as SURDEGSVG } from '../images/sourdoughsvg.svg';
 import HelmetProvider from './blocks/HelmetProvider';
 
-const Home = ({
-  categories,
-  cart,
-  removeFromCart,
-  changeVariantQuantity,
-  totalSumInCart,
-  format,
-  baseUrl,
-  isLoading
-}) => {
+const Home = ({ categories, cart, removeFromCart, changeVariantQuantity, totalSumInCart, format, baseUrl, isLoading }) => {
   const [cartOpen, setCartOpen] = useState(false);
 
   const toggleDrawer = () => (event) => {
@@ -104,10 +95,7 @@ const Home = ({
           minHeight: '100vh' // minimum height of 100% of the viewport height
         }}
       >
-        <Box
-          ref={headerRef}
-          sx={{ position: 'sticky', top: 0, zIndex: 1100, bgcolor: 'background.paper' }}
-        >
+        <Box ref={headerRef} sx={{ position: 'sticky', top: 0, zIndex: 1100, bgcolor: 'background.paper' }}>
           <Grid container borderBottom={1} paddingTop={1} paddingBottom={1} borderColor="#e6e6e6">
             <Grid item xs>
               <Box paddingLeft={2} display="flex" gap={2}>
@@ -124,28 +112,15 @@ const Home = ({
             </Grid>
 
             <Grid item xs display="flex" justifyContent="center" alignItems="center">
-              <Typography
-                component={Link}
-                sx={{ color: 'inherit', textDecoration: 'inherit', fontSize: '30px' }}
-                to="/"
-                variant="h5"
-              >
+              <Typography component={Link} sx={{ color: 'inherit', textDecoration: 'inherit', fontSize: '30px' }} to="/" variant="h5">
                 GUSTAF LUND
               </Typography>
             </Grid>
 
             <Grid item xs display="flex" justifyContent="end">
               <Box paddingRight={4}>
-                <IconButton
-                  onClick={() => setCartOpen(!cartOpen)}
-                  color="inherit"
-                  aria-label="shopping-cart"
-                >
-                  <Badge
-                    badgeContent={cart && Object.keys(cart).length}
-                    color="secondary"
-                    sx={{ '& .MuiBadge-badge': {} }}
-                  >
+                <IconButton onClick={() => setCartOpen(!cartOpen)} color="inherit" aria-label="shopping-cart">
+                  <Badge badgeContent={cart && Object.keys(cart).length} color="secondary" sx={{ '& .MuiBadge-badge': {} }}>
                     <ShoppingCartIcon />
                   </Badge>
                 </IconButton>

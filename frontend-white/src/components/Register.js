@@ -110,9 +110,7 @@ const Register = ({ setToken, notify, errorMessage }) => {
                   error={password2 !== '' && password !== password2 ? true : false}
                   name="password2"
                   label="Bekräfta Lösenord"
-                  helperText={
-                    password2 !== '' && password !== password2 ? 'Lösenorden stämmer inte.' : ''
-                  }
+                  helperText={password2 !== '' && password !== password2 ? 'Lösenorden stämmer inte.' : ''}
                   type="password"
                   id="password2"
                   autoComplete="current-password"

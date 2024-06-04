@@ -17,16 +17,8 @@ const Admin = () => {
       <Suspense fallback={<></>}>
         <Routes>
           {/* <Route path="/" element={<Admin />} /> */}
-          <Route
-            path="items/:categoryid?/:itemid?"
-            element={
-              result.data && <AdminItems queryClient={queryClient} categories={result.data} />
-            }
-          />
-          <Route
-            path="orders"
-            element={<AdminOrders queryClient={queryClient} categories={result.data} />}
-          />
+          <Route path="items/:categoryid?/:itemid?" element={result.data && <AdminItems queryClient={queryClient} categories={result.data} />} />
+          <Route path="orders" element={<AdminOrders queryClient={queryClient} categories={result.data} />} />
         </Routes>
       </Suspense>
     </>

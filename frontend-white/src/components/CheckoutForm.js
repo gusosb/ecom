@@ -2,13 +2,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import FlipNumber from './blocks/FlipNumber';
-import {
-  useStripe,
-  useElements,
-  PaymentElement,
-  AddressElement,
-  LinkAuthenticationElement
-} from '@stripe/react-stripe-js';
+import { useStripe, useElements, PaymentElement, AddressElement, LinkAuthenticationElement } from '@stripe/react-stripe-js';
 
 const allowedCountries = [
   'AT',

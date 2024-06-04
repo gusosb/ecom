@@ -18,12 +18,7 @@ const CustomerSupport = () => {
       <Grid container style={{ height: `calc(100vh - ${footerHeight + headerHeight - 0.5}px)` }}>
         <Grid item xs={12} md={6} style={{ display: 'flex', flexDirection: 'column' }}>
           <Box sx={{ flexGrow: 1, backgroundColor: '#000', padding: 4, px: 2, color: '#fff' }}>
-            <Typography
-              variant="h4"
-              gutterBottom
-              component="div"
-              style={{ textAlign: 'center', fontSize: '1.6rem' }}
-            >
+            <Typography variant="h4" gutterBottom component="div" style={{ textAlign: 'center', fontSize: '1.6rem' }}>
               CUSTOMER SUPPORT
             </Typography>
             <List>
