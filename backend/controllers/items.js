@@ -121,6 +121,7 @@ itemsRouter.put('/variant/:id', async (request, response) => {
       // => logic for sending notification
       const bcc = notifications.map((notification) => notification.email);
       const html = await generateEmailTemplate({ itemId: variant.itemId, template: 'backInStock' });
+      console.log('Update variant - html', html);
 
       const mailOptions = { from: process.env.EMAIL_USER, bcc, subject: 'Item back in stock', html };
       transporter.sendMail(mailOptions, (error, info) => {

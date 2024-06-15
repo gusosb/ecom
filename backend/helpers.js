@@ -181,7 +181,7 @@ const generateEmailTemplate = async ({ itemId }) => {
       <body>
         <h1>Item back in stock</h1>
         <p>The item you were interested in is back in stock!</p>
-        <img src="${item.image}" alt="${item.name}">
+        <img src="${item.images[0].path}" alt="${item.name}">
         <p>${item.name}</p>
         <p>${item.description}</p>
       </body>
