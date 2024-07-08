@@ -74,15 +74,7 @@ export const DetailsButton = styled(Button)({
   }
 });
 
-export const CustomAccordion = ({
-  title,
-  children,
-  expanded,
-  handleChange,
-  first,
-  last,
-  mobile
-}) => {
+export const CustomAccordion = ({ title, children, expanded, handleChange, first, last, mobile }) => {
   return (
     <Accordion
       expanded={expanded}
@@ -147,7 +139,7 @@ export const CustomAccordion = ({
           }
         }}
       >
-        <Typography component="div" variant="body2" marginTop={2} marginBottom={1}>
+        <Typography component="div" variant="body1" marginTop={0} marginBottom={1}>
           {children}
         </Typography>
       </AccordionDetails>
@@ -155,14 +147,7 @@ export const CustomAccordion = ({
   );
 };
 
-export const VariantSelector = ({
-  variant,
-  setVariant,
-  variants,
-  showVariants,
-  setShowVariants,
-  disableTopBorder
-}) => {
+export const VariantSelector = ({ variant, setVariant, variants, showVariants, setShowVariants, disableTopBorder }) => {
   const selectVariant = (variantId) => {
     setVariant(variantId);
     setShowVariants(false);
@@ -415,11 +400,7 @@ export const CountryCurrencyProvider = ({ children }) => {
   };
 
   return (
-    <CountryCurrencyContext.Provider
-      value={{ selectedCountry, selectedCurrency, updateCountryCurrency }}
-    >
-      {children}
-    </CountryCurrencyContext.Provider>
+    <CountryCurrencyContext.Provider value={{ selectedCountry, selectedCurrency, updateCountryCurrency }}>{children}</CountryCurrencyContext.Provider>
   );
 };
 
@@ -462,10 +443,7 @@ export const CountryCurrencyModal = () => {
           <Typography variant="h6" component="div" gutterBottom>
             CHANGE COUNTRY
           </Typography>
-          <CustomButton
-            onClick={() => handleChange('SVERIGE', 'SEK')}
-            sx={{ textTransform: 'none', textAlign: 'left', width: '100%' }}
-          >
+          <CustomButton onClick={() => handleChange('SVERIGE', 'SEK')} sx={{ textTransform: 'none', textAlign: 'left', width: '100%' }}>
             <Typography
               variant="body1"
               component="span"
@@ -476,15 +454,8 @@ export const CountryCurrencyModal = () => {
               SVERIGE / SEK
             </Typography>
           </CustomButton>
-          <CustomButton
-            onClick={() => handleChange('EUROPE', 'EUR')}
-            sx={{ textTransform: 'none', textAlign: 'left', width: '100%' }}
-          >
-            <Typography
-              variant="body1"
-              component="span"
-              sx={{ opacity: selectedCountry === 'EUROPE' && selectedCurrency === 'EUR' ? 0.5 : 1 }}
-            >
+          <CustomButton onClick={() => handleChange('EUROPE', 'EUR')} sx={{ textTransform: 'none', textAlign: 'left', width: '100%' }}>
+            <Typography variant="body1" component="span" sx={{ opacity: selectedCountry === 'EUROPE' && selectedCurrency === 'EUR' ? 0.5 : 1 }}>
               EUROPE / EUR
             </Typography>
           </CustomButton>

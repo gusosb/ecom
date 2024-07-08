@@ -1,4 +1,4 @@
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { convertTaxRate } from '../helpers';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -17,7 +17,8 @@ const CategoryMobile = ({
   isShopRoute,
   ProductSkeleton,
   isLoading,
-  selectedCurrency
+  selectedCurrency,
+  theme
 }) => {
   //const [, footerHeight] = useOutletContext();
 
@@ -36,10 +37,13 @@ const CategoryMobile = ({
                   <Product component={Link} to={`/p/${item.id}/${item.name}`}>
                     <img src={baseUrl + item.images[0]?.path} alt={item.name} style={{ objectFit: 'cover' }} />
                     <ProductInfo className="ProductInfo">
-                      <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', fontSize: '0.75rem' }}>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{ textTransform: 'uppercase', fontSize: '0.75rem', color: 'rgba(200, 200, 200, 0.9) !important' }}
+                      >
                         {item.name}
                       </Typography>
-                      <Typography variant="body1" sx={{ fontSize: '0.875rem' }}>
+                      <Typography variant="body1" sx={{ fontSize: '0.87rem', color: 'rgba(200, 200, 200, 0.9) !important' }}>
                         {selectedCurrency === 'SEK'
                           ? format((item.price_sek * (1 + convertTaxRate(item.vatRateSE))) / 100)
                           : format(item.price_eur / 100)}{' '}
@@ -77,7 +81,7 @@ const CategoryMobile = ({
                 left: 0,
                 right: 0,
                 height: '2px',
-                backgroundColor: isShopRoute ? '#fbdd7e' : 'transparent'
+                backgroundColor: isShopRoute ? theme.palette.secondary.main : 'transparent'
               },
               pb: '2px'
             }}
@@ -97,7 +101,7 @@ const CategoryMobile = ({
                   left: 0,
                   right: 0,
                   height: '2px',
-                  backgroundColor: selectedCategory.id === category.id ? '#fbdd7e' : 'transparent'
+                  backgroundColor: selectedCategory.id === category.id ? theme.palette.secondary.main : 'transparent'
                 },
                 pb: '2px'
               }}

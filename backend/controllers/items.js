@@ -8,8 +8,9 @@ const { generateEmailTemplate } = require('../helpers.js');
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  service: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
+  host: process.env.EMAIL_HOST,
+  port: Number(process.env.EMAIL_PORT),
+  secure: true, // use SSL
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
@@ -120,10 +121,10 @@ itemsRouter.put('/variant/:id', async (request, response) => {
     if (notifications.length > 0) {
       // => logic for sending notification
       const bcc = notifications.map((notification) => notification.email);
-      const html = await generateEmailTemplate({ itemId: variant.itemId, template: 'backInStock' });
+      const { html, subject } = await generateEmailTemplate({ itemId: variant.itemId, template: 'backInStock' });
       console.log('Update variant - html', html);
 
-      const mailOptions = { from: process.env.EMAIL_USER, bcc, subject: 'Item back in stock', html };
+      const mailOptions = { from: `"GUSTAF LUND" < ${process.env.EMAIL_USER} >`, bcc, subject, html };
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) return console.log(error);
         console.log('Email sent: ' + info.response);

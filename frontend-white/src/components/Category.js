@@ -8,6 +8,7 @@ import { Typography } from '@mui/material';
 import { useState } from 'react';
 import '../styles.css';
 import Skeleton from '@mui/material/Skeleton';
+import { useTheme } from '@mui/material/styles';
 
 const Product = styled(Box)({
   position: 'relative',
@@ -64,6 +65,8 @@ const Category = ({ categories, baseUrl, format, isLoading, selectedCurrency }) 
     }));
   };
 
+  const theme = useTheme();
+
   if (windowSize.width < 800)
     return (
       <CategoryMobile
@@ -81,6 +84,7 @@ const Category = ({ categories, baseUrl, format, isLoading, selectedCurrency }) 
         isLoading={isLoading}
         ProductSkeleton={ProductSkeleton}
         selectedCurrency={selectedCurrency}
+        theme={theme}
       />
     );
 
@@ -111,7 +115,7 @@ const Category = ({ categories, baseUrl, format, isLoading, selectedCurrency }) 
               left: 0,
               right: 0,
               height: '2px',
-              backgroundColor: isShopRoute ? '#fbdd7e' : 'transparent'
+              backgroundColor: isShopRoute ? theme.palette.secondary.main : 'transparent'
             },
             pb: '2px'
           }}
@@ -132,7 +136,7 @@ const Category = ({ categories, baseUrl, format, isLoading, selectedCurrency }) 
                 left: 0,
                 right: 0,
                 height: '2px',
-                backgroundColor: selectedCategory.id === category.id ? '#fbdd7e' : 'transparent'
+                backgroundColor: selectedCategory.id === category.id ? theme.palette.secondary.main : 'transparent'
               },
               pb: '2px'
             }}
@@ -198,10 +202,10 @@ const Category = ({ categories, baseUrl, format, isLoading, selectedCurrency }) 
                     </div>
 
                     <ProductInfo className="ProductInfo">
-                      <Typography variant="subtitle1" sx={{ textTransform: 'uppercase' }}>
+                      <Typography variant="subtitle1" sx={{ textTransform: 'uppercase', color: 'rgba(200, 200, 200, 0.9) !important' }}>
                         {item.name}
                       </Typography>
-                      <Typography variant="body1">
+                      <Typography variant="body1" sx={{ color: 'rgba(200, 200, 200, 0.9) !important' }}>
                         {selectedCurrency === 'SEK'
                           ? format((item.price_sek * (1 + convertTaxRate(item.vatRateSE))) / 100)
                           : format(item.price_eur / 100)}{' '}

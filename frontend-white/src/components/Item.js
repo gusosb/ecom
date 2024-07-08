@@ -1,10 +1,10 @@
-import { useParams, useOutletContext } from 'react-router-dom';
+import { useParams, useOutletContext, useLocation } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { useWindowSize, CustomAccordion, VariantSelector, convertTaxRate, useCountryCurrency, validateEmail } from '../helpers';
-
+import { Helmet } from 'react-helmet-async';
 import ItemMobile from './ItemMobile';
 import Markdown from 'react-markdown';
-
+import remarkGfm from 'remark-gfm';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -32,6 +32,9 @@ const Item = ({ cart, setCart, categories, format, baseUrl, newNotificationMutat
   const [errorMessage, setErrorMessage] = useState('');
 
   const emailFieldRef = useRef(null);
+
+  const location = useLocation();
+  const canonicalUrl = `https://www.gustaflund.com${location.pathname}`;
 
   const handleSendNotify = () => {
     if (validateEmail(notificationEmail)) {
@@ -99,6 +102,16 @@ const Item = ({ cart, setCart, categories, format, baseUrl, newNotificationMutat
 
   return (
     <>
+      {selectedItem.name && selectedItem.description && (
+        <>
+          <Helmet>
+            <title>{selectedItem?.name} - GUSTAF LUND</title>
+            <meta name="description" content={selectedItem?.description?.substring(0, 160)} />
+            <link rel="canonical" href={canonicalUrl} />
+          </Helmet>
+        </>
+      )}
+
       <Grid container>
         <Grid item xs={12} md={6}>
           {selectedItem?.images?.map((image) => (
@@ -246,14 +259,46 @@ const Item = ({ cart, setCart, categories, format, baseUrl, newNotificationMutat
                     expanded={expanded === 'DETAILS'}
                     handleChange={() => handleAccordionChange('DETAILS')}
                   >
-                    <Typography>{selectedItem.details}</Typography>
+                    <Markdown
+                      components={{
+                        p: ({ node, ...props }) => <Typography fontSize={15} variant="body1" gutterBottom {...props} />,
+                        h1: ({ node, ...props }) => <Typography variant="body2" gutterBottom {...props} />,
+                        ul: ({ node, ...props }) => <ul style={{ marginTop: '0px', marginBottom: '0px', paddingLeft: '20px' }} {...props} />,
+                        li: ({ node, ...props }) => <li style={{ marginTop: '0px', marginBottom: '0px' }} {...props} />
+                      }}
+                    >
+                      {selectedItem.details}
+                    </Markdown>
                   </CustomAccordion>
                   <CustomAccordion title="SIZE & FIT" expanded={expanded === 'SIZE & FIT'} handleChange={() => handleAccordionChange('SIZE & FIT')}>
-                    <Typography>{selectedItem.sizefit}</Typography>
+                    <Markdown
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        p: ({ node, ...props }) => <Typography fontSize={15} variant="body1" gutterBottom {...props} />,
+                        h1: ({ node, ...props }) => <Typography variant="body2" gutterBottom {...props} />,
+                        table: ({ node, ...props }) => <table style={{ width: '100%', borderCollapse: 'collapse' }} {...props} />,
+                        th: ({ node, ...props }) => (
+                          <th style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2', textAlign: 'left' }} {...props} />
+                        ),
+                        td: ({ node, ...props }) => <td style={{ border: '1px solid #ddd', padding: '8px' }} {...props} />,
+                        ul: ({ node, ...props }) => <ul style={{ marginTop: '0px', marginBottom: '0px', paddingLeft: '20px' }} {...props} />,
+                        li: ({ node, ...props }) => <li style={{ marginTop: '0px', marginBottom: '0px' }} {...props} />
+                      }}
+                    >
+                      {selectedItem.sizefit}
+                    </Markdown>
                   </CustomAccordion>
 
                   <CustomAccordion title="CARE" last={true} expanded={expanded === 'CARE'} handleChange={() => handleAccordionChange('CARE')}>
-                    <Typography>{selectedItem.care}</Typography>
+                    <Markdown
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        p: ({ node, ...props }) => <Typography fontSize={15} variant="body1" gutterBottom {...props} />,
+                        h1: ({ node, ...props }) => <Typography variant="body2" gutterBottom {...props} />
+                      }}
+                    >
+                      {selectedItem.care}
+                    </Markdown>
                   </CustomAccordion>
 
                   {/* 

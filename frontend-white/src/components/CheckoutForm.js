@@ -50,7 +50,8 @@ const CheckoutForm = ({
   setPhone,
   setCreatingOrder,
   email,
-  selectedCurrency
+  selectedCurrency,
+  updateCountryCurrency
 }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -62,8 +63,8 @@ const CheckoutForm = ({
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/confirmation`,
-        receipt_email: email
+        return_url: `${window.location.origin}/confirmation`
+        //receipt_email: email
       }
     });
 
@@ -101,7 +102,12 @@ const CheckoutForm = ({
               value.address.postal_code && setPostalcode(value.address.postal_code);
               value.address.city && setCity(value.address.city);
               value.address.state && setState(value.address.state);
-              value.address.country && setCountry(value.address.country);
+              const country = value.address.country;
+              if (country) {
+                setCountry(value.address.country);
+                if (selectedCurrency === 'SEK' && country !== 'SE') updateCountryCurrency('EUROPE', 'EUR');
+                if (selectedCurrency === 'EUR' && country === 'SE') updateCountryCurrency('SVERIGE', 'SEK');
+              }
             }}
           />
         </Box>
@@ -116,7 +122,7 @@ const CheckoutForm = ({
                 backgroundColor: '#000',
                 color: '#fff',
                 '&:hover': {
-                  backgroundColor: 'rgba(0, 0, 0, 0.8)' // Slightly lighter black on hover
+                  backgroundColor: 'rgba(0, 0, 0, 0.8)'
                 },
                 padding: '16px',
                 borderRadius: '1'

@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { DetailsButton, CustomAccordion, VariantSelector, convertTaxRate } from '../helpers';
 import '../styles.css';
+import remarkGfm from 'remark-gfm';
 
 // const backgroundColor = 'rgb(238, 238, 238)';
 //const backgroundColor = '#FEFCF9';
@@ -68,7 +69,7 @@ const ItemMobile = ({
                   <Box
                     component={Typography}
                     variant="h5"
-                    paddingTop={0}
+                    paddingTop={2}
                     sx={{ textTransform: 'uppercase' }}
                     display="flex"
                     justifyContent="center"
@@ -117,15 +118,47 @@ const ItemMobile = ({
             {toggleDetails && (
               <>
                 <CustomAccordion title="DETAILS" expanded={expanded === 'DETAILS'} handleChange={() => handleAccordionChange('DETAILS')}>
-                  <Typography>{selectedItem.details}</Typography>
+                  <Markdown
+                    components={{
+                      p: ({ node, ...props }) => <Typography fontSize={15} variant="body1" gutterBottom {...props} />,
+                      h1: ({ node, ...props }) => <Typography variant="body2" gutterBottom {...props} />,
+                      ul: ({ node, ...props }) => <ul style={{ marginTop: '0px', marginBottom: '0px', paddingLeft: '20px' }} {...props} />,
+                      li: ({ node, ...props }) => <li style={{ marginTop: '0px', marginBottom: '0px' }} {...props} />
+                    }}
+                  >
+                    {selectedItem.details}
+                  </Markdown>
                 </CustomAccordion>
 
                 <CustomAccordion title="SIZE & FIT" expanded={expanded === 'SIZE & FIT'} handleChange={() => handleAccordionChange('SIZE & FIT')}>
-                  <Typography>{selectedItem.specification}</Typography>
+                  <Markdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      p: ({ node, ...props }) => <Typography fontSize={15} variant="body1" gutterBottom {...props} />,
+                      h1: ({ node, ...props }) => <Typography variant="body2" gutterBottom {...props} />,
+                      table: ({ node, ...props }) => <table style={{ width: '100%', borderCollapse: 'collapse' }} {...props} />,
+                      th: ({ node, ...props }) => (
+                        <th style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2', textAlign: 'left' }} {...props} />
+                      ),
+                      td: ({ node, ...props }) => <td style={{ border: '1px solid #ddd', padding: '8px' }} {...props} />,
+                      ul: ({ node, ...props }) => <ul style={{ marginTop: '0px', marginBottom: '0px', paddingLeft: '20px' }} {...props} />,
+                      li: ({ node, ...props }) => <li style={{ marginTop: '0px', marginBottom: '0px' }} {...props} />
+                    }}
+                  >
+                    {selectedItem.sizefit}
+                  </Markdown>
                 </CustomAccordion>
 
                 <CustomAccordion last={true} title="CARE" expanded={expanded === 'CARE'} handleChange={() => handleAccordionChange('CARE')}>
-                  <Typography>{selectedItem.specification}</Typography>
+                  <Markdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      p: ({ node, ...props }) => <Typography fontSize={15} variant="body1" gutterBottom {...props} />,
+                      h1: ({ node, ...props }) => <Typography variant="body2" gutterBottom {...props} />
+                    }}
+                  >
+                    {selectedItem.care}
+                  </Markdown>
                 </CustomAccordion>
               </>
             )}

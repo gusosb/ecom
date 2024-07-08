@@ -30,9 +30,6 @@ OrderItem.init(
     unit_price: {
       type: DataTypes.INTEGER
     },
-    total_discount_amount: {
-      type: DataTypes.INTEGER
-    },
     tax_rate: {
       type: DataTypes.INTEGER
     },

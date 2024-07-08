@@ -36,7 +36,8 @@ const CheckoutMobileStripe = ({
   AddIcon,
   creatingOrder,
   baseUrl,
-  selectedCurrency
+  selectedCurrency,
+  updateCountryCurrency
 }) => {
   return (
     <>
@@ -177,6 +178,7 @@ const CheckoutMobileStripe = ({
               setState={setState}
               setCountry={setCountry}
               selectedCurrency={selectedCurrency}
+              updateCountryCurrency={updateCountryCurrency}
             />
           </Elements>
         )}

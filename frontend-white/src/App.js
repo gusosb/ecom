@@ -12,24 +12,16 @@ import Discover from './components/Discover';
 import TheCashmere from './components/TheCashmere';
 import CustomerSupport from './components/CustomerSupport';
 import Terms from './components/Terms';
-//import FrontPage from './components/FrontPage';
 import Home from './components/Home';
 import FAQ from './components/pages/FAQ';
 
 const Login = lazy(() => import('./components/Login'));
 const Register = lazy(() => import('./components/Register'));
-//const Home = lazy(() => import('./components/Home'));
 const AdminItems = lazy(() => import('./components/AdminItems'));
 const AdminOrders = lazy(() => import('./components/AdminOrders'));
 const Confirmation = lazy(() => import('./components/ConfirmationWrapper'));
 const FrontPage = lazy(() => import('./components/FrontPage'));
-//const CustomerSupport = lazy(() => import('./components/CustomerSupport'));
-//const Discover = lazy(() => import('./components/Discover'));
-//const TheCashmere = lazy(() => import('./components/TheCashmere'));
-//const Terms = lazy(() => import('./components/Terms'));
 const About = lazy(() => import('./components/About'));
-
-//const FAQ = lazy(() => import('./components/pages/FAQ'));
 const Returns = lazy(() => import('./components/pages/Returns'));
 const Contact = lazy(() => import('./components/pages/Contact'));
 
@@ -44,7 +36,7 @@ const App = () => {
   const [avoidReading, setAvoidReading] = useState(false);
   const [token, setToken] = useState(null);
 
-  const { selectedCurrency } = useCountryCurrency();
+  const { selectedCurrency, updateCountryCurrency } = useCountryCurrency();
 
   const newNotificationMutation = useMutation(addNotify);
 
@@ -69,11 +61,20 @@ const App = () => {
     }, 10000);
   };
 
+  const preloadImages = (imageUrls) => {
+    imageUrls.forEach((url) => {
+      const img = new Image();
+      img.src = url;
+    });
+  };
+
+  /*
   const logout = () => {
     setToken(null);
     localStorage.clear();
-    /*     client.resetStore() */
+         client.resetStore() 
   };
+  */
 
   const removeFromCart = (key) => {
     const values = { ...cart };
@@ -106,6 +107,14 @@ const App = () => {
       setAvoidReading(true);
     } else localStorage.setItem('ecomcart-white-gustaflund', JSON.stringify(cart));
   }, [token, cart, avoidReading]);
+
+  useEffect(() => {
+    if (result.data) {
+      const items = result.data.flatMap((category) => category.items);
+      const imageUrls = items.flatMap((item) => item.images.map((image) => baseUrl + image.path));
+      preloadImages(imageUrls);
+    }
+  }, [result.data]);
 
   return (
     <>
@@ -147,6 +156,7 @@ const App = () => {
                 element={
                   <Checkout
                     selectedCurrency={selectedCurrency}
+                    updateCountryCurrency={updateCountryCurrency}
                     baseUrl={baseUrl}
                     format={format}
                     changeVariantQuantity={changeVariantQuantity}

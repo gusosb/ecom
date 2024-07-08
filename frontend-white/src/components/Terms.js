@@ -56,10 +56,10 @@ const Terms = () => {
         </Typography>
         <br />
         <Typography variant="body1">
-          A binding purchase agreement is entered into as soon as you complete the checkout and submit payment. A receipt will be sent out from Stripe
-          to the email address you submitted at checkout. This receipt serves as proof of guarantee for full payment. If an item runs out of stock
-          before the status has been correctly updated on the website, GUSTAF LUND will notify you by email. We will then cancel the order in question
-          and refund your purchase.
+          A binding purchase agreement is entered into as soon as you complete the checkout and submit payment. An order confirmation will be sent out
+          to the email address you submitted at checkout. This confirmation serves as proof of guarantee for full payment. If an item runs out of
+          stock before the status has been correctly updated on the website, GUSTAF LUND will notify you by email. We will then cancel the order in
+          question and refund your purchase.
         </Typography>
         <br />
         <br />
@@ -164,7 +164,7 @@ const Terms = () => {
         </Typography>
         <br />
         <br />
-        <Typography variant="body1">Last modification date: 13th of May, 2024.</Typography>
+        <Typography variant="body1">Last modification date: 26th of June, 2024.</Typography>
       </Box>
     </div>
   );

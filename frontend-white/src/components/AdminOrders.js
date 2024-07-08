@@ -1,6 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { getAdminOrders } from '../requests';
-import { Link } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { getAdminOrders, updateTracking } from '../requests';
 import { useState } from 'react';
 
 import Button from '@mui/material/Button';
@@ -10,21 +9,8 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Grid from '@mui/material/Grid';
-import ListSubheader from '@mui/material/ListSubheader';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
-import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -34,6 +20,14 @@ import Modal from '@mui/material/Modal';
 const AdminOrders = () => {
   const result = useQuery(['adminorders'], getAdminOrders, {
     refetchOnWindowFocus: false
+  });
+
+  const queryClient = useQueryClient();
+
+  const updateTrackingMutation = useMutation(updateTracking, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admincategories'] });
+    }
   });
 
   const orders = result.data || [];
@@ -49,7 +43,6 @@ const AdminOrders = () => {
   };
 
   const handleModalOpen = (orderID) => {
-    // Modify to accept orderID
     setorderID(orderID); // Set the current item ID
     setModalOpen(true);
   };
@@ -63,6 +56,7 @@ const AdminOrders = () => {
   };
 
   const sendTrackingNumber = async () => {
+    updateTrackingMutation.mutate({ orderID, tracking: numberInput });
     setNumberInput('');
     setorderID(null);
     setModalOpen(false);
@@ -70,7 +64,7 @@ const AdminOrders = () => {
 
   return (
     <TableContainer sx={{ maxWidth: 1250 }}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 650 }} aria-label="simple-table">
         <TableHead>
           <TableRow>
             <TableCell>Client Secret</TableCell>
@@ -92,7 +86,7 @@ const AdminOrders = () => {
                 <TableCell align="right">{order.order_reference}</TableCell>
                 <TableCell align="right">{order.order_amount / 100}</TableCell>
                 <TableCell align="right">
-                  {order.isPaid ? <CheckCircleOutlineIcon sx={{ color: 'green' }} /> : <DoNotDisturbIcon sx={{ color: 'red' }} />}
+                  {order.is_paid ? <CheckCircleOutlineIcon sx={{ color: 'green' }} /> : <DoNotDisturbIcon sx={{ color: 'red' }} />}
                 </TableCell>
                 <TableCell align="right">
                   {order.is_fulfilled ? <CheckCircleOutlineIcon sx={{ color: 'green' }} /> : <DoNotDisturbIcon sx={{ color: 'red' }} />}

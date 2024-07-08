@@ -59,7 +59,16 @@ const appearance = {
   }
 };
 
-const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQuantity, format, baseUrl, selectedCurrency }) => {
+const CheckoutStripe = ({
+  cart,
+  totalSumInCart,
+  removeFromCart,
+  changeVariantQuantity,
+  format,
+  baseUrl,
+  selectedCurrency,
+  updateCountryCurrency
+}) => {
   const [payment, setPayment] = useState({});
   const [creatingOrder, setCreatingOrder] = useState(false);
   const [isInitialRender, setIsInitialRender] = useState(true);
@@ -237,6 +246,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
         creatingOrder={creatingOrder}
         baseUrl={baseUrl}
         selectedCurrency={selectedCurrency}
+        updateCountryCurrency={updateCountryCurrency}
       />
     );
 
@@ -371,6 +381,7 @@ const CheckoutStripe = ({ cart, totalSumInCart, removeFromCart, changeVariantQua
                   setState={setState}
                   setCountry={setCountry}
                   selectedCurrency={selectedCurrency}
+                  updateCountryCurrency={updateCountryCurrency}
                 />
               </Elements>
             )}

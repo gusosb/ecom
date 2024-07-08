@@ -1,8 +1,22 @@
 const ordersRouter = require('express').Router();
 const { auth } = require('./auth');
-const { Order, OrderItem } = require('../models');
+const { Order, OrderItem, Variant } = require('../models');
+
+const { generateConfirmationEmail } = require('../helpers.js');
 
 const stripe = require('stripe')(process.env.STRIPE_KEY);
+
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  host: process.env.EMAIL_HOST,
+  port: Number(process.env.EMAIL_PORT),
+  secure: true, // use SSL
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
 
 ordersRouter.get('/admin', async (request, response) => {
   const currentUser = (await auth(request)) || [];
@@ -147,7 +161,10 @@ ordersRouter.post('/webhook-receiver', async (request, response) => {
 
   const externalId = data.object.client_secret;
 
-  const order = await Order.findOne({ where: { externalId } });
+  const order = await Order.findOne({
+    where: { externalId },
+    include: [{ model: OrderItem }]
+  });
   console.log(order);
 
   if (type !== 'payment_intent.succeeded') return response.status(200).json();
@@ -155,7 +172,35 @@ ordersRouter.post('/webhook-receiver', async (request, response) => {
   order.is_paid = true;
   await order.save();
 
+  console.log('order', order);
+
   response.status(201).json();
+
+  setImmediate(async () => {
+    try {
+      await Promise.all(
+        order.orderitems.map(async (item) => {
+          const variant = await Variant.findOne({ where: { id: item.reference } });
+          if (variant) {
+            variant.sellable -= item.quantity;
+            await variant.save();
+          }
+        })
+      );
+
+      // => order is paid, we confirm it
+      const to = order.email;
+      const html = await generateConfirmationEmail({ order });
+      const subject = `Order confirmation #${order.order_reference}`;
+
+      const mailOptions = { from: `"GUSTAF LUND" < ${process.env.EMAIL_USER} >`, to, subject, html };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) return console.log(error);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
 });
 
 module.exports = ordersRouter;

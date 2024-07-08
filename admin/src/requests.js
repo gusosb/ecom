@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-//export const baseUrl = 'http://localhost:3001';
-export const baseUrl = 'https://api.gustaflund.com';
+export const baseUrl = 'http://localhost:3001';
+//export const baseUrl = 'https://api.gustaflund.com';
 const token = localStorage.getItem('gustaflund-bunny-racer') || '';
 
 // export const getSite = () =>
@@ -81,9 +81,8 @@ export const updateOrder = (
 ) => axios.post(baseUrl + '/api/orders/update', data).then((res) => res.data);
 
 export const updateTracking = (
-  data // => Updates the tracking number on the order
-) =>
-  axios.put(`${baseUrl}/api/order/admin/tracking/${data.orderID}`, data, { headers: { Authorization: `bearer ${token}` } }).then((res) => res.data);
+  order // => Updates the tracking number on the order
+) => axios.put(`${baseUrl}/api/order/admin/tracking/${order.id}`, order).then((res) => res.data);
 
 // export const readOrder = data => // => REad the order on confirmation
 //     axios.post(baseUrl + `/api/read/${data.order_id}`, data).then(res => res.data)

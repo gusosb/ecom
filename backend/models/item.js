@@ -37,19 +37,19 @@ Item.init(
       type: DataTypes.STRING
     },
     description: {
-      type: DataTypes.STRING
+      type: DataTypes.TEXT
     },
     sku: {
       type: DataTypes.STRING
     },
     details: {
-      type: DataTypes.STRING
+      type: DataTypes.TEXT
     },
     sizefit: {
-      type: DataTypes.STRING
+      type: DataTypes.TEXT
     },
     care: {
-      type: DataTypes.STRING
+      type: DataTypes.TEXT
     }
   },
   {
