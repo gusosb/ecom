@@ -13,6 +13,8 @@ frontend/build
 frontend-white/node_modules
 frontend-white/build
 frontend-white/.env
+admin/node_modules
+admin/build
 backend/node_modules
 backend/.env
 backend/uploads
