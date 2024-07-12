@@ -3,11 +3,19 @@ import { useWindowSize } from '../helpers';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-const TheCashmere = () => {
+const TheCashmere = ({ Helmet }) => {
   const windowSize = useWindowSize();
 
   return (
     <>
+      <Helmet>
+        <title>GUSTAF LUND | About Our Cashmere</title>
+        <meta
+          name="description"
+          content="Learn about GUSTAF LUND's premium cashmere. Discover where our cashmere comes from and how our luxurious men's clothing is meticulously crafted to ensure the highest quality."
+        />
+        <link rel="canonical" href="https://www.gustaflund.com/the-cashmere" />
+      </Helmet>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Box sx={{ maxWidth: 1000, my: windowSize.width > 800 ? 7 : 2, mx: 5 }}>
           <Typography variant="body2" fontSize={20} fontWeight="bold">

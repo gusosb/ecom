@@ -8,13 +8,22 @@ import Typography from '@mui/material/Typography';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useWindowSize } from '../helpers';
 
-const CustomerSupport = () => {
+const CustomerSupport = ({ Helmet }) => {
   const [, headerHeight, footerHeight] = useOutletContext();
 
   const windowSize = useWindowSize();
 
   return (
     <>
+      <Helmet>
+        <title>GUSTAF LUND | Customer Support</title>
+        <meta
+          name="description"
+          content="Get assistance with your GUSTAF LUND purchases. Our customer support team is here to help with any inquiries about your order or our premium cashmere men's clothing. Contact us for support and information."
+        />
+        <link rel="canonical" href="https://www.gustaflund.com/customer-support" />
+      </Helmet>
+
       <Grid container style={{ height: `calc(100vh - ${footerHeight + headerHeight - 0.5}px)` }}>
         <Grid item xs={12} md={6} style={{ display: 'flex', flexDirection: 'column' }}>
           <Box sx={{ flexGrow: 1, backgroundColor: '#000', padding: 4, px: 2, color: '#fff' }}>

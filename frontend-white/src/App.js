@@ -4,6 +4,7 @@ import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { getCategories, baseUrl, addNotify } from './requests';
 import { useCountryCurrency } from './helpers';
 import GoogleAnalytics from './components/GoogleAnalytics';
+import { Helmet } from 'react-helmet-async';
 
 import Category from './components/Category';
 import Item from './components/Item';
@@ -148,7 +149,7 @@ const App = () => {
                 />
               }
             >
-              <Route index element={<FrontPage />} />
+              <Route index element={<FrontPage Helmet={Helmet} />} />
               <Route index element={<Category format={format} baseUrl={baseUrl} categories={result.data || []} />} />
 
               <Route
@@ -171,6 +172,7 @@ const App = () => {
                 path="/shop/:categoryname?"
                 element={
                   <Category
+                    Helmet={Helmet}
                     selectedCurrency={selectedCurrency}
                     isLoading={result.isLoading}
                     format={format}
@@ -207,11 +209,17 @@ const App = () => {
               />
 
               <Route path="/discover" element={<Discover notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
-              <Route path="/the-cashmere" element={<TheCashmere notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
-              <Route path="/terms-and-conditions" element={<Terms notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
+              <Route path="/the-cashmere" element={<TheCashmere Helmet={Helmet} notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
+              <Route
+                path="/terms-and-conditions"
+                element={<Terms notify={notify} Helmet={Helmet} setToken={setToken} errorMessage={errorMessage} />}
+              />
               <Route path="/about-us" element={<About notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
 
-              <Route path="/customer-support" element={<CustomerSupport notify={notify} setToken={setToken} errorMessage={errorMessage} />}>
+              <Route
+                path="/customer-support"
+                element={<CustomerSupport Helmet={Helmet} notify={notify} setToken={setToken} errorMessage={errorMessage} />}
+              >
                 <Route path="faq" element={<FAQ notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
                 <Route path="returns" element={<Returns notify={notify} setToken={setToken} errorMessage={errorMessage} />} />
                 <Route path="contact-us" element={<Contact notify={notify} setToken={setToken} errorMessage={errorMessage} />} />

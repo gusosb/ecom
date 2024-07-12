@@ -41,7 +41,7 @@ const ProductSkeleton = ({ height }) => (
   </Product>
 );
 
-const Category = ({ categories, baseUrl, format, isLoading, selectedCurrency }) => {
+const Category = ({ categories, baseUrl, format, isLoading, selectedCurrency, Helmet }) => {
   const categoryName = useParams().categoryname;
   const selectedCategory = categories.find((category) => category.name.toLowerCase() === categoryName?.toLowerCase()) || [];
 
@@ -90,6 +90,14 @@ const Category = ({ categories, baseUrl, format, isLoading, selectedCurrency }) 
 
   return (
     <>
+      <Helmet>
+        <title>GUSTAF LUND | Shop Premium Cashmere Men's Clothing</title>
+        <meta
+          name="description"
+          content="Explore the GUSTAF LUND shop and discover our collection of premium cashmere men's clothing. Find sophisticated and timeless garments crafted with meticulous attention to detail."
+        />
+        <link rel="canonical" href="https://www.gustaflund.com/shop" />
+      </Helmet>
       <Grid
         container
         borderBottom={1}
