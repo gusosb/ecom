@@ -114,9 +114,12 @@ const Item = ({ cart, setCart, categories, format, baseUrl, newNotificationMutat
 
       <Grid container>
         <Grid item xs={12} md={6}>
-          {selectedItem?.images?.map((image) => (
-            <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} preload />
-          ))}
+          {selectedItem?.images
+            ?.slice()
+            .sort((a, b) => a.index - b.index)
+            .map((image) => (
+              <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} preload />
+            ))}
         </Grid>
         <Grid item xs={12} md={6}>
           <Box

@@ -46,6 +46,7 @@ const Category = ({ categories, baseUrl, format, isLoading, selectedCurrency, He
   const selectedCategory = categories.find((category) => category.name.toLowerCase() === categoryName?.toLowerCase()) || [];
 
   const items = selectedCategory.items || categories.flatMap((category) => category.items);
+  console.log(items, 'items');
 
   const location = useLocation();
   const isShopRoute = location.pathname === '/shop';
@@ -163,6 +164,9 @@ const Category = ({ categories, baseUrl, format, isLoading, selectedCurrency, He
             ))
           : items.map((item, index) => {
               const hoverImage = item.images.find((e) => e.isHover)?.path;
+              const lowestIndexImage = item.images.reduce((lowest, image) => {
+                return image.index < lowest.index ? image : lowest;
+              }, item.images[0]);
 
               return (
                 <Grid item xs={12} sm={6} md={3} key={index}>
@@ -195,7 +199,7 @@ const Category = ({ categories, baseUrl, format, isLoading, selectedCurrency, He
                         />
                       )}
                       <img
-                        src={baseUrl + item.images[0]?.path}
+                        src={baseUrl + lowestIndexImage.path}
                         alt={item.name}
                         style={{
                           objectFit: 'cover',

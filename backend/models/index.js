@@ -33,7 +33,7 @@ Item.hasMany(Review);
 Review.belongsTo(Item);
 
 Notification.belongsTo(Variant);
-Item.hasMany(Variant);
+Variant.hasMany(Notification);
 
 // sequelize.sync()
 sequelize.sync({ alter: true });

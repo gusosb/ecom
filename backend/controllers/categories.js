@@ -1,6 +1,6 @@
 const categoriesRouter = require('express').Router();
 const { auth } = require('./auth');
-const { Variant, Image, Item, Category, Review } = require('../models');
+const { Variant, Image, Item, Category, Notification } = require('../models');
 
 categoriesRouter.get('/', async (request, response) => {
   const categories = await Category.findAll({
@@ -17,7 +17,7 @@ categoriesRouter.get('/', async (request, response) => {
               {
                 model: Item,
                 where: { isActive: true },
-                include: [{ model: Image }, { model: Variant }, { model: Review }]
+                include: [{ model: Image }, { model: Variant }]
               }
             ]
           }
@@ -34,7 +34,7 @@ categoriesRouter.get('/new', async (request, response) => {
       {
         model: Item,
         where: { isActive: true },
-        include: [{ model: Image }, { model: Variant }, { model: Review }]
+        include: [{ model: Image }, { model: Variant }]
       }
     ]
   });
@@ -59,7 +59,7 @@ categoriesRouter.get('/admin', async (request, response) => {
             include: [
               {
                 model: Item,
-                include: [{ model: Image }, { model: Variant }, { model: Review }]
+                include: [{ model: Image }, { model: Variant }]
               }
             ]
           }
@@ -79,7 +79,13 @@ categoriesRouter.get('/admin/new', async (request, response) => {
     include: [
       {
         model: Item,
-        include: [{ model: Image }, { model: Variant }, { model: Review }]
+        include: [
+          { model: Image },
+          {
+            model: Variant,
+            include: [{ model: Notification }]
+          }
+        ]
       }
     ]
   });

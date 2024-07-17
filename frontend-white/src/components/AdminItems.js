@@ -99,6 +99,7 @@ const AdminItems = ({ queryClient }) => {
     refetchOnWindowFocus: false
   });
   const categories = result.data || [];
+  console.log('result', result);
 
   const topCategoryID = parseInt(useParams().categoryid);
   const subCategoryID = parseInt(useParams().subonecategoryid);
@@ -126,6 +127,7 @@ const AdminItems = ({ queryClient }) => {
   const selectedItem = selectedCategory?.items?.find((item) => item.id === parseInt(itemID)) || [];
 
   const selectedVariant = selectedItem.variants?.find((variant) => variant.id === variantID);
+  console.log('selectedVariant', selectedVariant);
 
   const [newVariant, setNewVariant] = useState('');
   const [newVariantSellable, setNewVariantSellable] = useState('');
@@ -264,6 +266,7 @@ const AdminItems = ({ queryClient }) => {
     formData.append('file', newImage);
     formData.append('itemId', itemID);
     formData.append('isHover', isHover);
+    formData.append('index', imageIndex);
     addImageMutation.mutate(formData);
   };
   const sendNewVariant = () => {

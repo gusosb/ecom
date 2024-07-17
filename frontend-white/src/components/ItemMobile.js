@@ -61,49 +61,52 @@ const ItemMobile = ({
     <>
       <Grid container>
         <Grid item xs={12} md={6} ref={ref}>
-          {selectedItem?.images?.map((image, index) => {
-            if (index === 0)
-              return (
-                <>
-                  <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} preload />
-                  <Box
-                    component={Typography}
-                    variant="h5"
-                    paddingTop={2}
-                    sx={{ textTransform: 'uppercase' }}
-                    display="flex"
-                    justifyContent="center"
-                    backgroundColor={backgroundColor}
-                  >
-                    {selectedItem.name}
-                  </Box>
-
-                  <Box
-                    component={Typography}
-                    paddingTop={2}
-                    variant="subtitle1"
-                    display="flex"
-                    justifyContent="center"
-                    backgroundColor={backgroundColor}
-                    alignItems="center"
-                    textAlign="center"
-                    sx={{ fontSize: '1.1rem' }}
-                  >
-                    <Box mx={5} mb={4}>
-                      <Markdown
-                        components={{
-                          p: ({ node, ...props }) => <Typography fontSize={20} variant="body1" gutterBottom {...props} />,
-                          h1: ({ node, ...props }) => <Typography variant="body2" gutterBottom {...props} />
-                        }}
-                      >
-                        {selectedItem.description}
-                      </Markdown>
+          {selectedItem?.images
+            ?.slice()
+            .sort((a, b) => a.index - b.index)
+            .map((image, index) => {
+              if (index === 0)
+                return (
+                  <>
+                    <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} preload />
+                    <Box
+                      component={Typography}
+                      variant="h5"
+                      paddingTop={2}
+                      sx={{ textTransform: 'uppercase' }}
+                      display="flex"
+                      justifyContent="center"
+                      backgroundColor={backgroundColor}
+                    >
+                      {selectedItem.name}
                     </Box>
-                  </Box>
-                </>
-              );
-            return <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} preload />;
-          })}
+
+                    <Box
+                      component={Typography}
+                      paddingTop={2}
+                      variant="subtitle1"
+                      display="flex"
+                      justifyContent="center"
+                      backgroundColor={backgroundColor}
+                      alignItems="center"
+                      textAlign="center"
+                      sx={{ fontSize: '1.1rem' }}
+                    >
+                      <Box mx={5} mb={4}>
+                        <Markdown
+                          components={{
+                            p: ({ node, ...props }) => <Typography fontSize={20} variant="body1" gutterBottom {...props} />,
+                            h1: ({ node, ...props }) => <Typography variant="body2" gutterBottom {...props} />
+                          }}
+                        >
+                          {selectedItem.description}
+                        </Markdown>
+                      </Box>
+                    </Box>
+                  </>
+                );
+              return <img src={baseUrl + image.path} alt="Product" style={{ width: '100%', height: 'auto', display: 'block' }} preload />;
+            })}
         </Grid>
 
         <Grid
