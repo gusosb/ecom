@@ -50,6 +50,8 @@ ordersRouter.post('/create-payment-intent', async (request, response) => {
   const { locale, order_amount, order_tax_amount, order_lines, email, phone, firstname, lastname, address, postalcode, city, currency } =
     request.body;
 
+  console.log('createpaymentintent!');
+
   const paymentIntent = await stripe.paymentIntents.create({
     amount: order_amount,
     currency,
